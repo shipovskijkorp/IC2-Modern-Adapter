@@ -31,7 +31,7 @@ for family in $FAMILIES; do
     echo "==> Building $family family"
     (
         cd "$FAMILY_DIR"
-        ./gradlew chiseledBuild --no-daemon
+        ./gradlew buildAndCollect --no-daemon
     )
 done
 

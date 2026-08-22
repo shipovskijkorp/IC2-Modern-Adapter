@@ -29,6 +29,7 @@ val modArchiveName = commonProperty("common.mod.archive_name")
 val modAuthors = commonProperty("common.mod.authors")
 val modLicense = commonProperty("common.mod.license")
 val junitVersion = commonProperty("common.deps.junit")
+val gsonVersion = commonProperty("common.deps.gson")
 val sharedSourceRoot = commonProperty("common.source.shared_root")
 
 val minecraftVersion = property("minecraft_version").toString()
@@ -69,6 +70,8 @@ repositories {
 dependencies {
     add("minecraft", "net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("com.google.code.gson:gson:$gsonVersion")
 }
 
 tasks.processResources {

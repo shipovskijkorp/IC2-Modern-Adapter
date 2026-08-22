@@ -1,6 +1,13 @@
 package com.shipovskijkorp.ic2modernadapter.registry;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
+import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantFacingBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.PlaceholderDynamiteBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.PlaceholderDoorBlock;
+import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedDoubleHighBlockItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedItem;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,8 +20,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.WaterFluid;
 import net.neoforged.bus.api.IEventBus;
@@ -53,15 +63,17 @@ public final class IC2ContentRegistries {
 
     static {
         for (String path : MANIFEST.registries().blocks()) {
-            BLOCKS_BY_PATH.put(path, BLOCKS.registerSimpleBlock(path));
+            BLOCKS_BY_PATH.put(path, BLOCKS.register(path, () -> createPlaceholderBlock(path)));
         }
 
         for (String path : MANIFEST.registries().items()) {
             Supplier<? extends Item> item;
-            if (BLOCK_ITEM_PATHS.contains(path)) {
-                item = ITEMS.registerSimpleBlockItem(path, requireBlock(path));
+            if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
+                Supplier<? extends Block> block = requireBlock(path);
+                item = ITEMS.register(path, () -> createBlockItem(path, block.get()));
             } else {
-                item = ITEMS.registerSimpleItem(path);
+                item = ITEMS.register(path, () -> new LegacyTranslatedItem(
+                        path, new Item.Properties(), IC2VariantStacks::variantKey));
             }
             ITEMS_BY_PATH.put(path, item);
         }
@@ -128,6 +140,51 @@ public final class IC2ContentRegistries {
 
     public static Supplier<? extends BlockEntityType<?>> blockEntityType(String path) {
         return require(BLOCK_ENTITIES_BY_PATH, "block entity type", path);
+    }
+
+    private static Block createPlaceholderBlock(String path) {
+        BlockBehaviour.Properties properties = placeholderProperties(path);
+        int variantCount = MANIFEST.stackVariants(path).size();
+        if ("te".equals(path)) {
+            return new LegacyVariantFacingBlock(properties, variantCount, IC2VariantStacks::placementVariantIndex);
+        }
+        if (variantCount > 1) {
+            return new LegacyVariantBlock(properties, variantCount, IC2VariantStacks::placementVariantIndex);
+        }
+        return switch (path) {
+            case "rubber_wood" -> new RotatedPillarBlock(properties);
+            case "fence" -> new FenceBlock(properties);
+            case "reinforced_door" -> new PlaceholderDoorBlock(properties);
+            case "dynamite" -> new PlaceholderDynamiteBlock(properties);
+            default -> new Block(properties);
+        };
+    }
+
+    private static BlockBehaviour.Properties placeholderProperties(String path) {
+        BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().strength(1.0F);
+        if ("te".equals(path)
+                || "leaves".equals(path)
+                || "sapling".equals(path)
+                || "scaffold".equals(path)
+                || "fence".equals(path)
+                || "sheet".equals(path)
+                || "glass".equals(path)
+                || "mining_pipe".equals(path)
+                || "reinforced_door".equals(path)
+                || "dynamite".equals(path)
+                || MANIFEST.registries().fluidPaths().contains(path)) {
+            properties.noOcclusion();
+        }
+        return properties;
+    }
+
+    private static Item createBlockItem(String path, Block block) {
+        Item.Properties properties = new Item.Properties();
+        if ("reinforced_door".equals(path)) {
+            return new LegacyTranslatedDoubleHighBlockItem(
+                    path, block, properties, IC2VariantStacks::variantKey);
+        }
+        return new LegacyTranslatedBlockItem(path, block, properties, IC2VariantStacks::variantKey);
     }
 
     private static Supplier<? extends Block> requireBlock(String path) {

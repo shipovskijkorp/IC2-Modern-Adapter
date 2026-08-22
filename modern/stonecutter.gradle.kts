@@ -5,8 +5,5 @@ plugins {
 
 stonecutter active "1.21.1-neoforge" /* [SC] DO NOT EDIT */
 
-stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
-    group = "build"
-    description = "Builds every modern Stonecutter target and collects its JAR."
-    ofTask("buildAndCollect")
-}
+// Stonecutter 0.8 keeps the native task fan-out introduced in 0.7.
+// Use the same `buildAndCollect` entry point as the legacy family.

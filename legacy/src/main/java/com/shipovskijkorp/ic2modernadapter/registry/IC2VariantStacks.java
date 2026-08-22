@@ -24,8 +24,32 @@ public final class IC2VariantStacks {
         }
 
         ItemStack stack = new ItemStack(item);
-        stack.setTag(LegacyVariantNbt.build(variant));
+        var tag = LegacyVariantNbt.build(variant);
+        tag.putInt("CustomModelData", MANIFEST.customModelData(variant.key()));
+        stack.setTag(tag);
         return stack;
+    }
+
+    /** Returns the stable legacy subtype identity carried by the stack, or {@code null}. */
+    public static String variantKey(ItemStack stack) {
+        if (!stack.hasTag()) {
+            return null;
+        }
+        String key = stack.getTag().getString(LegacyVariantNbt.VARIANT_KEY);
+        return key.isEmpty() ? null : key;
+    }
+
+    /** Resolves the finite visual subtype written by {@link #create}; plain stacks use variant 0. */
+    public static int placementVariantIndex(ItemStack stack) {
+        String key = variantKey(stack);
+        if (key == null) {
+            return 0;
+        }
+        try {
+            return MANIFEST.stackVariantIndex(key);
+        } catch (IllegalArgumentException ignored) {
+            return 0;
+        }
     }
 
     public static List<ItemStack> createAll() {

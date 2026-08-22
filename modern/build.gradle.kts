@@ -29,6 +29,7 @@ val modArchiveName = commonProperty("common.mod.archive_name")
 val modAuthors = commonProperty("common.mod.authors")
 val modLicense = commonProperty("common.mod.license")
 val junitVersion = commonProperty("common.deps.junit")
+val gsonVersion = commonProperty("common.deps.gson")
 val sharedSourceRoot = commonProperty("common.source.shared_root")
 
 val minecraftVersion = property("minecraft_version").toString()
@@ -76,6 +77,8 @@ repositories {
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("com.google.code.gson:gson:$gsonVersion")
 }
 
 tasks.processResources {
@@ -107,9 +110,14 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
+val bundledLicenseFile = rootProject.layout.projectDirectory.file("../LICENSE")
+val bundledLicenseName = "LICENSE_$modId"
+
 tasks.named<Jar>("jar") {
-    from(rootProject.file("../LICENSE")) {
-        rename { "LICENSE_${modId}" }
+    // Keep the copy spec configuration-cache safe: do not capture the Kotlin build-script
+    // object from a rename lambda. Both values are resolved during configuration instead.
+    from(bundledLicenseFile) {
+        rename("LICENSE", bundledLicenseName)
     }
 }
 

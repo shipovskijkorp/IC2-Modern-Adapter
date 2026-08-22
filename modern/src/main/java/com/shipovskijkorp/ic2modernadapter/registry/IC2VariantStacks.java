@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.CustomModelData;
 
 /** Creates the finite legacy meta/NBT identities using 1.21's custom-data component. */
 public final class IC2VariantStacks {
@@ -25,7 +26,31 @@ public final class IC2VariantStacks {
 
         ItemStack stack = new ItemStack(item);
         CustomData.set(DataComponents.CUSTOM_DATA, stack, LegacyVariantNbt.build(variant));
+        stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(MANIFEST.customModelData(variant.key())));
         return stack;
+    }
+
+    /** Returns the stable legacy subtype identity carried by the stack, or {@code null}. */
+    public static String variantKey(ItemStack stack) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return null;
+        }
+        String key = customData.copyTag().getString(LegacyVariantNbt.VARIANT_KEY);
+        return key.isEmpty() ? null : key;
+    }
+
+    /** Resolves the finite visual subtype written by {@link #create}; plain stacks use variant 0. */
+    public static int placementVariantIndex(ItemStack stack) {
+        String key = variantKey(stack);
+        if (key == null) {
+            return 0;
+        }
+        try {
+            return MANIFEST.stackVariantIndex(key);
+        } catch (IllegalArgumentException ignored) {
+            return 0;
+        }
     }
 
     public static List<ItemStack> createAll() {

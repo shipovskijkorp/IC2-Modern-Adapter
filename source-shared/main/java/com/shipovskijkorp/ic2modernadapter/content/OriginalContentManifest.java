@@ -42,6 +42,7 @@ public final class OriginalContentManifest {
     private List<StackVariant> stackVariants;
     private transient Map<String, StackVariant> stackVariantsByKey;
     private transient Map<String, List<StackVariant>> stackVariantsByItem;
+    private transient Map<String, Integer> stackVariantIndexByKey;
 
     public static OriginalContentManifest get() {
         return INSTANCE;
@@ -78,6 +79,20 @@ public final class OriginalContentManifest {
     /** Returns all finite legacy identities carried by the given root item. */
     public List<StackVariant> stackVariants(String itemPath) {
         return stackVariantsByItem.getOrDefault(itemPath, List.of());
+    }
+
+    /** Zero-based finite subtype index within its root item. */
+    public int stackVariantIndex(String variantKey) {
+        Integer index = stackVariantIndexByKey.get(variantKey);
+        if (index == null) {
+            throw new IllegalArgumentException("Unknown IC2 stack variant: " + variantKey);
+        }
+        return index;
+    }
+
+    /** Stable positive CustomModelData value used by generated legacy item-model overrides. */
+    public int customModelData(String variantKey) {
+        return stackVariantIndex(variantKey) + 1;
     }
 
     private static OriginalContentManifest load() {
@@ -145,8 +160,15 @@ public final class OriginalContentManifest {
         }
         stackVariantsByKey = Map.copyOf(byKey);
         Map<String, List<StackVariant>> immutableByItem = new LinkedHashMap<>();
-        byItem.forEach((item, variants) -> immutableByItem.put(item, List.copyOf(variants)));
+        Map<String, Integer> byVariantIndex = new LinkedHashMap<>();
+        byItem.forEach((item, variants) -> {
+            immutableByItem.put(item, List.copyOf(variants));
+            for (int index = 0; index < variants.size(); index++) {
+                byVariantIndex.put(variants.get(index).key, index);
+            }
+        });
         stackVariantsByItem = Map.copyOf(immutableByItem);
+        stackVariantIndexByKey = Map.copyOf(byVariantIndex);
     }
 
     private static void requireSize(String name, List<?> list, int expected) {

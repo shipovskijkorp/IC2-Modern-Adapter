@@ -5,8 +5,5 @@ plugins {
 
 stonecutter active "1.20.1-forge" /* [SC] DO NOT EDIT */
 
-stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
-    group = "build"
-    description = "Builds every legacy Stonecutter target and collects its JAR."
-    ofTask("buildAndCollect")
-}
+// Stonecutter 0.7+ fans native Gradle tasks out to every configured node.
+// Run `buildAndCollect` directly instead of the removed chiseled task API.

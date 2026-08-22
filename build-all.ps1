@@ -42,7 +42,7 @@ foreach ($family in $families) {
     Write-Host "==> Building $family family"
     Push-Location $familyDir
     try {
-        & .\gradlew.bat chiseledBuild --no-daemon
+        & .\gradlew.bat buildAndCollect --no-daemon
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     } finally {
         Pop-Location
