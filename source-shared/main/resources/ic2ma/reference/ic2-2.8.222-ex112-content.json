@@ -1,0 +1,3808 @@
+{
+  "sourceVersion": "2.8.222-ex112",
+  "namespace": "ic2",
+  "registries": {
+    "blocks": [
+      "te",
+      "resource",
+      "leaves",
+      "rubber_wood",
+      "sapling",
+      "scaffold",
+      "foam",
+      "fence",
+      "sheet",
+      "glass",
+      "wall",
+      "mining_pipe",
+      "reinforced_door",
+      "dynamite",
+      "refractory_bricks",
+      "uu_matter",
+      "construction_foam",
+      "coolant",
+      "creosote",
+      "hot_coolant",
+      "pahoehoe_lava",
+      "biomass",
+      "biogas",
+      "distilled_water",
+      "superheated_steam",
+      "steam",
+      "hot_water",
+      "weed_ex",
+      "air",
+      "hydrogen",
+      "oxygen",
+      "heavy_water",
+      "milk"
+    ],
+    "items": [
+      "boat",
+      "crushed",
+      "purified",
+      "dust",
+      "ingot",
+      "plate",
+      "casing",
+      "nuclear",
+      "misc_resource",
+      "block_cutting_blade",
+      "crafting",
+      "crystal_memory",
+      "upgrade_kit",
+      "crop_res",
+      "terra_wart",
+      "re_battery",
+      "advanced_re_battery",
+      "energy_crystal",
+      "lapotron_crystal",
+      "single_use_battery",
+      "charging_re_battery",
+      "advanced_charging_re_battery",
+      "charging_energy_crystal",
+      "charging_lapotron_crystal",
+      "heat_storage",
+      "tri_heat_storage",
+      "hex_heat_storage",
+      "plating",
+      "heat_plating",
+      "containment_plating",
+      "heat_exchanger",
+      "reactor_heat_exchanger",
+      "component_heat_exchanger",
+      "advanced_heat_exchanger",
+      "heat_vent",
+      "reactor_heat_vent",
+      "overclocked_heat_vent",
+      "component_heat_vent",
+      "advanced_heat_vent",
+      "neutron_reflector",
+      "thick_neutron_reflector",
+      "iridium_reflector",
+      "rsh_condensator",
+      "lzh_condensator",
+      "heatpack",
+      "uranium_fuel_rod",
+      "dual_uranium_fuel_rod",
+      "quad_uranium_fuel_rod",
+      "mox_fuel_rod",
+      "dual_mox_fuel_rod",
+      "quad_mox_fuel_rod",
+      "lithium_fuel_rod",
+      "depleted_isotope_fuel_rod",
+      "tfbp",
+      "bronze_axe",
+      "bronze_hoe",
+      "bronze_pickaxe",
+      "bronze_shovel",
+      "bronze_sword",
+      "containment_box",
+      "cutter",
+      "debug_item",
+      "foam_sprayer",
+      "forge_hammer",
+      "frequency_transmitter",
+      "meter",
+      "remote",
+      "tool_box",
+      "treetap",
+      "wrench",
+      "wrench_new",
+      "crowbar",
+      "barrel",
+      "booze_mug",
+      "mug",
+      "crop_stick",
+      "cropnalyzer",
+      "crop_seed_bag",
+      "weeding_trowel",
+      "advanced_scanner",
+      "chainsaw",
+      "diamond_drill",
+      "drill",
+      "electric_hoe",
+      "electric_treetap",
+      "electric_wrench",
+      "iridium_drill",
+      "mining_laser",
+      "nano_saber",
+      "obscurator",
+      "scanner",
+      "wind_meter",
+      "painter",
+      "fluid_cell",
+      "cell",
+      "cable",
+      "upgrade",
+      "advanced_batpack",
+      "alloy_chestplate",
+      "batpack",
+      "bronze_boots",
+      "bronze_chestplate",
+      "bronze_helmet",
+      "bronze_leggings",
+      "cf_pack",
+      "energy_pack",
+      "hazmat_chestplate",
+      "hazmat_helmet",
+      "hazmat_leggings",
+      "jetpack",
+      "jetpack_electric",
+      "lappack",
+      "nano_boots",
+      "nano_chestplate",
+      "nano_helmet",
+      "nano_leggings",
+      "nightvision_goggles",
+      "quantum_boots",
+      "quantum_chestplate",
+      "quantum_helmet",
+      "quantum_leggings",
+      "rubber_boots",
+      "solar_helmet",
+      "static_boots",
+      "filled_tin_can",
+      "filled_fuel_can",
+      "iodine_tablet",
+      "rotor_wood",
+      "rotor_bronze",
+      "rotor_iron",
+      "rotor_carbon",
+      "rotor_steel",
+      "dynamite",
+      "dynamite_sticky",
+      "pipe",
+      "cover",
+      "coke",
+      "te",
+      "resource",
+      "leaves",
+      "rubber_wood",
+      "sapling",
+      "scaffold",
+      "foam",
+      "fence",
+      "sheet",
+      "glass",
+      "wall",
+      "mining_pipe",
+      "reinforced_door",
+      "refractory_bricks",
+      "uu_matter",
+      "construction_foam",
+      "coolant",
+      "creosote",
+      "hot_coolant",
+      "pahoehoe_lava",
+      "biomass",
+      "biogas",
+      "distilled_water",
+      "superheated_steam",
+      "steam",
+      "hot_water",
+      "weed_ex",
+      "air",
+      "hydrogen",
+      "oxygen",
+      "heavy_water",
+      "milk"
+    ],
+    "blockItems": [
+      "te",
+      "resource",
+      "leaves",
+      "rubber_wood",
+      "sapling",
+      "scaffold",
+      "foam",
+      "fence",
+      "sheet",
+      "glass",
+      "wall",
+      "mining_pipe",
+      "reinforced_door",
+      "refractory_bricks",
+      "uu_matter",
+      "construction_foam",
+      "coolant",
+      "creosote",
+      "hot_coolant",
+      "pahoehoe_lava",
+      "biomass",
+      "biogas",
+      "distilled_water",
+      "superheated_steam",
+      "steam",
+      "hot_water",
+      "weed_ex",
+      "air",
+      "hydrogen",
+      "oxygen",
+      "heavy_water",
+      "milk"
+    ],
+    "fluids": [
+      {
+        "path": "uu_matter",
+        "legacyName": "ic2uu_matter"
+      },
+      {
+        "path": "construction_foam",
+        "legacyName": "ic2construction_foam"
+      },
+      {
+        "path": "coolant",
+        "legacyName": "ic2coolant"
+      },
+      {
+        "path": "creosote",
+        "legacyName": "ic2creosote"
+      },
+      {
+        "path": "hot_coolant",
+        "legacyName": "ic2hot_coolant"
+      },
+      {
+        "path": "pahoehoe_lava",
+        "legacyName": "ic2pahoehoe_lava"
+      },
+      {
+        "path": "biomass",
+        "legacyName": "ic2biomass"
+      },
+      {
+        "path": "biogas",
+        "legacyName": "ic2biogas"
+      },
+      {
+        "path": "distilled_water",
+        "legacyName": "ic2distilled_water"
+      },
+      {
+        "path": "superheated_steam",
+        "legacyName": "ic2superheated_steam"
+      },
+      {
+        "path": "steam",
+        "legacyName": "ic2steam"
+      },
+      {
+        "path": "hot_water",
+        "legacyName": "ic2hot_water"
+      },
+      {
+        "path": "weed_ex",
+        "legacyName": "ic2weed_ex"
+      },
+      {
+        "path": "air",
+        "legacyName": "ic2air"
+      },
+      {
+        "path": "hydrogen",
+        "legacyName": "ic2hydrogen"
+      },
+      {
+        "path": "oxygen",
+        "legacyName": "ic2oxygen"
+      },
+      {
+        "path": "heavy_water",
+        "legacyName": "ic2heavy_water"
+      },
+      {
+        "path": "milk",
+        "legacyName": "ic2milk"
+      }
+    ],
+    "mobEffects": [
+      "radiation"
+    ],
+    "entities": [
+      "mining_laser",
+      "dynamite",
+      "sticky_dynamite",
+      "itnt",
+      "nuke",
+      "carbon_boat",
+      "rubber_boat",
+      "electric_boat",
+      "particle",
+      "fireproof_item"
+    ],
+    "blockEntities": [
+      "barrel",
+      "wall",
+      "itnt",
+      "nuke",
+      "generator",
+      "geo_generator",
+      "kinetic_generator",
+      "rt_generator",
+      "semifluid_generator",
+      "solar_generator",
+      "stirling_generator",
+      "water_generator",
+      "wind_generator",
+      "electric_heat_generator",
+      "fluid_heat_generator",
+      "rt_heat_generator",
+      "solid_heat_generator",
+      "electric_kinetic_generator",
+      "manual_kinetic_generator",
+      "steam_kinetic_generator",
+      "stirling_kinetic_generator",
+      "water_kinetic_generator",
+      "wind_kinetic_generator",
+      "nuclear_reactor",
+      "reactor_access_hatch",
+      "reactor_chamber",
+      "reactor_fluid_port",
+      "reactor_redstone_port",
+      "condenser",
+      "fluid_bottler",
+      "fluid_distributor",
+      "fluid_regulator",
+      "liquid_heat_exchanger",
+      "pump",
+      "solar_distiller",
+      "steam_generator",
+      "item_buffer",
+      "luminator_flat",
+      "magnetizer",
+      "sorting_machine",
+      "teleporter",
+      "terraformer",
+      "tesla_coil",
+      "canner",
+      "compressor",
+      "electric_furnace",
+      "extractor",
+      "iron_furnace",
+      "macerator",
+      "recycler",
+      "solid_canner",
+      "blast_furnace",
+      "block_cutter",
+      "centrifuge",
+      "fermenter",
+      "induction_furnace",
+      "metal_former",
+      "ore_washing_plant",
+      "advanced_miner",
+      "crop_harvester",
+      "cropmatron",
+      "miner",
+      "mass_fabricator",
+      "uu_assembly_bench",
+      "matter_generator",
+      "pattern_storage",
+      "replicator",
+      "scanner",
+      "energy_o_mat",
+      "personal_chest",
+      "trade_o_mat",
+      "trading_terminal",
+      "cable",
+      "detector_cable",
+      "splitter_cable",
+      "chargepad_batbox",
+      "chargepad_cesu",
+      "chargepad_mfe",
+      "chargepad_mfsu",
+      "batbox",
+      "cesu",
+      "mfe",
+      "mfsu",
+      "electrolyzer",
+      "lv_transformer",
+      "mv_transformer",
+      "hv_transformer",
+      "ev_transformer",
+      "tank",
+      "chunk_loader",
+      "item_buffer_2",
+      "creative_generator",
+      "steam_repressurizer",
+      "weighted_fluid_distributor",
+      "weighted_item_distributor",
+      "rci_rsh",
+      "rci_lzh",
+      "crop",
+      "industrial_workbench",
+      "batch_crafter",
+      "fluid_pipe",
+      "coke_kiln",
+      "coke_kiln_hatch",
+      "coke_kiln_grate",
+      "wooden_storage_box",
+      "iron_storage_box",
+      "bronze_storage_box",
+      "steel_storage_box",
+      "iridium_storage_box",
+      "bronze_tank",
+      "iron_tank",
+      "steel_tank",
+      "iridium_tank"
+    ]
+  },
+  "legacy": {
+    "declaredButUnregisteredItems": [
+      "plasma_launcher",
+      "tritium_fuel_rod",
+      "item_pipe",
+      "extractor_cover",
+      "ingot2",
+      "test_pick"
+    ],
+    "tileEntityMigrationAliases": [
+      "Oldnuke",
+      "Oldcanner",
+      "Oldcropmatron",
+      "Oldmass_fabricator",
+      "Oldcable",
+      "Olddetector_cable",
+      "Oldsplitter_cable",
+      "Oldmfe",
+      "Oldmfsu",
+      "Oldelectrolyzer"
+    ],
+    "devOnlyEntities": [
+      "beam"
+    ]
+  },
+  "stackVariants": [
+    {
+      "key": "boat/broken_rubber",
+      "item": "boat",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "boat/rubber",
+      "item": "boat",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "boat/carbon",
+      "item": "boat",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "boat/electric",
+      "item": "boat",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/copper",
+      "item": "crushed",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/gold",
+      "item": "crushed",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/iron",
+      "item": "crushed",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/lead",
+      "item": "crushed",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/silver",
+      "item": "crushed",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/tin",
+      "item": "crushed",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crushed/uranium",
+      "item": "crushed",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/copper",
+      "item": "purified",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/gold",
+      "item": "purified",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/iron",
+      "item": "purified",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/lead",
+      "item": "purified",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/silver",
+      "item": "purified",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/tin",
+      "item": "purified",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "purified/uranium",
+      "item": "purified",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/bronze",
+      "item": "dust",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/clay",
+      "item": "dust",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/coal",
+      "item": "dust",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/coal_fuel",
+      "item": "dust",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/copper",
+      "item": "dust",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/diamond",
+      "item": "dust",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/energium",
+      "item": "dust",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/gold",
+      "item": "dust",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/iron",
+      "item": "dust",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/lapis",
+      "item": "dust",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/lead",
+      "item": "dust",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/lithium",
+      "item": "dust",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/obsidian",
+      "item": "dust",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/silicon_dioxide",
+      "item": "dust",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/silver",
+      "item": "dust",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/stone",
+      "item": "dust",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/sulfur",
+      "item": "dust",
+      "legacyMeta": 16,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/tin",
+      "item": "dust",
+      "legacyMeta": 17,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_bronze",
+      "item": "dust",
+      "legacyMeta": 18,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_copper",
+      "item": "dust",
+      "legacyMeta": 19,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_gold",
+      "item": "dust",
+      "legacyMeta": 20,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_iron",
+      "item": "dust",
+      "legacyMeta": 21,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_lapis",
+      "item": "dust",
+      "legacyMeta": 22,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_lead",
+      "item": "dust",
+      "legacyMeta": 23,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_lithium",
+      "item": "dust",
+      "legacyMeta": 24,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_obsidian",
+      "item": "dust",
+      "legacyMeta": 25,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_silver",
+      "item": "dust",
+      "legacyMeta": 26,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_sulfur",
+      "item": "dust",
+      "legacyMeta": 27,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_tin",
+      "item": "dust",
+      "legacyMeta": 28,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/tin_hydrated",
+      "item": "dust",
+      "legacyMeta": 29,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/netherrack",
+      "item": "dust",
+      "legacyMeta": 30,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/ender_pearl",
+      "item": "dust",
+      "legacyMeta": 31,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/ender_eye",
+      "item": "dust",
+      "legacyMeta": 32,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/milk",
+      "item": "dust",
+      "legacyMeta": 33,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/emerald",
+      "item": "dust",
+      "legacyMeta": 34,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_emerald",
+      "item": "dust",
+      "legacyMeta": 35,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "dust/small_diamond",
+      "item": "dust",
+      "legacyMeta": 36,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/alloy",
+      "item": "ingot",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/bronze",
+      "item": "ingot",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/copper",
+      "item": "ingot",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/lead",
+      "item": "ingot",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/silver",
+      "item": "ingot",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/steel",
+      "item": "ingot",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/tin",
+      "item": "ingot",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/refined_iron",
+      "item": "ingot",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "ingot/uranium",
+      "item": "ingot",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/bronze",
+      "item": "plate",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/copper",
+      "item": "plate",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/gold",
+      "item": "plate",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/iron",
+      "item": "plate",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/lapis",
+      "item": "plate",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/lead",
+      "item": "plate",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/obsidian",
+      "item": "plate",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/steel",
+      "item": "plate",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/tin",
+      "item": "plate",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_bronze",
+      "item": "plate",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_copper",
+      "item": "plate",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_gold",
+      "item": "plate",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_iron",
+      "item": "plate",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_lapis",
+      "item": "plate",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_lead",
+      "item": "plate",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_obsidian",
+      "item": "plate",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_steel",
+      "item": "plate",
+      "legacyMeta": 16,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "plate/dense_tin",
+      "item": "plate",
+      "legacyMeta": 17,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/bronze",
+      "item": "casing",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/copper",
+      "item": "casing",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/gold",
+      "item": "casing",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/iron",
+      "item": "casing",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/lead",
+      "item": "casing",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/steel",
+      "item": "casing",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "casing/tin",
+      "item": "casing",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/uranium",
+      "item": "nuclear",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/uranium_235",
+      "item": "nuclear",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/uranium_238",
+      "item": "nuclear",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/plutonium",
+      "item": "nuclear",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/mox",
+      "item": "nuclear",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/small_uranium_235",
+      "item": "nuclear",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/small_uranium_238",
+      "item": "nuclear",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/small_plutonium",
+      "item": "nuclear",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/uranium_pellet",
+      "item": "nuclear",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/mox_pellet",
+      "item": "nuclear",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/rtg_pellet",
+      "item": "nuclear",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/depleted_uranium",
+      "item": "nuclear",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/depleted_dual_uranium",
+      "item": "nuclear",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/depleted_quad_uranium",
+      "item": "nuclear",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/depleted_mox",
+      "item": "nuclear",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/depleted_dual_mox",
+      "item": "nuclear",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/depleted_quad_mox",
+      "item": "nuclear",
+      "legacyMeta": 16,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/near_depleted_uranium",
+      "item": "nuclear",
+      "legacyMeta": 17,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "nuclear/re_enriched_uranium",
+      "item": "nuclear",
+      "legacyMeta": 18,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/ashes",
+      "item": "misc_resource",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/iridium_ore",
+      "item": "misc_resource",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/iridium_shard",
+      "item": "misc_resource",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/matter",
+      "item": "misc_resource",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/resin",
+      "item": "misc_resource",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/slag",
+      "item": "misc_resource",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/iodine",
+      "item": "misc_resource",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/water_sheet",
+      "item": "misc_resource",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "misc_resource/lava_sheet",
+      "item": "misc_resource",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "block_cutting_blade/iron",
+      "item": "block_cutting_blade",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "block_cutting_blade/steel",
+      "item": "block_cutting_blade",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "block_cutting_blade/diamond",
+      "item": "block_cutting_blade",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/rubber",
+      "item": "crafting",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/circuit",
+      "item": "crafting",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/advanced_circuit",
+      "item": "crafting",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/alloy",
+      "item": "crafting",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/iridium",
+      "item": "crafting",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/coil",
+      "item": "crafting",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/electric_motor",
+      "item": "crafting",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/heat_conductor",
+      "item": "crafting",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/copper_boiler",
+      "item": "crafting",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/fuel_rod",
+      "item": "crafting",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/tin_can",
+      "item": "crafting",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/small_power_unit",
+      "item": "crafting",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/power_unit",
+      "item": "crafting",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/carbon_fibre",
+      "item": "crafting",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/carbon_mesh",
+      "item": "crafting",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/carbon_plate",
+      "item": "crafting",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/coal_ball",
+      "item": "crafting",
+      "legacyMeta": 16,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/coal_block",
+      "item": "crafting",
+      "legacyMeta": 17,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/coal_chunk",
+      "item": "crafting",
+      "legacyMeta": 18,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/industrial_diamond",
+      "item": "crafting",
+      "legacyMeta": 19,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/plant_ball",
+      "item": "crafting",
+      "legacyMeta": 20,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/compressed_plants",
+      "item": "crafting",
+      "legacyMeta": 39,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/bio_chaff",
+      "item": "crafting",
+      "legacyMeta": 21,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/compressed_hydrated_coal",
+      "item": "crafting",
+      "legacyMeta": 22,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/scrap",
+      "item": "crafting",
+      "legacyMeta": 23,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/scrap_box",
+      "item": "crafting",
+      "legacyMeta": 24,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/cf_powder",
+      "item": "crafting",
+      "legacyMeta": 25,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/pellet",
+      "item": "crafting",
+      "legacyMeta": 26,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/raw_crystal_memory",
+      "item": "crafting",
+      "legacyMeta": 27,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/iron_shaft",
+      "item": "crafting",
+      "legacyMeta": 29,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/steel_shaft",
+      "item": "crafting",
+      "legacyMeta": 30,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/wood_rotor_blade",
+      "item": "crafting",
+      "legacyMeta": 31,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/iron_rotor_blade",
+      "item": "crafting",
+      "legacyMeta": 32,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/steel_rotor_blade",
+      "item": "crafting",
+      "legacyMeta": 33,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/carbon_rotor_blade",
+      "item": "crafting",
+      "legacyMeta": 34,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/steam_turbine_blade",
+      "item": "crafting",
+      "legacyMeta": 35,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/steam_turbine",
+      "item": "crafting",
+      "legacyMeta": 36,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/jetpack_attachment_plate",
+      "item": "crafting",
+      "legacyMeta": 37,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/coin",
+      "item": "crafting",
+      "legacyMeta": 38,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/empty_fuel_can",
+      "item": "crafting",
+      "legacyMeta": 40,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/bronze_rotor_blade",
+      "item": "crafting",
+      "legacyMeta": 41,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crafting/bronze_shaft",
+      "item": "crafting",
+      "legacyMeta": 42,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade_kit/mfsu",
+      "item": "upgrade_kit",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/coffee_beans",
+      "item": "crop_res",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/coffee_powder",
+      "item": "crop_res",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/fertilizer",
+      "item": "crop_res",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/grin_powder",
+      "item": "crop_res",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/hops",
+      "item": "crop_res",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/weed",
+      "item": "crop_res",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/milk_wart",
+      "item": "crop_res",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/oil_berry",
+      "item": "crop_res",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "crop_res/bobs_yer_uncle_ranks_berry",
+      "item": "crop_res",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/blank",
+      "item": "tfbp",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/chilling",
+      "item": "tfbp",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/cultivation",
+      "item": "tfbp",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/desertification",
+      "item": "tfbp",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/flatification",
+      "item": "tfbp",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/irrigation",
+      "item": "tfbp",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "tfbp/mushroom",
+      "item": "tfbp",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/blank",
+      "item": "painter",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/black",
+      "item": "painter",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/blue",
+      "item": "painter",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/brown",
+      "item": "painter",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/cyan",
+      "item": "painter",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/gray",
+      "item": "painter",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/green",
+      "item": "painter",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/light_blue",
+      "item": "painter",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/light_gray",
+      "item": "painter",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/lime",
+      "item": "painter",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/magenta",
+      "item": "painter",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/orange",
+      "item": "painter",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/pink",
+      "item": "painter",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/purple",
+      "item": "painter",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/red",
+      "item": "painter",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/white",
+      "item": "painter",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "painter/yellow",
+      "item": "painter",
+      "legacyMeta": 16,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "cell/empty",
+      "item": "cell",
+      "legacyMeta": 0,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/water",
+      "item": "cell",
+      "legacyMeta": 1,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/lava",
+      "item": "cell",
+      "legacyMeta": 2,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/air",
+      "item": "cell",
+      "legacyMeta": 3,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/electrolyzed_water",
+      "item": "cell",
+      "legacyMeta": 4,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/biofuel",
+      "item": "cell",
+      "legacyMeta": 5,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/coalfuel",
+      "item": "cell",
+      "legacyMeta": 6,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/bio",
+      "item": "cell",
+      "legacyMeta": 7,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/hydrated_coal",
+      "item": "cell",
+      "legacyMeta": 8,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/weed_ex",
+      "item": "cell",
+      "legacyMeta": 9,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "cell/hydration",
+      "item": "cell",
+      "legacyMeta": 10,
+      "creativeVisible": false,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/overclocker",
+      "item": "upgrade",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/transformer",
+      "item": "upgrade",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/energy_storage",
+      "item": "upgrade",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/redstone_inverter",
+      "item": "upgrade",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/ejector",
+      "item": "upgrade",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/advanced_ejector",
+      "item": "upgrade",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/pulling",
+      "item": "upgrade",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/advanced_pulling",
+      "item": "upgrade",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/fluid_ejector",
+      "item": "upgrade",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/fluid_pulling",
+      "item": "upgrade",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "upgrade/remote_interface",
+      "item": "upgrade",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "cover/pump_lv",
+      "item": "cover",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "cover/pump_mv",
+      "item": "cover",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/basalt",
+      "item": "resource",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/copper_ore",
+      "item": "resource",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/lead_ore",
+      "item": "resource",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/tin_ore",
+      "item": "resource",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/uranium_ore",
+      "item": "resource",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/bronze_block",
+      "item": "resource",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/copper_block",
+      "item": "resource",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/lead_block",
+      "item": "resource",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/steel_block",
+      "item": "resource",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/tin_block",
+      "item": "resource",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/uranium_block",
+      "item": "resource",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/reinforced_stone",
+      "item": "resource",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/machine",
+      "item": "resource",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/advanced_machine",
+      "item": "resource",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/reactor_vessel",
+      "item": "resource",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "resource/silver_block",
+      "item": "resource",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "leaves/rubber",
+      "item": "leaves",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "scaffold/wood",
+      "item": "scaffold",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "scaffold/reinforced_wood",
+      "item": "scaffold",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "scaffold/iron",
+      "item": "scaffold",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "scaffold/reinforced_iron",
+      "item": "scaffold",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "foam/normal",
+      "item": "foam",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "foam/reinforced",
+      "item": "foam",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "fence/iron",
+      "item": "fence",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "sheet/resin",
+      "item": "sheet",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "sheet/rubber",
+      "item": "sheet",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "sheet/wool",
+      "item": "sheet",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "glass/reinforced",
+      "item": "glass",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/black",
+      "item": "wall",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/blue",
+      "item": "wall",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/brown",
+      "item": "wall",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/cyan",
+      "item": "wall",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/gray",
+      "item": "wall",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/green",
+      "item": "wall",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/light_blue",
+      "item": "wall",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/light_gray",
+      "item": "wall",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/lime",
+      "item": "wall",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/magenta",
+      "item": "wall",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/orange",
+      "item": "wall",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/pink",
+      "item": "wall",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/purple",
+      "item": "wall",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/red",
+      "item": "wall",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/white",
+      "item": "wall",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "wall/yellow",
+      "item": "wall",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "mining_pipe/pipe",
+      "item": "mining_pipe",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "mining_pipe/tip",
+      "item": "mining_pipe",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/itnt",
+      "item": "te",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/nuke",
+      "item": "te",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/generator",
+      "item": "te",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/geo_generator",
+      "item": "te",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/kinetic_generator",
+      "item": "te",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/rt_generator",
+      "item": "te",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/semifluid_generator",
+      "item": "te",
+      "legacyMeta": 7,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/solar_generator",
+      "item": "te",
+      "legacyMeta": 8,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/stirling_generator",
+      "item": "te",
+      "legacyMeta": 9,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/water_generator",
+      "item": "te",
+      "legacyMeta": 10,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/wind_generator",
+      "item": "te",
+      "legacyMeta": 11,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/electric_heat_generator",
+      "item": "te",
+      "legacyMeta": 12,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/fluid_heat_generator",
+      "item": "te",
+      "legacyMeta": 13,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/rt_heat_generator",
+      "item": "te",
+      "legacyMeta": 14,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/solid_heat_generator",
+      "item": "te",
+      "legacyMeta": 15,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/electric_kinetic_generator",
+      "item": "te",
+      "legacyMeta": 16,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/manual_kinetic_generator",
+      "item": "te",
+      "legacyMeta": 17,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/steam_kinetic_generator",
+      "item": "te",
+      "legacyMeta": 18,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/stirling_kinetic_generator",
+      "item": "te",
+      "legacyMeta": 19,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/water_kinetic_generator",
+      "item": "te",
+      "legacyMeta": 20,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/wind_kinetic_generator",
+      "item": "te",
+      "legacyMeta": 21,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/nuclear_reactor",
+      "item": "te",
+      "legacyMeta": 22,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/reactor_access_hatch",
+      "item": "te",
+      "legacyMeta": 23,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/reactor_chamber",
+      "item": "te",
+      "legacyMeta": 24,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/reactor_fluid_port",
+      "item": "te",
+      "legacyMeta": 25,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/reactor_redstone_port",
+      "item": "te",
+      "legacyMeta": 26,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/condenser",
+      "item": "te",
+      "legacyMeta": 27,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/fluid_bottler",
+      "item": "te",
+      "legacyMeta": 28,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/fluid_distributor",
+      "item": "te",
+      "legacyMeta": 29,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/fluid_regulator",
+      "item": "te",
+      "legacyMeta": 30,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/liquid_heat_exchanger",
+      "item": "te",
+      "legacyMeta": 31,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/pump",
+      "item": "te",
+      "legacyMeta": 32,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/solar_distiller",
+      "item": "te",
+      "legacyMeta": 33,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/steam_generator",
+      "item": "te",
+      "legacyMeta": 34,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/item_buffer",
+      "item": "te",
+      "legacyMeta": 35,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/luminator_flat",
+      "item": "te",
+      "legacyMeta": 36,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/magnetizer",
+      "item": "te",
+      "legacyMeta": 37,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/sorting_machine",
+      "item": "te",
+      "legacyMeta": 38,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/teleporter",
+      "item": "te",
+      "legacyMeta": 39,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/terraformer",
+      "item": "te",
+      "legacyMeta": 40,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/tesla_coil",
+      "item": "te",
+      "legacyMeta": 41,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/canner",
+      "item": "te",
+      "legacyMeta": 42,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/compressor",
+      "item": "te",
+      "legacyMeta": 43,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/electric_furnace",
+      "item": "te",
+      "legacyMeta": 44,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/extractor",
+      "item": "te",
+      "legacyMeta": 45,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/iron_furnace",
+      "item": "te",
+      "legacyMeta": 46,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/macerator",
+      "item": "te",
+      "legacyMeta": 47,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/recycler",
+      "item": "te",
+      "legacyMeta": 48,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/solid_canner",
+      "item": "te",
+      "legacyMeta": 49,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/blast_furnace",
+      "item": "te",
+      "legacyMeta": 50,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/block_cutter",
+      "item": "te",
+      "legacyMeta": 51,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/centrifuge",
+      "item": "te",
+      "legacyMeta": 52,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/fermenter",
+      "item": "te",
+      "legacyMeta": 53,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/induction_furnace",
+      "item": "te",
+      "legacyMeta": 54,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/metal_former",
+      "item": "te",
+      "legacyMeta": 55,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/ore_washing_plant",
+      "item": "te",
+      "legacyMeta": 56,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/advanced_miner",
+      "item": "te",
+      "legacyMeta": 57,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/crop_harvester",
+      "item": "te",
+      "legacyMeta": 58,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/cropmatron",
+      "item": "te",
+      "legacyMeta": 59,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/miner",
+      "item": "te",
+      "legacyMeta": 60,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/mass_fabricator",
+      "item": "te",
+      "legacyMeta": 92,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/uu_assembly_bench",
+      "item": "te",
+      "legacyMeta": 93,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/matter_generator",
+      "item": "te",
+      "legacyMeta": 61,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/pattern_storage",
+      "item": "te",
+      "legacyMeta": 62,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/replicator",
+      "item": "te",
+      "legacyMeta": 63,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/scanner",
+      "item": "te",
+      "legacyMeta": 64,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/energy_o_mat",
+      "item": "te",
+      "legacyMeta": 65,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/personal_chest",
+      "item": "te",
+      "legacyMeta": 66,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/trade_o_mat",
+      "item": "te",
+      "legacyMeta": 67,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/trading_terminal",
+      "item": "te",
+      "legacyMeta": 94,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/chargepad_batbox",
+      "item": "te",
+      "legacyMeta": 68,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/chargepad_cesu",
+      "item": "te",
+      "legacyMeta": 69,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/chargepad_mfe",
+      "item": "te",
+      "legacyMeta": 70,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/chargepad_mfsu",
+      "item": "te",
+      "legacyMeta": 71,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/batbox",
+      "item": "te",
+      "legacyMeta": 72,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/cesu",
+      "item": "te",
+      "legacyMeta": 73,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/mfe",
+      "item": "te",
+      "legacyMeta": 74,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/mfsu",
+      "item": "te",
+      "legacyMeta": 75,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/electrolyzer",
+      "item": "te",
+      "legacyMeta": 76,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/lv_transformer",
+      "item": "te",
+      "legacyMeta": 77,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/mv_transformer",
+      "item": "te",
+      "legacyMeta": 78,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/hv_transformer",
+      "item": "te",
+      "legacyMeta": 79,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/ev_transformer",
+      "item": "te",
+      "legacyMeta": 80,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/tank",
+      "item": "te",
+      "legacyMeta": 81,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/chunk_loader",
+      "item": "te",
+      "legacyMeta": 82,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/item_buffer_2",
+      "item": "te",
+      "legacyMeta": 83,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/creative_generator",
+      "item": "te",
+      "legacyMeta": 86,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/steam_repressurizer",
+      "item": "te",
+      "legacyMeta": 87,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/weighted_fluid_distributor",
+      "item": "te",
+      "legacyMeta": 90,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/weighted_item_distributor",
+      "item": "te",
+      "legacyMeta": 91,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/rci_rsh",
+      "item": "te",
+      "legacyMeta": 84,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/rci_lzh",
+      "item": "te",
+      "legacyMeta": 85,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/industrial_workbench",
+      "item": "te",
+      "legacyMeta": 88,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/batch_crafter",
+      "item": "te",
+      "legacyMeta": 89,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/coke_kiln",
+      "item": "te",
+      "legacyMeta": 100,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/coke_kiln_hatch",
+      "item": "te",
+      "legacyMeta": 101,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/coke_kiln_grate",
+      "item": "te",
+      "legacyMeta": 102,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/wooden_storage_box",
+      "item": "te",
+      "legacyMeta": 111,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/iron_storage_box",
+      "item": "te",
+      "legacyMeta": 112,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/bronze_storage_box",
+      "item": "te",
+      "legacyMeta": 113,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/steel_storage_box",
+      "item": "te",
+      "legacyMeta": 114,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/iridium_storage_box",
+      "item": "te",
+      "legacyMeta": 115,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/bronze_tank",
+      "item": "te",
+      "legacyMeta": 131,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/iron_tank",
+      "item": "te",
+      "legacyMeta": 132,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/steel_tank",
+      "item": "te",
+      "legacyMeta": 133,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "te/iridium_tank",
+      "item": "te",
+      "legacyMeta": 134,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "cable/copper_0",
+      "item": "cable",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "0"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "cable/copper_1",
+      "item": "cable",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "0"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "key": "cable/glass_0",
+      "item": "cable",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "1"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "cable/gold_0",
+      "item": "cable",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "2"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "cable/gold_1",
+      "item": "cable",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "2"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "key": "cable/gold_2",
+      "item": "cable",
+      "legacyMeta": 2,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "2"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "key": "cable/iron_0",
+      "item": "cable",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "3"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "cable/iron_1",
+      "item": "cable",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "3"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "key": "cable/iron_2",
+      "item": "cable",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "3"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "key": "cable/iron_3",
+      "item": "cable",
+      "legacyMeta": 3,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "3"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "key": "cable/tin_0",
+      "item": "cable",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "4"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "cable/tin_1",
+      "item": "cable",
+      "legacyMeta": 4,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "4"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "key": "cable/detector_0",
+      "item": "cable",
+      "legacyMeta": 5,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "5"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "cable/splitter_0",
+      "item": "cable",
+      "legacyMeta": 6,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "6"
+        },
+        {
+          "path": "insulation",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "pipe/bronze_tiny",
+      "item": "pipe",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "0"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "pipe/bronze_small",
+      "item": "pipe",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "0"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "key": "pipe/bronze_medium",
+      "item": "pipe",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "0"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "key": "pipe/bronze_large",
+      "item": "pipe",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "0"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "key": "pipe/steel_tiny",
+      "item": "pipe",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "1"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "key": "pipe/steel_small",
+      "item": "pipe",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "1"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "key": "pipe/steel_medium",
+      "item": "pipe",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "1"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "key": "pipe/steel_large",
+      "item": "pipe",
+      "legacyMeta": 1,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "type",
+          "type": "byte",
+          "value": "1"
+        },
+        {
+          "path": "size",
+          "type": "byte",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/empty",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": []
+    },
+    {
+      "key": "fluid_cell/uu_matter",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2uu_matter"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/construction_foam",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2construction_foam"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/coolant",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2coolant"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/creosote",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2creosote"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/hot_coolant",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2hot_coolant"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/pahoehoe_lava",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2pahoehoe_lava"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/biomass",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2biomass"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/biogas",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2biogas"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/distilled_water",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2distilled_water"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/superheated_steam",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2superheated_steam"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/steam",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2steam"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/hot_water",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2hot_water"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/weed_ex",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2weed_ex"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/air",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2air"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/hydrogen",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2hydrogen"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/oxygen",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2oxygen"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/heavy_water",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2heavy_water"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    },
+    {
+      "key": "fluid_cell/milk",
+      "item": "fluid_cell",
+      "legacyMeta": 0,
+      "creativeVisible": true,
+      "nbt": [
+        {
+          "path": "Fluid.FluidName",
+          "type": "string",
+          "value": "ic2milk"
+        },
+        {
+          "path": "Fluid.Amount",
+          "type": "int",
+          "value": "1000"
+        }
+      ]
+    }
+  ]
+}

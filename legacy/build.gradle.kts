@@ -52,6 +52,10 @@ sourceSets {
         java.srcDir(rootProject.file("../$sharedSourceRoot/main/java"))
         resources.srcDir(rootProject.file("../$sharedSourceRoot/main/resources"))
     }
+    named("test") {
+        java.srcDir(rootProject.file("../$sharedSourceRoot/test/java"))
+        resources.srcDir(rootProject.file("../$sharedSourceRoot/test/resources"))
+    }
 }
 
 minecraft {
