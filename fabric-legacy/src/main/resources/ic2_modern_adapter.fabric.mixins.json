@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.shipovskijkorp.ic2modernadapter.mixin",
+  "client": [
+    "RequiredRuntimeResourcePackMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

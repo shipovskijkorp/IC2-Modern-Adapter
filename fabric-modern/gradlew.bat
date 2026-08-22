@@ -2,7 +2,7 @@
 setlocal
 set "APP_HOME=%~dp0"
 set "WRAPPER_JAR=%APP_HOME%gradle\wrapper\gradle-wrapper.jar"
-set "WRAPPER_URL=https://raw.githubusercontent.com/gradle/gradle/v9.2.1/gradle/wrapper/gradle-wrapper.jar"
+set "WRAPPER_URL=https://raw.githubusercontent.com/gradle/gradle/v9.5.1/gradle/wrapper/gradle-wrapper.jar"
 
 if not exist "%WRAPPER_JAR%" call :bootstrap_wrapper
 if errorlevel 1 exit /b %ERRORLEVEL%
@@ -18,7 +18,7 @@ exit /b %ERRORLEVEL%
 
 :bootstrap_wrapper
 if not exist "%APP_HOME%gradle\wrapper" mkdir "%APP_HOME%gradle\wrapper"
-echo Bootstrapping Gradle 9.2.1 wrapper...
+echo Bootstrapping Gradle 9.5.1 wrapper...
 
 where curl.exe >nul 2>nul
 if not errorlevel 1 (
@@ -40,7 +40,7 @@ if exist "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" (
     if exist "%WRAPPER_JAR%" del /q "%WRAPPER_JAR%"
 )
 
-echo ERROR: Could not download the Gradle 9.2.1 wrapper JAR.
+echo ERROR: Could not download the Gradle 9.5.1 wrapper JAR.
 echo        Tried curl.exe, pwsh.exe, and Windows PowerShell.
 echo        URL: %WRAPPER_URL%
 exit /b 1

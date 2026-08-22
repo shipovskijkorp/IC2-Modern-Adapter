@@ -7,6 +7,12 @@
   "authors": ["${mod_authors}"],
   "license": "${mod_license}",
   "environment": "*",
+  "mixins": [
+    {
+      "config": "ic2_modern_adapter.fabric.mixins.json",
+      "environment": "client"
+    }
+  ],
   "entrypoints": {
     "main": [
       "com.shipovskijkorp.ic2modernadapter.IC2ModernAdapter"
