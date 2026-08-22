@@ -1,0 +1,16 @@
+.idea/
+*.iml
+.gradle/
+**/.gradle/
+**/build/
+**/run/
+**/runs/
+**/out/
+
+# Stonecutter generated/version workspaces
+legacy/versions/*/src/
+modern/versions/*/src/
+
+# Bootstrap-downloaded Gradle wrapper binaries
+legacy/gradle/wrapper/gradle-wrapper.jar
+modern/gradle/wrapper/gradle-wrapper.jar
