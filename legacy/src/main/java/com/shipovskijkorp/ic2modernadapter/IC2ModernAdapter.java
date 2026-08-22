@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter;
 
 import com.shipovskijkorp.ic2modernadapter.client.InDevTooltips;
+import com.shipovskijkorp.ic2modernadapter.creative.IC2CreativeTab;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,7 @@ public final class IC2ModernAdapter {
     public IC2ModernAdapter() {
         var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IC2ContentRegistries.register(modEventBus);
+        IC2CreativeTab.register(modEventBus);
         modEventBus.addListener(IC2RuntimeResources::onAddPackFinders);
         MinecraftForge.EVENT_BUS.addListener(InDevTooltips::onItemTooltip);
     }

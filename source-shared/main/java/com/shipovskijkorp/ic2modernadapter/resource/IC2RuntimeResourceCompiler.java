@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
+import com.shipovskijkorp.ic2modernadapter.content.OriginalItemModels;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalTranslationKeys;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import java.awt.image.BufferedImage;
@@ -69,14 +70,97 @@ public final class IC2RuntimeResourceCompiler {
             resources.put(asset, archive.readAsset(asset));
         }
 
+        normalizeLegacyTextureLayout(resources);
+        normalizeLegacyModelTextures(resources);
         compileLanguages(archive, resources);
 
         Map<String, JsonObject> legacyBlockstates = loadLegacyBlockstates(archive);
         compileBlockstates(resources, legacyBlockstates);
         compileBlockItemModels(resources, legacyBlockstates);
+        compileStandaloneItemModels(resources);
         assignCutoutRenderTypes(resources);
         validateOutput(resources);
         return new CompiledIc2ResourcePack(archive.path(), resources);
+    }
+
+    /**
+     * Moves the old 1.12 texture directories onto the modern item/block atlas layout. Modern
+     * Minecraft's atlases discover textures under textures/item and textures/block; IC2 1.12 used
+     * the plural textures/items and textures/blocks paths. Keeping the old paths byte-for-byte is
+     * therefore not enough even though the PNG files themselves are valid.
+     */
+    private static void normalizeLegacyTextureLayout(Map<String, byte[]> resources) {
+        Map<String, byte[]> moved = new LinkedHashMap<>();
+        for (Map.Entry<String, byte[]> entry : List.copyOf(resources.entrySet())) {
+            String normalized = normalizeLegacyTexturePath(entry.getKey());
+            if (normalized.equals(entry.getKey())) {
+                continue;
+            }
+            moved.put(normalized, entry.getValue());
+            resources.remove(entry.getKey());
+        }
+        moved.forEach(resources::putIfAbsent);
+    }
+
+    static String normalizeLegacyTexturePath(String path) {
+        if (path.startsWith("textures/blocks/")) {
+            return "textures/block/" + path.substring("textures/blocks/".length());
+        }
+        if (path.startsWith("textures/items/")) {
+            return "textures/item/" + path.substring("textures/items/".length());
+        }
+        return path;
+    }
+
+    /** Rewrites every original item/block texture reference to the modern singular atlas path. */
+    private static void normalizeLegacyModelTextures(Map<String, byte[]> resources) {
+        List<String> modelPaths = resources.keySet().stream()
+                .filter(path -> path.startsWith("models/") && path.endsWith(".json"))
+                .toList();
+        for (String modelPath : modelPaths) {
+            JsonObject model = parseJsonObject(resources.get(modelPath), modelPath);
+            if (rewriteLegacyTextureReferences(model)) {
+                putJson(resources, modelPath, model);
+            }
+        }
+    }
+
+    private static boolean rewriteLegacyTextureReferences(JsonElement element) {
+        boolean changed = false;
+        if (element.isJsonArray()) {
+            for (JsonElement child : element.getAsJsonArray()) {
+                changed |= rewriteLegacyTextureReferences(child);
+            }
+            return changed;
+        }
+        if (!element.isJsonObject()) {
+            return false;
+        }
+        JsonObject object = element.getAsJsonObject();
+        for (Map.Entry<String, JsonElement> entry : List.copyOf(object.entrySet())) {
+            JsonElement value = entry.getValue();
+            if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isString()) {
+                String oldValue = value.getAsString();
+                String newValue = normalizeLegacyTextureId(oldValue);
+                if (!newValue.equals(oldValue)) {
+                    object.addProperty(entry.getKey(), newValue);
+                    changed = true;
+                }
+            } else {
+                changed |= rewriteLegacyTextureReferences(value);
+            }
+        }
+        return changed;
+    }
+
+    static String normalizeLegacyTextureId(String id) {
+        if (id.startsWith("ic2:blocks/")) {
+            return "ic2:block/" + id.substring("ic2:blocks/".length());
+        }
+        if (id.startsWith("ic2:items/")) {
+            return "ic2:item/" + id.substring("ic2:items/".length());
+        }
+        return id;
     }
 
     /** Converts IC2's custom UTF-8 property bundles into modern Minecraft language JSON. */
@@ -281,7 +365,7 @@ public final class IC2RuntimeResourceCompiler {
         model.addProperty("parent", "minecraft:block/cube_all");
         model.addProperty("render_type", "minecraft:translucent");
         JsonObject textures = new JsonObject();
-        textures.addProperty("all", "ic2:blocks/fluid/" + blockPath + "_still");
+        textures.addProperty("all", "ic2:block/fluid/" + blockPath + "_still");
         model.add("textures", textures);
         putJson(output, modelPath, model);
 
@@ -375,6 +459,105 @@ public final class IC2RuntimeResourceCompiler {
         JsonObject variantsNode = requireObject(oldState, "variants");
         JsonObject typeMap = requireObject(variantsNode, "type");
         return modelId(requireElement(typeMap, variantName));
+    }
+
+    /**
+     * Recreates the code-side item model registration that IC2 1.12 performed through
+     * ModelLoader.setCustomModelResourceLocation / custom mesh definitions. Merely copying the
+     * original nested JSON files is insufficient on modern Minecraft: registry id
+     * ic2:advanced_batpack is looked up as models/item/advanced_batpack.json, while IC2 stored the
+     * actual model at models/item/armor/advanced_batpack.json and connected the two in Java.
+     */
+    private static void compileStandaloneItemModels(Map<String, byte[]> output) {
+        Set<String> blockItems = Set.copyOf(MANIFEST.registries().blockItems());
+        Map<String, String> uniqueModelsByBasename = indexUniqueOriginalItemModels(output);
+
+        for (String itemPath : MANIFEST.registries().items()) {
+            if (blockItems.contains(itemPath)) {
+                continue;
+            }
+
+            String rootPath = "models/item/" + itemPath + ".json";
+            List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(itemPath);
+            if (!variants.isEmpty()) {
+                putJson(output, rootPath, compileFiniteStandaloneItemModel(itemPath, variants, output));
+                continue;
+            }
+
+            // Some root items already had a top-level model in the original resource pack.
+            if (output.containsKey(rootPath)) {
+                continue;
+            }
+
+            String originalModel = uniqueModelsByBasename.get(itemPath);
+            if (originalModel == null) {
+                originalModel = OriginalItemModels.dynamicDefaultModel(itemPath);
+            }
+            if (originalModel == null) {
+                throw new IllegalStateException("No original item model mapping for ic2:" + itemPath);
+            }
+            requireItemModel(output, originalModel, itemPath);
+            putJson(output, rootPath, aliasItemModel(originalModel));
+        }
+    }
+
+    private static JsonObject compileFiniteStandaloneItemModel(
+            String itemPath,
+            List<OriginalContentManifest.StackVariant> variants,
+            Map<String, byte[]> output) {
+        JsonObject result = new JsonObject();
+        JsonArray overrides = new JsonArray();
+
+        for (int index = 0; index < variants.size(); index++) {
+            OriginalContentManifest.StackVariant variant = variants.get(index);
+            String originalModel = OriginalItemModels.finiteVariantModel(itemPath, variant.key());
+            requireItemModel(output, originalModel, variant.key());
+            String modelId = "ic2:item/" + originalModel;
+            if (index == 0) {
+                result.addProperty("parent", modelId);
+            }
+
+            JsonObject override = new JsonObject();
+            JsonObject predicate = new JsonObject();
+            predicate.addProperty("custom_model_data", index + 1);
+            override.add("predicate", predicate);
+            override.addProperty("model", modelId);
+            overrides.add(override);
+        }
+        result.add("overrides", overrides);
+        return result;
+    }
+
+    private static JsonObject aliasItemModel(String originalModel) {
+        JsonObject alias = new JsonObject();
+        alias.addProperty("parent", "ic2:item/" + originalModel);
+        return alias;
+    }
+
+    private static Map<String, String> indexUniqueOriginalItemModels(Map<String, byte[]> output) {
+        Map<String, String> result = new LinkedHashMap<>();
+        Set<String> duplicates = new HashSet<>();
+        for (String path : output.keySet()) {
+            if (!path.startsWith("models/item/") || !path.endsWith(".json")) {
+                continue;
+            }
+            String model = path.substring("models/item/".length(), path.length() - ".json".length());
+            String basename = model.substring(model.lastIndexOf('/') + 1);
+            String previous = result.putIfAbsent(basename, model);
+            if (previous != null && !previous.equals(model)) {
+                duplicates.add(basename);
+            }
+        }
+        duplicates.forEach(result::remove);
+        return result;
+    }
+
+    private static void requireItemModel(Map<String, byte[]> output, String modelPath, String content) {
+        String resourcePath = "models/item/" + modelPath + ".json";
+        if (!output.containsKey(resourcePath)) {
+            throw new IllegalStateException(
+                    "Original IC2 item model " + resourcePath + " is missing for " + content);
+        }
     }
 
     /**
@@ -599,22 +782,19 @@ public final class IC2RuntimeResourceCompiler {
             requireOutput(resources, statePath);
             collectModelIds(parseJsonObject(resources.get(statePath), statePath), modelIds);
         }
-        for (String blockItem : MANIFEST.registries().blockItems()) {
-            String itemModelPath = "models/item/" + blockItem + ".json";
+        for (String item : MANIFEST.registries().items()) {
+            String itemModelPath = "models/item/" + item + ".json";
             requireOutput(resources, itemModelPath);
+            modelIds.add("ic2:item/" + item);
             collectModelIds(parseJsonObject(resources.get(itemModelPath), itemModelPath), modelIds);
         }
-
-        // Dynamite was not an ItemBlock in IC2 1.12, but the placeholder item is intentionally
-        // placeable during this visual-only milestone. Its original 2D item model is still used.
-        requireOutput(resources, "models/item/dynamite.json");
 
         Set<String> validatedModels = new HashSet<>();
         for (String modelId : modelIds) {
             validateIc2Model(modelId, resources, validatedModels);
         }
         requireOutput(resources, "models/block/machine/processing/basic/macerator.json");
-        requireOutput(resources, "textures/blocks/machine/processing/basic/macerator_front.png");
+        requireOutput(resources, "textures/block/machine/processing/basic/macerator_front.png");
     }
 
     private static void collectModelIds(JsonElement element, Set<String> output) {
@@ -670,10 +850,24 @@ public final class IC2RuntimeResourceCompiler {
                 if (textureId.startsWith("#") || !textureId.startsWith("ic2:")) {
                     continue;
                 }
-                requireOutput(resources,
-                        "textures/" + textureId.substring("ic2:".length()) + ".png");
+                requireOutput(resources, textureResourcePath(textureId));
             }
         }
+    }
+
+    /** Resolves an IC2 model texture id to the path exposed by the compiled modern pack. */
+    static String textureResourcePath(String textureId) {
+        String normalized = normalizeLegacyTextureId(textureId);
+        if (normalized.startsWith("ic2:block/")) {
+            return "textures/block/" + normalized.substring("ic2:block/".length()) + ".png";
+        }
+        if (normalized.startsWith("ic2:item/")) {
+            return "textures/item/" + normalized.substring("ic2:item/".length()) + ".png";
+        }
+        if (normalized.startsWith("ic2:")) {
+            return "textures/" + normalized.substring("ic2:".length()) + ".png";
+        }
+        throw new IllegalArgumentException("Not an IC2 texture id: " + textureId);
     }
 
 
