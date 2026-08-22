@@ -362,10 +362,10 @@ public final class IC2RuntimeResourceCompiler {
     private static JsonObject compileFluidBlock(String blockPath, Map<String, byte[]> output) {
         String modelPath = "models/block/ic2ma_generated/fluid/" + blockPath + ".json";
         JsonObject model = new JsonObject();
-        model.addProperty("parent", "minecraft:block/cube_all");
+        model.addProperty("parent", "ic2:block/sheet_base");
         model.addProperty("render_type", "minecraft:translucent");
         JsonObject textures = new JsonObject();
-        textures.addProperty("all", "ic2:block/fluid/" + blockPath + "_still");
+        textures.addProperty("texture", "ic2:block/fluid/" + blockPath + "_still");
         model.add("textures", textures);
         putJson(output, modelPath, model);
 
@@ -384,7 +384,7 @@ public final class IC2RuntimeResourceCompiler {
             List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(blockPath);
             if (variants.size() > 1) {
                 putJson(output, "models/item/" + blockPath + ".json",
-                        compileVariantItemModel(blockPath, oldStates.get(blockPath), variants));
+                        compileVariantItemModel(blockPath, oldStates.get(blockPath), variants, output));
                 continue;
             }
 
@@ -396,7 +396,7 @@ public final class IC2RuntimeResourceCompiler {
             }
 
             JsonObject itemModel = new JsonObject();
-            String parent = modelForBlockItem(blockPath, oldStates, variants);
+            String parent = modelForBlockItem(blockPath, oldStates, variants, output);
             itemModel.addProperty("parent", parent);
             putJson(output, itemModelPath, itemModel);
         }
@@ -405,12 +405,14 @@ public final class IC2RuntimeResourceCompiler {
     private static JsonObject compileVariantItemModel(
             String blockPath,
             JsonObject oldState,
-            List<OriginalContentManifest.StackVariant> variants) {
+            List<OriginalContentManifest.StackVariant> variants,
+            Map<String, byte[]> output) {
         JsonObject result = new JsonObject();
         JsonArray overrides = new JsonArray();
 
         for (int index = 0; index < variants.size(); index++) {
-            String model = modelForLegacyVariant(blockPath, oldState, suffix(variants.get(index).key()));
+            String model = itemModelForLegacyVariant(
+                    blockPath, oldState, suffix(variants.get(index).key()), output);
             if (index == 0) {
                 result.addProperty("parent", model);
             }
@@ -428,9 +430,10 @@ public final class IC2RuntimeResourceCompiler {
     private static String modelForBlockItem(
             String blockPath,
             Map<String, JsonObject> oldStates,
-            List<OriginalContentManifest.StackVariant> variants) {
+            List<OriginalContentManifest.StackVariant> variants,
+            Map<String, byte[]> output) {
         if (isFluidBlock(blockPath)) {
-            return "ic2:block/ic2ma_generated/fluid/" + blockPath;
+            return ensureWrappedBlockItemModel(blockPath, blockPath, "ic2:block/ic2ma_generated/fluid/" + blockPath, output);
         }
         if (blockPath.equals("leaves")) {
             return "ic2:block/ic2ma_generated/leaves/rubber";
@@ -440,7 +443,8 @@ public final class IC2RuntimeResourceCompiler {
                     requireObject(requireObject(oldStates.get("rubber_wood"), "variants"), "state"), "plain_y"));
         }
         if (blockPath.equals("fence")) {
-            return "ic2:block/fence/iron_post";
+            requireItemModel(output, "fence/iron", blockPath);
+            return "ic2:item/fence/iron";
         }
         if (blockPath.equals("sapling")) {
             return modelId(requireElement(requireObject(oldStates.get("sapling"), "variants"), "normal"));
@@ -450,15 +454,81 @@ public final class IC2RuntimeResourceCompiler {
                     requireObject(oldStates.get("refractory_bricks"), "variants"), "refractory_bricks"));
         }
         if (!variants.isEmpty()) {
-            return modelForLegacyVariant(blockPath, oldStates.get(blockPath), suffix(variants.get(0).key()));
+            return itemModelForLegacyVariant(blockPath, oldStates.get(blockPath), suffix(variants.get(0).key()), output);
         }
         throw new IllegalStateException("No block item model mapping for ic2:" + blockPath);
+    }
+
+    private static String itemModelForLegacyVariant(
+            String blockPath, JsonObject oldState, String variantName, Map<String, byte[]> output) {
+        if (blockPath.equals("fence")) {
+            requireItemModel(output, "fence/iron", blockPath + "/" + variantName);
+            return "ic2:item/fence/iron";
+        }
+        String model = modelForLegacyVariant(blockPath, oldState, variantName);
+        if (requiresWrappedBlockItemModel(blockPath)) {
+            return ensureWrappedBlockItemModel(blockPath, variantName, model, output);
+        }
+        return model;
     }
 
     private static String modelForLegacyVariant(String blockPath, JsonObject oldState, String variantName) {
         JsonObject variantsNode = requireObject(oldState, "variants");
         JsonObject typeMap = requireObject(variantsNode, "type");
         return modelId(requireElement(typeMap, variantName));
+    }
+
+    private static boolean requiresWrappedBlockItemModel(String blockPath) {
+        return blockPath.equals("te") || blockPath.equals("sheet") || isFluidBlock(blockPath);
+    }
+
+    private static String ensureWrappedBlockItemModel(
+            String blockPath, String variantName, String parentModel, Map<String, byte[]> output) {
+        String modelPath = "models/item/ic2ma_generated/block_item/" + blockPath + "/" + variantName + ".json";
+        if (!output.containsKey(modelPath)) {
+            JsonObject model = new JsonObject();
+            model.addProperty("parent", parentModel);
+            model.add("display", defaultBlockItemDisplay());
+            putJson(output, modelPath, model);
+        }
+        return "ic2:item/ic2ma_generated/block_item/" + blockPath + "/" + variantName;
+    }
+
+    private static JsonObject defaultBlockItemDisplay() {
+        JsonObject display = new JsonObject();
+        display.add("thirdperson_righthand", transformJson(75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375));
+        display.add("thirdperson_lefthand", transformJson(75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375));
+        display.add("firstperson_righthand", transformJson(0, 45, 0, 0, 0, 0, 0.4, 0.4, 0.4));
+        display.add("firstperson_lefthand", transformJson(0, 225, 0, 0, 0, 0, 0.4, 0.4, 0.4));
+        display.add("gui", transformJson(30, 225, 0, 0, 0, 0, 0.625, 0.625, 0.625));
+        display.add("ground", transformJson(0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25));
+        display.add("fixed", transformJson(0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5));
+        return display;
+    }
+
+    private static JsonObject transformJson(
+            double rotX,
+            double rotY,
+            double rotZ,
+            double transX,
+            double transY,
+            double transZ,
+            double scaleX,
+            double scaleY,
+            double scaleZ) {
+        JsonObject transform = new JsonObject();
+        transform.add("rotation", triple(rotX, rotY, rotZ));
+        transform.add("translation", triple(transX, transY, transZ));
+        transform.add("scale", triple(scaleX, scaleY, scaleZ));
+        return transform;
+    }
+
+    private static JsonArray triple(double x, double y, double z) {
+        JsonArray values = new JsonArray();
+        values.add(x);
+        values.add(y);
+        values.add(z);
+        return values;
     }
 
     /**
@@ -490,6 +560,9 @@ public final class IC2RuntimeResourceCompiler {
             }
 
             String originalModel = uniqueModelsByBasename.get(itemPath);
+            if (originalModel == null) {
+                originalModel = resolveFolderedRootItemModel(output, itemPath);
+            }
             if (originalModel == null) {
                 originalModel = OriginalItemModels.dynamicDefaultModel(itemPath);
             }
@@ -532,6 +605,22 @@ public final class IC2RuntimeResourceCompiler {
         JsonObject alias = new JsonObject();
         alias.addProperty("parent", "ic2:item/" + originalModel);
         return alias;
+    }
+
+    private static String resolveFolderedRootItemModel(Map<String, byte[]> output, String itemPath) {
+        String match = null;
+        for (String candidate : OriginalItemModels.rootModelCandidates(itemPath)) {
+            if (!output.containsKey("models/item/" + candidate + ".json")) {
+                continue;
+            }
+            if (match != null && !match.equals(candidate)) {
+                throw new IllegalStateException(
+                        "Ambiguous original IC2 item model mapping for ic2:" + itemPath
+                                + ": " + match + " and " + candidate);
+            }
+            match = candidate;
+        }
+        return match;
     }
 
     private static Map<String, String> indexUniqueOriginalItemModels(Map<String, byte[]> output) {

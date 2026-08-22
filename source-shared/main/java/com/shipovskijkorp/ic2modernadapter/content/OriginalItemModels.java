@@ -1,5 +1,8 @@
 package com.shipovskijkorp.ic2modernadapter.content;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Canonical model identities used by the original IC2 2.8.222 item registration code.
  *
@@ -8,6 +11,44 @@ package com.shipovskijkorp.ic2modernadapter.content;
  * JSON resources loaded from the user's IC2 archive.</p>
  */
 public final class OriginalItemModels {
+
+    private static final List<String> ROOT_MODEL_FOLDERS = List.of(
+            "",
+            "armor/",
+            "battery/",
+            "boat/",
+            "brewing/",
+            "cable/",
+            "cell/",
+            "crafting/",
+            "crop/",
+            "pipe/",
+            "reactor/",
+            "reactor/fuel_rod/",
+            "resource/",
+            "rotor/",
+            "tfbp/",
+            "tool/",
+            "tool/electric/",
+            "tool/painter/",
+            "upgrade/");
+
+    /**
+     * Original ItemName folder candidates for ordinary, non-subtyped item models.
+     *
+     * <p>Most IC2 items did not store their JSON at models/item/&lt;registry id&gt;.json; Java-side
+     * registration selected a model under ItemFolder instead. Returning the finite set of folders
+     * lets the runtime compiler recreate that lookup without executing the original code. The
+     * compiler still requires exactly one matching model, so this cannot silently choose an
+     * ambiguous resource.</p>
+     */
+    public static List<String> rootModelCandidates(String itemPath) {
+        List<String> candidates = new ArrayList<>(ROOT_MODEL_FOLDERS.size());
+        for (String folder : ROOT_MODEL_FOLDERS) {
+            candidates.add(folder + itemPath);
+        }
+        return List.copyOf(candidates);
+    }
     /** Resolves a finite legacy stack variant to its original model path under models/item/. */
     public static String finiteVariantModel(String itemPath, String variantKey) {
         String variant = suffix(variantKey);

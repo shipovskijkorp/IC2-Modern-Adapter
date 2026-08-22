@@ -17,6 +17,7 @@ public final class OriginalCreativeTabLayout {
     public static final String ICON_ITEM_PATH = "mining_laser";
 
     private static final OriginalContentManifest MANIFEST = OriginalContentManifest.get();
+    private static final Set<String> ROOT_ITEMS_HIDDEN_IN_RELEASE_TAB = Set.of("debug_item", "booze_mug");
 
     /**
      * Exact root registration order from BlocksItems.initBlocks/initFluids/initItems in the
@@ -194,29 +195,31 @@ public final class OriginalCreativeTabLayout {
             "cover",
             "coke");
 
-    private static final List<Entry> ENTRIES = buildEntries();
+    private static final List<Entry> ENTRIES = buildEntries(false);
+    private static final List<Entry> ALL_ENTRIES = buildEntries(true);
 
     public static List<String> rootItemOrder() {
         return ROOT_ITEM_ORDER;
     }
 
-    /**
-     * Every content identity currently exposed by IC2MA, arranged by the reference registration
-     * order. Items with canonical finite variants expand to those variants in original enum order.
-     *
-     * <p>IC2MA deliberately includes development/debug and legacy-hidden identities here because
-     * this tab is also the project's complete development catalogue. Dynamic runtime-generated
-     * states such as charged electric items and crop seed genetics remain one root stack until
-     * their corresponding behavior systems exist.</p>
-     */
+    /** Entries actually shown by the recreated release IC2 creative tab. */
     public static List<Entry> entries() {
         return ENTRIES;
     }
 
-    private static List<Entry> buildEntries() {
+    /** Complete development catalogue, including legacy-hidden and debug-only identities. */
+    public static List<Entry> allEntries() {
+        return ALL_ENTRIES;
+    }
+
+    private static List<Entry> buildEntries(boolean includeHidden) {
         validateRootOrder();
         List<Entry> entries = new ArrayList<>();
         for (String itemPath : ROOT_ITEM_ORDER) {
+            if (!includeHidden && ROOT_ITEMS_HIDDEN_IN_RELEASE_TAB.contains(itemPath)) {
+                continue;
+            }
+
             List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(itemPath);
             if (variants.isEmpty()) {
                 entries.add(new Entry(itemPath, null));
@@ -224,6 +227,9 @@ public final class OriginalCreativeTabLayout {
             }
 
             for (OriginalContentManifest.StackVariant variant : variants) {
+                if (!includeHidden && !variant.creativeVisible()) {
+                    continue;
+                }
                 entries.add(new Entry(itemPath, variant.key()));
             }
         }

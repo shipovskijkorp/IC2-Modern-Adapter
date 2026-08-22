@@ -3,6 +3,7 @@ package com.shipovskijkorp.ic2modernadapter.content;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,16 @@ class OriginalItemModelsTest {
                     OriginalItemModels.finiteVariantModel(variant.item(), variant.key()));
             assertFalse(model.isBlank(), variant.key());
         }
+    }
+
+    @Test
+    void exposesOriginalFolderCandidatesForCodeRegisteredRootModels() {
+        assertTrue(OriginalItemModels.rootModelCandidates("scanner")
+                .contains("tool/electric/scanner"));
+        assertTrue(OriginalItemModels.rootModelCandidates("bronze_helmet")
+                .contains("armor/bronze_helmet"));
+        assertTrue(OriginalItemModels.rootModelCandidates("heat_vent")
+                .contains("reactor/heat_vent"));
     }
 
     @Test

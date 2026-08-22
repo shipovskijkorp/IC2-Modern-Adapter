@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.content;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
@@ -19,7 +20,7 @@ class OriginalCreativeTabLayoutTest {
     }
 
     @Test
-    void preservesReferenceRegistrationOrderAnchors() {
+    void preservesReferenceBlocksItemsRegistrationOrder() {
         List<String> order = OriginalCreativeTabLayout.rootItemOrder();
         assertEquals(List.of(
                 "te", "resource", "leaves", "rubber_wood", "sapling", "scaffold", "fence",
@@ -33,28 +34,44 @@ class OriginalCreativeTabLayoutTest {
     }
 
     @Test
-    void finiteVariantsExpandInManifestOrder() {
+    void finiteVariantsExpandInManifestOrderAfterVisibilityFiltering() {
         List<String> cableVariants = OriginalCreativeTabLayout.entries().stream()
                 .filter(entry -> entry.itemPath().equals("cable"))
                 .map(OriginalCreativeTabLayout.Entry::variantKey)
                 .toList();
         assertEquals(MANIFEST.stackVariants("cable").stream()
+                .filter(OriginalContentManifest.StackVariant::creativeVisible)
                 .map(OriginalContentManifest.StackVariant::key)
                 .toList(), cableVariants);
     }
 
     @Test
-    void exposesEveryCurrentRootIdentityForDevelopment() {
+    void releaseTabHidesOnlyActuallyHiddenLegacyContent() {
         var exposedRoots = OriginalCreativeTabLayout.entries().stream()
                 .map(OriginalCreativeTabLayout.Entry::itemPath)
                 .collect(java.util.stream.Collectors.toSet());
-        assertEquals(new HashSet<>(MANIFEST.registries().items()), exposedRoots);
+
+        // ItemClassicCell subtypes are disabled in the Experimental release profile.
+        assertFalse(exposedRoots.contains("cell"));
+        // Both explicitly call setCreativeTab(null) in the original build.
+        assertFalse(exposedRoots.contains("debug_item"));
+        assertFalse(exposedRoots.contains("booze_mug"));
+
+        // ItemFluidCell.getSubItems() deliberately enumerates every registered fluid.
+        assertTrue(OriginalCreativeTabLayout.entries().stream()
+                .anyMatch(entry -> "fluid_cell/construction_foam".equals(entry.variantKey())));
         assertTrue(OriginalCreativeTabLayout.entries().stream()
                 .anyMatch(entry -> "fluid_cell/uu_matter".equals(entry.variantKey())));
-        assertTrue(OriginalCreativeTabLayout.entries().stream()
+    }
+
+    @Test
+    void developmentCatalogueStillKeepsHiddenLegacyIdentitiesAvailable() {
+        assertTrue(OriginalCreativeTabLayout.allEntries().stream()
                 .anyMatch(entry -> entry.itemPath().equals("cell")));
-        assertTrue(OriginalCreativeTabLayout.entries().stream()
+        assertTrue(OriginalCreativeTabLayout.allEntries().stream()
                 .anyMatch(entry -> entry.itemPath().equals("debug_item")));
+        assertTrue(OriginalCreativeTabLayout.allEntries().stream()
+                .anyMatch(entry -> entry.itemPath().equals("booze_mug")));
     }
 
     @Test
