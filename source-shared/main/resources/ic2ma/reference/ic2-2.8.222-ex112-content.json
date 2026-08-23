@@ -873,13 +873,6 @@
       "nbt": []
     },
     {
-      "key": "ingot/copper",
-      "item": "ingot",
-      "legacyMeta": 2,
-      "creativeVisible": true,
-      "nbt": []
-    },
-    {
       "key": "ingot/lead",
       "item": "ingot",
       "legacyMeta": 3,
@@ -2021,13 +2014,6 @@
       "nbt": []
     },
     {
-      "key": "resource/copper_ore",
-      "item": "resource",
-      "legacyMeta": 1,
-      "creativeVisible": true,
-      "nbt": []
-    },
-    {
       "key": "resource/lead_ore",
       "item": "resource",
       "legacyMeta": 2,
@@ -2052,13 +2038,6 @@
       "key": "resource/bronze_block",
       "item": "resource",
       "legacyMeta": 5,
-      "creativeVisible": true,
-      "nbt": []
-    },
-    {
-      "key": "resource/copper_block",
-      "item": "resource",
-      "legacyMeta": 6,
       "creativeVisible": true,
       "nbt": []
     },

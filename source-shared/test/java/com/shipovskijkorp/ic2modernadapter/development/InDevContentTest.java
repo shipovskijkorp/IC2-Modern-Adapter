@@ -16,5 +16,7 @@ class InDevContentTest {
         }
         assertTrue(InDevContent.isItem("ic2", "te", "te/macerator"));
         assertFalse(InDevContent.isItem("ic2", "cable"), "all fourteen cable variants are implemented");
+        assertFalse(InDevContent.isItem("ic2", "cutter"), "insulation cutter is implemented");
+        assertFalse(InDevContent.isItem("ic2", "forge_hammer"), "forge hammer crafting behavior is implemented");
     }
 }

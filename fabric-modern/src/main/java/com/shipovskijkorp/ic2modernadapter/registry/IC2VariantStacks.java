@@ -30,6 +30,18 @@ public final class IC2VariantStacks {
         return stack;
     }
 
+    /** Creates an original dynamic NBT subtype that is intentionally not part of the finite manifest. */
+    public static ItemStack createDynamicVariant(String itemPath, String variantKey) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MANIFEST.namespace(), itemPath);
+        Item item = BuiltInRegistries.ITEM.getOptional(id)
+                .orElseThrow(() -> new IllegalStateException("IC2 item is not registered yet: " + id));
+        ItemStack stack = new ItemStack(item);
+        var tag = new net.minecraft.nbt.CompoundTag();
+        tag.putString(LegacyVariantNbt.VARIANT_KEY, variantKey);
+        CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+        return stack;
+    }
+
     /** Returns the stable legacy subtype identity carried by the stack, or {@code null}. */
     public static String variantKey(ItemStack stack) {
         CustomData customData = stack.get(DataComponents.CUSTOM_DATA);

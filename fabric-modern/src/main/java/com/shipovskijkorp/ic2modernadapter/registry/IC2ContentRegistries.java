@@ -16,6 +16,10 @@ import com.shipovskijkorp.ic2modernadapter.content.block.PlaceholderDoorBlock;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedDoubleHighBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.LegacyCraftingToolItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
+import com.shipovskijkorp.ic2modernadapter.recipe.LegacyCraftingRecipe;
+import com.shipovskijkorp.ic2modernadapter.recipe.LegacySmeltingRecipe;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +63,15 @@ public final class IC2ContentRegistries {
             return;
         }
 
+        Registry.register(
+                BuiltInRegistries.RECIPE_SERIALIZER,
+                adapterId("legacy_crafting"),
+                new LegacyCraftingRecipe.Serializer());
+        Registry.register(
+                BuiltInRegistries.RECIPE_SERIALIZER,
+                adapterId("legacy_smelting"),
+                new LegacySmeltingRecipe.Serializer());
+
         for (String path : MANIFEST.registries().blocks()) {
             Block block = Registry.register(BuiltInRegistries.BLOCK, id(path), createPlaceholderBlock(path));
             BLOCKS_BY_PATH.put(path, () -> block);
@@ -79,6 +92,21 @@ public final class IC2ContentRegistries {
                 item = new CableItem(new Item.Properties(), cableBlock, IC2VariantStacks::variantKey);
             } else if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
                 item = createBlockItem(path, requireBlock(path).get());
+            } else if ("cutter".equals(path)) {
+                item = new WireCutterItem(
+                        path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
+            } else if ("forge_hammer".equals(path)) {
+                item = new LegacyCraftingToolItem(
+                        path, new Item.Properties().durability(80), IC2VariantStacks::variantKey);
+            } else if ("cf_pack".equals(path) || "jetpack".equals(path)) {
+                item = new LegacyTranslatedItem(
+                        path, new Item.Properties().durability(27), IC2VariantStacks::variantKey);
+            } else if ("rsh_condensator".equals(path)) {
+                item = new LegacyTranslatedItem(
+                        path, new Item.Properties().durability(20_000), IC2VariantStacks::variantKey);
+            } else if ("lzh_condensator".equals(path)) {
+                item = new LegacyTranslatedItem(
+                        path, new Item.Properties().durability(100_000), IC2VariantStacks::variantKey);
             } else {
                 item = new LegacyTranslatedItem(path, new Item.Properties(), IC2VariantStacks::variantKey);
             }
@@ -238,6 +266,10 @@ public final class IC2ContentRegistries {
             throw new IllegalStateException("Incomplete IC2 " + kind + " registration: expected "
                     + expectedSet + ", got " + actual);
         }
+    }
+
+    private static ResourceLocation adapterId(String path) {
+        return ResourceLocation.fromNamespaceAndPath("ic2_modern_adapter", path);
     }
 
     private static ResourceLocation id(String path) {

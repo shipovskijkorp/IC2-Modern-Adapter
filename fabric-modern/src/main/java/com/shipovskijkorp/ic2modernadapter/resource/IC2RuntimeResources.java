@@ -26,14 +26,16 @@ public final class IC2RuntimeResources {
         RuntimeResourcePack pack = RuntimeResourcePack.create(id("original_ic2_runtime"));
         pack.setDisplayName(Component.literal("IC2 Modern Adapter - Original IC2 Resources"));
         pack.setAllowsDuplicateResource(false);
-        packData.resources().forEach((path, bytes) ->
+        packData.clientResources().forEach((path, bytes) ->
                 pack.addResource(PackType.CLIENT_RESOURCES, ic2(path), bytes));
+        packData.serverDataResources().forEach((path, bytes) ->
+                pack.addResource(PackType.SERVER_DATA, ic2(path), bytes));
 
-        // Same effective priority as the Forge/NeoForge built-in TOP pack: above ordinary mod
-        // resources, while still allowing an enabled user resource pack to override IC2 visuals.
-        RRPEventHelper.BEFORE_USER.registerSidedPack(PackType.CLIENT_RESOURCES, pack);
+        // Register the same runtime pack on both resource domains. User resource/data packs still
+        // have higher priority than the adapter-generated original-IC2 resources.
+        RRPEventHelper.BEFORE_USER.registerPack(pack);
         runtimePack = pack;
-        LOGGER.info("Published {} compiled IC2 runtime resources through Fabric/BRRP", packData.size());
+        LOGGER.info("Published {} IC2 client resources and {} recipe/data resources through Fabric/BRRP", packData.clientSize(), packData.serverDataSize());
     }
 
     private static CompiledIc2ResourcePack compiled() {
@@ -48,7 +50,7 @@ public final class IC2RuntimeResources {
                     Path source = OriginalIc2Locator.locate(FabricLoader.getInstance().getGameDir());
                     value = IC2RuntimeResourceCompiler.compile(source);
                     compiled = value;
-                    LOGGER.info("Compiled {} IC2 runtime resources in memory from {}", value.size(), source);
+                    LOGGER.info("Compiled {} IC2 client resources and {} runtime recipes/data resources in memory from {}", value.clientSize(), value.serverDataSize(), source);
                 } catch (IOException | RuntimeException e) {
                     throw new IllegalStateException("Unable to compile original IC2 client resources", e);
                 }

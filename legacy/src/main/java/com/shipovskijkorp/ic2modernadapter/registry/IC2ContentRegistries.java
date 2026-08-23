@@ -16,6 +16,10 @@ import com.shipovskijkorp.ic2modernadapter.content.block.PlaceholderDoorBlock;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedDoubleHighBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.LegacyCraftingToolItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
+import com.shipovskijkorp.ic2modernadapter.recipe.LegacyCraftingRecipe;
+import com.shipovskijkorp.ic2modernadapter.recipe.LegacySmeltingRecipe;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +30,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -62,6 +67,12 @@ public final class IC2ContentRegistries {
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, NAMESPACE);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, NAMESPACE);
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
+            DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, "ic2_modern_adapter");
+    private static final Supplier<RecipeSerializer<?>> LEGACY_CRAFTING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("legacy_crafting", LegacyCraftingRecipe.Serializer::new);
+    private static final Supplier<RecipeSerializer<?>> LEGACY_SMELTING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("legacy_smelting", LegacySmeltingRecipe.Serializer::new);
 
     /** Internal modern carrier block for the original standalone ic2:cable item. */
     private static final Supplier<CableBlock> CABLE_BLOCK = BLOCKS.register("cable", () -> new CableCarrierBlock(
@@ -92,6 +103,21 @@ public final class IC2ContentRegistries {
             } else if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
                 Supplier<? extends Block> block = requireBlock(path);
                 item = ITEMS.register(path, () -> createBlockItem(path, block.get()));
+            } else if ("cutter".equals(path)) {
+                item = ITEMS.register(path, () -> new WireCutterItem(
+                        path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey));
+            } else if ("forge_hammer".equals(path)) {
+                item = ITEMS.register(path, () -> new LegacyCraftingToolItem(
+                        path, new Item.Properties().durability(80), IC2VariantStacks::variantKey));
+            } else if ("cf_pack".equals(path) || "jetpack".equals(path)) {
+                item = ITEMS.register(path, () -> new LegacyTranslatedItem(
+                        path, new Item.Properties().durability(27), IC2VariantStacks::variantKey));
+            } else if ("rsh_condensator".equals(path)) {
+                item = ITEMS.register(path, () -> new LegacyTranslatedItem(
+                        path, new Item.Properties().durability(20_000), IC2VariantStacks::variantKey));
+            } else if ("lzh_condensator".equals(path)) {
+                item = ITEMS.register(path, () -> new LegacyTranslatedItem(
+                        path, new Item.Properties().durability(100_000), IC2VariantStacks::variantKey));
             } else {
                 item = ITEMS.register(path, () -> new LegacyTranslatedItem(
                         path, new Item.Properties(), IC2VariantStacks::variantKey));
@@ -149,6 +175,7 @@ public final class IC2ContentRegistries {
         MOB_EFFECTS.register(modEventBus);
         ENTITY_TYPES.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
+        RECIPE_SERIALIZERS.register(modEventBus);
     }
 
     public static Supplier<? extends Block> block(String path) {

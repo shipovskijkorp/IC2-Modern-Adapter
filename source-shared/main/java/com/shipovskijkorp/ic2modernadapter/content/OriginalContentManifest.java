@@ -30,7 +30,7 @@ public final class OriginalContentManifest {
     public static final int EXPECTED_MOB_EFFECTS = 1;
     public static final int EXPECTED_ENTITIES = 10;
     public static final int EXPECTED_BLOCK_ENTITIES = 113;
-    public static final int EXPECTED_STACK_VARIANTS = 413;
+    public static final int EXPECTED_STACK_VARIANTS = 410;
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final OriginalContentManifest INSTANCE = load();

@@ -5,6 +5,7 @@ import com.shipovskijkorp.ic2modernadapter.energy.FabricEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorPlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
+import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
 import net.fabricmc.api.ModInitializer;
 
 /** Fabric common entrypoint. */
@@ -14,6 +15,7 @@ public final class IC2ModernAdapter implements ModInitializer {
     @Override
     public void onInitialize() {
         IC2ContentRegistries.register();
+        IC2RuntimeResources.register();
         GeneratorPlatform.register();
         EuStoragePlatform.register();
         IC2CreativeTab.register();

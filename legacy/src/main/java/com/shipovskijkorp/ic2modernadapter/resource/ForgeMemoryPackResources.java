@@ -35,10 +35,15 @@ final class ForgeMemoryPackResources extends AbstractPackResources {
     @Override
     @Nullable
     public IoSupplier<InputStream> getResource(PackType type, ResourceLocation location) {
-        if (type != PackType.CLIENT_RESOURCES || !CompiledIc2ResourcePack.NAMESPACE.equals(location.getNamespace())) {
+        if (!CompiledIc2ResourcePack.NAMESPACE.equals(location.getNamespace())) {
             return null;
         }
-        return compiled.resource(location.getPath()).map(ForgeMemoryPackResources::bytes).orElse(null);
+        return switch (type) {
+            case CLIENT_RESOURCES -> compiled.clientResource(location.getPath())
+                    .map(ForgeMemoryPackResources::bytes).orElse(null);
+            case SERVER_DATA -> compiled.serverDataResource(location.getPath())
+                    .map(ForgeMemoryPackResources::bytes).orElse(null);
+        };
     }
 
     @Override
@@ -47,11 +52,14 @@ final class ForgeMemoryPackResources extends AbstractPackResources {
             String namespace,
             String path,
             ResourceOutput output) {
-        if (type != PackType.CLIENT_RESOURCES || !CompiledIc2ResourcePack.NAMESPACE.equals(namespace)) {
+        if (!CompiledIc2ResourcePack.NAMESPACE.equals(namespace)) {
             return;
         }
         String prefix = path.isEmpty() ? "" : path.endsWith("/") ? path : path + "/";
-        compiled.resources().forEach((resourcePath, data) -> {
+        java.util.Map<String, byte[]> resources = type == PackType.CLIENT_RESOURCES
+                ? compiled.clientResources()
+                : compiled.serverDataResources();
+        resources.forEach((resourcePath, data) -> {
             if (resourcePath.startsWith(prefix) && CompiledIc2ResourcePack.isValidResourcePath(resourcePath)) {
                 output.accept(new ResourceLocation(namespace, resourcePath), bytes(data));
             }
@@ -60,7 +68,7 @@ final class ForgeMemoryPackResources extends AbstractPackResources {
 
     @Override
     public Set<String> getNamespaces(PackType type) {
-        return type == PackType.CLIENT_RESOURCES
+        return type == PackType.CLIENT_RESOURCES || type == PackType.SERVER_DATA
                 ? Set.of(CompiledIc2ResourcePack.NAMESPACE)
                 : Set.of();
     }

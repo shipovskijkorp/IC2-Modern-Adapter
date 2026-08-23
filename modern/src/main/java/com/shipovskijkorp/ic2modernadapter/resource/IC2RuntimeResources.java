@@ -22,10 +22,11 @@ public final class IC2RuntimeResources {
     private static volatile CompiledIc2ResourcePack compiled;
 
     public static void onAddPackFinders(AddPackFindersEvent event) {
-        if (event.getPackType() != PackType.CLIENT_RESOURCES) {
+        if (event.getPackType() != PackType.CLIENT_RESOURCES && event.getPackType() != PackType.SERVER_DATA) {
             return;
         }
 
+        PackType packType = event.getPackType();
         CompiledIc2ResourcePack packData = compiled();
         event.addRepositorySource(consumer -> {
             PackLocationInfo location = new PackLocationInfo(
@@ -36,18 +37,18 @@ public final class IC2RuntimeResources {
             Pack.ResourcesSupplier resources = new Pack.ResourcesSupplier() {
                 @Override
                 public net.minecraft.server.packs.PackResources openPrimary(PackLocationInfo info) {
-                    return new NeoForgeMemoryPackResources(info, packData);
+                    return new NeoForgeMemoryPackResources(info, packData, packType);
                 }
 
                 @Override
                 public net.minecraft.server.packs.PackResources openFull(PackLocationInfo info, Pack.Metadata metadata) {
-                    return new NeoForgeMemoryPackResources(info, packData);
+                    return new NeoForgeMemoryPackResources(info, packData, packType);
                 }
             };
             Pack pack = Pack.readMetaAndCreate(
                     location,
                     resources,
-                    PackType.CLIENT_RESOURCES,
+                    packType,
                     new PackSelectionConfig(true, Pack.Position.TOP, false));
             if (pack == null) {
                 throw new IllegalStateException("Unable to create the IC2 Modern Adapter runtime resource pack");
@@ -68,7 +69,7 @@ public final class IC2RuntimeResources {
                     Path source = OriginalIc2Locator.locate(FMLPaths.GAMEDIR.get());
                     value = IC2RuntimeResourceCompiler.compile(source);
                     compiled = value;
-                    LOGGER.info("Compiled {} IC2 runtime resources in memory from {}", value.size(), source);
+                    LOGGER.info("Compiled {} IC2 client resources and {} runtime recipes/data resources in memory from {}", value.clientSize(), value.serverDataSize(), source);
                 } catch (IOException | RuntimeException e) {
                     throw new IllegalStateException("Unable to compile original IC2 client resources", e);
                 }

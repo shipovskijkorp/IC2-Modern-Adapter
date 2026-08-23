@@ -1,5 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.energy.cable;
 
+import com.shipovskijkorp.ic2modernadapter.content.item.LegacyCraftingToolItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
 import com.shipovskijkorp.ic2modernadapter.energy.api.IEuEnergyStorage;
 import com.shipovskijkorp.ic2modernadapter.energy.net.EuNetwork;
 import java.util.EnumMap;
@@ -9,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -238,6 +241,53 @@ public class CableBlock extends Block implements EntityBlock {
         for (Direction direction : Direction.values()) {
             EuNetwork.invalidate(level, pos.relative(direction));
         }
+    }
+
+    /** Whether the current finite cable variant can accept one more rubber insulation layer. */
+    public static boolean canAddInsulation(BlockState state) {
+        EuCableVariant cable = variant(state);
+        return cable != null && cable.insulation() < cable.maxInsulation();
+    }
+
+    /** Whether the current finite cable variant has a removable rubber insulation layer. */
+    public static boolean canRemoveInsulation(BlockState state) {
+        EuCableVariant cable = variant(state);
+        return cable != null && cable.insulation() > 0;
+    }
+
+    /**
+     * Original left-click cutter behavior: try main hand first, then off-hand; spend three cutter
+     * durability, remove one insulation layer and return one IC2 rubber item.
+     */
+    @Override
+    public void attack(BlockState state, Level level, BlockPos pos, Player player) {
+        super.attack(state, level, pos, player);
+        if (!canRemoveInsulation(state)) {
+            return;
+        }
+        ItemStack cutter = cutterInHands(player);
+        if (cutter.isEmpty()) {
+            return;
+        }
+        if (level.isClientSide()) {
+            return;
+        }
+        if (!player.getAbilities().instabuild && !cutter.isDamageableItem()) {
+            return;
+        }
+        if (tryRemoveInsulation(level, pos)) {
+            LegacyCraftingToolItem.damageHeldTool(cutter, 3, player);
+            Block.popResource(level, pos, variantStackFactory.apply("crafting/rubber"));
+        }
+    }
+
+    private static ItemStack cutterInHands(Player player) {
+        ItemStack main = player.getMainHandItem();
+        if (main.getItem() instanceof WireCutterItem) {
+            return main;
+        }
+        ItemStack off = player.getOffhandItem();
+        return off.getItem() instanceof WireCutterItem ? off : ItemStack.EMPTY;
     }
 
     /** Cable-side half of the original cutter + rubber insulation interaction. */

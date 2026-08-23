@@ -18,10 +18,11 @@ public final class IC2RuntimeResources {
     private static volatile CompiledIc2ResourcePack compiled;
 
     public static void onAddPackFinders(AddPackFindersEvent event) {
-        if (event.getPackType() != PackType.CLIENT_RESOURCES) {
+        if (event.getPackType() != PackType.CLIENT_RESOURCES && event.getPackType() != PackType.SERVER_DATA) {
             return;
         }
 
+        PackType packType = event.getPackType();
         CompiledIc2ResourcePack packData = compiled();
         event.addRepositorySource(consumer -> {
             Pack pack = Pack.readMetaAndCreate(
@@ -29,7 +30,7 @@ public final class IC2RuntimeResources {
                     Component.literal("IC2 Modern Adapter - Original IC2 Resources"),
                     true,
                     id -> new ForgeMemoryPackResources(id, packData),
-                    PackType.CLIENT_RESOURCES,
+                    packType,
                     Pack.Position.TOP,
                     PackSource.BUILT_IN);
             if (pack == null) {
@@ -51,7 +52,7 @@ public final class IC2RuntimeResources {
                     Path source = OriginalIc2Locator.locate(FMLPaths.GAMEDIR.get());
                     value = IC2RuntimeResourceCompiler.compile(source);
                     compiled = value;
-                    LOGGER.info("Compiled {} IC2 runtime resources in memory from {}", value.size(), source);
+                    LOGGER.info("Compiled {} IC2 client resources and {} runtime recipes/data resources in memory from {}", value.clientSize(), value.serverDataSize(), source);
                 } catch (IOException | RuntimeException e) {
                     throw new IllegalStateException("Unable to compile original IC2 client resources", e);
                 }

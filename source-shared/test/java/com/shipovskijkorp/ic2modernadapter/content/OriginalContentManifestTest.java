@@ -20,7 +20,7 @@ final class OriginalContentManifestTest {
         assertEquals(1, manifest.registries().mobEffects().size());
         assertEquals(10, manifest.registries().entities().size());
         assertEquals(113, manifest.registries().blockEntities().size());
-        assertEquals(413, manifest.stackVariants().size());
+        assertEquals(410, manifest.stackVariants().size());
 
         assertTrue(manifest.registries().items().contains("cable"));
         assertTrue(manifest.registries().items().contains("pipe"));
@@ -28,6 +28,9 @@ final class OriginalContentManifestTest {
         assertTrue(manifest.registries().blocks().contains("te"));
         assertTrue(manifest.registries().mobEffects().contains("radiation"));
         assertFalse(manifest.registries().entities().contains("beam"));
+        assertFalse(manifest.stackVariants().stream().anyMatch(v -> v.key().equals("ingot/copper")));
+        assertFalse(manifest.stackVariants().stream().anyMatch(v -> v.key().equals("resource/copper_ore")));
+        assertFalse(manifest.stackVariants().stream().anyMatch(v -> v.key().equals("resource/copper_block")));
     }
 
     @Test
