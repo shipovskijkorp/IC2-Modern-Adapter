@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter;
 
 import com.shipovskijkorp.ic2modernadapter.creative.IC2CreativeTab;
+import com.shipovskijkorp.ic2modernadapter.energy.FabricEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import net.fabricmc.api.ModInitializer;
 
@@ -12,5 +13,6 @@ public final class IC2ModernAdapter implements ModInitializer {
     public void onInitialize() {
         IC2ContentRegistries.register();
         IC2CreativeTab.register();
+        FabricEuNetworkLifecycle.register();
     }
 }

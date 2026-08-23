@@ -2,6 +2,7 @@ package com.shipovskijkorp.ic2modernadapter;
 
 import com.shipovskijkorp.ic2modernadapter.client.InDevTooltips;
 import com.shipovskijkorp.ic2modernadapter.creative.IC2CreativeTab;
+import com.shipovskijkorp.ic2modernadapter.energy.NeoForgeEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
 import net.neoforged.bus.api.IEventBus;
@@ -17,5 +18,6 @@ public final class IC2ModernAdapter {
         IC2CreativeTab.register(modEventBus);
         modEventBus.addListener(IC2RuntimeResources::onAddPackFinders);
         NeoForge.EVENT_BUS.addListener(InDevTooltips::onItemTooltip);
+        NeoForgeEuNetworkLifecycle.register();
     }
 }
