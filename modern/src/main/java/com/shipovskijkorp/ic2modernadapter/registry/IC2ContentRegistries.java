@@ -19,7 +19,11 @@ import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockIte
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedDoubleHighBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyCraftingToolItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.IodineTabletItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.RadioactiveItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
+import com.shipovskijkorp.ic2modernadapter.radiation.RadioactivitySpec;
+import com.shipovskijkorp.ic2modernadapter.radiation.RadiationEffect;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyCraftingRecipe;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacySmeltingRecipe;
 import java.util.LinkedHashMap;
@@ -28,7 +32,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -103,6 +106,12 @@ public final class IC2ContentRegistries {
             } else if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
                 Supplier<? extends Block> block = requireBlock(path);
                 item = ITEMS.register(path, () -> createBlockItem(path, block.get()));
+            } else if ("iodine_tablet".equals(path)) {
+                item = ITEMS.register(path, () -> new IodineTabletItem(
+                        path, new Item.Properties(), IC2VariantStacks::variantKey));
+            } else if ("nuclear".equals(path) || RadioactivitySpec.radioactiveFuelRods().contains(path)) {
+                item = ITEMS.register(path, () -> new RadioactiveItem(
+                        path, new Item.Properties(), IC2VariantStacks::variantKey));
             } else if ("cutter".equals(path)) {
                 item = ITEMS.register(path, () -> new WireCutterItem(
                         path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey));
@@ -133,7 +142,7 @@ public final class IC2ContentRegistries {
         }
 
         for (String path : MANIFEST.registries().mobEffects()) {
-            EFFECTS_BY_PATH.put(path, MOB_EFFECTS.register(path, PlaceholderRadiationEffect::new));
+            EFFECTS_BY_PATH.put(path, MOB_EFFECTS.register(path, RadiationEffect::new));
         }
 
         // NeoForge 1.21.1 does not yet have the later DeferredRegister.Entities helper, so use the
@@ -290,12 +299,6 @@ public final class IC2ContentRegistries {
         if (!expectedSet.equals(actual)) {
             throw new IllegalStateException("Incomplete IC2 " + kind + " registration: expected "
                     + expectedSet + ", got " + actual);
-        }
-    }
-
-    private static final class PlaceholderRadiationEffect extends MobEffect {
-        private PlaceholderRadiationEffect() {
-            super(MobEffectCategory.HARMFUL, 5_149_489);
         }
     }
 

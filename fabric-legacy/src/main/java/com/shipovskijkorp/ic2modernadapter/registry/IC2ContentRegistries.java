@@ -19,7 +19,11 @@ import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockIte
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedDoubleHighBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyCraftingToolItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.IodineTabletItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.RadioactiveItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
+import com.shipovskijkorp.ic2modernadapter.radiation.RadioactivitySpec;
+import com.shipovskijkorp.ic2modernadapter.radiation.RadiationEffect;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyCraftingRecipe;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacySmeltingRecipe;
 import java.util.LinkedHashMap;
@@ -30,7 +34,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -94,6 +97,12 @@ public final class IC2ContentRegistries {
                 item = new CableItem(new Item.Properties(), cableBlock, IC2VariantStacks::variantKey);
             } else if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
                 item = createBlockItem(path, requireBlock(path).get());
+            } else if ("iodine_tablet".equals(path)) {
+                item = new IodineTabletItem(
+                        path, new Item.Properties(), IC2VariantStacks::variantKey);
+            } else if ("nuclear".equals(path) || RadioactivitySpec.radioactiveFuelRods().contains(path)) {
+                item = new RadioactiveItem(
+                        path, new Item.Properties(), IC2VariantStacks::variantKey);
             } else if ("cutter".equals(path)) {
                 item = new WireCutterItem(
                         path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
@@ -123,7 +132,7 @@ public final class IC2ContentRegistries {
         }
 
         for (String path : MANIFEST.registries().mobEffects()) {
-            MobEffect value = Registry.register(BuiltInRegistries.MOB_EFFECT, id(path), new PlaceholderRadiationEffect());
+            MobEffect value = Registry.register(BuiltInRegistries.MOB_EFFECT, id(path), new RadiationEffect());
             EFFECTS_BY_PATH.put(path, () -> value);
         }
 
@@ -281,12 +290,6 @@ public final class IC2ContentRegistries {
 
     private static ResourceLocation id(String path) {
         return new ResourceLocation(NAMESPACE, path);
-    }
-
-    private static final class PlaceholderRadiationEffect extends MobEffect {
-        private PlaceholderRadiationEffect() {
-            super(MobEffectCategory.HARMFUL, 5_149_489);
-        }
     }
 
     private IC2ContentRegistries() {
