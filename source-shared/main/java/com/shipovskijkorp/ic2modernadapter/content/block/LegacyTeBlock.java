@@ -6,6 +6,7 @@ import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntityBase;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorConstants;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractStandardMachineBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
+import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -15,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -96,6 +98,26 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
         }
         ItemStack drop = variantStackFactory.apply(implementedVariant);
         return drop == null || drop.isEmpty() ? List.of() : List.of(drop.copy());
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (level.isClientSide()) {
+            return;
+        }
+        EuStorageSpec storageSpec = EuStorageSpec.fromBlockState(state);
+        if (storageSpec == null) {
+            return;
+        }
+        long stored = Math.min(storageSpec.capacityEu(), IC2VariantStacks.blockEntityEnergy(stack));
+        if (stored <= 0L) {
+            return;
+        }
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof AbstractEuStorageBlockEntity storage) {
+            storage.setStoredEnergyFromItem(stored);
+        }
     }
 
     @Override

@@ -62,6 +62,45 @@ public final class IC2VariantStacks {
         }
     }
 
+
+    public static long euStored(ItemStack stack) {
+        if (stack == null || stack.isEmpty() || !stack.hasTag()) {
+            return 0L;
+        }
+        return Math.max(0L, stack.getTag().getLong("charge"));
+    }
+
+    public static void setEuStored(ItemStack stack, long amount) {
+        if (stack == null || stack.isEmpty()) {
+            return;
+        }
+        var tag = stack.getOrCreateTag();
+        if (amount <= 0L) {
+            tag.remove("charge");
+        } else {
+            tag.putDouble("charge", (double) amount);
+        }
+    }
+
+    public static long blockEntityEnergy(ItemStack stack) {
+        if (stack == null || stack.isEmpty() || !stack.hasTag()) {
+            return 0L;
+        }
+        return Math.max(0L, stack.getTag().getLong("energy"));
+    }
+
+    public static void setBlockEntityEnergy(ItemStack stack, long amount) {
+        if (stack == null || stack.isEmpty()) {
+            return;
+        }
+        var tag = stack.getOrCreateTag();
+        if (amount <= 0L) {
+            tag.remove("energy");
+        } else {
+            tag.putLong("energy", amount);
+        }
+    }
+
     public static List<ItemStack> createAll() {
         return MANIFEST.stackVariants().stream().map(IC2VariantStacks::create).toList();
     }

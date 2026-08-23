@@ -65,6 +65,60 @@ public final class IC2VariantStacks {
         }
     }
 
+
+    public static long euStored(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return 0L;
+        }
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return 0L;
+        }
+        return Math.max(0L, customData.copyTag().getLong("charge"));
+    }
+
+    public static void setEuStored(ItemStack stack, long amount) {
+        if (stack == null || stack.isEmpty()) {
+            return;
+        }
+        var tag = customDataCopy(stack);
+        if (amount <= 0L) {
+            tag.remove("charge");
+        } else {
+            tag.putDouble("charge", (double) amount);
+        }
+        CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+    }
+
+    public static long blockEntityEnergy(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return 0L;
+        }
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return 0L;
+        }
+        return Math.max(0L, customData.copyTag().getLong("energy"));
+    }
+
+    public static void setBlockEntityEnergy(ItemStack stack, long amount) {
+        if (stack == null || stack.isEmpty()) {
+            return;
+        }
+        var tag = customDataCopy(stack);
+        if (amount <= 0L) {
+            tag.remove("energy");
+        } else {
+            tag.putLong("energy", amount);
+        }
+        CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
+    }
+
+    private static net.minecraft.nbt.CompoundTag customDataCopy(ItemStack stack) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        return customData == null ? new net.minecraft.nbt.CompoundTag() : customData.copyTag();
+    }
+
     public static List<ItemStack> createAll() {
         return MANIFEST.stackVariants().stream().map(IC2VariantStacks::create).toList();
     }

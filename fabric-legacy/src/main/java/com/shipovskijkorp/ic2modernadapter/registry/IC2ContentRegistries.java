@@ -8,6 +8,7 @@ import com.shipovskijkorp.ic2modernadapter.machine.MachineBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuElectricItemSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.CableCarrierBlock;
@@ -29,6 +30,7 @@ import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedPickaxeIt
 import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedShovelItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedSwordItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.IodineTabletItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.EuElectricItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.RadioactiveItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
 import com.shipovskijkorp.ic2modernadapter.radiation.RadioactivitySpec;
@@ -264,6 +266,8 @@ public final class IC2ContentRegistries {
                     path, LegacyArmorMaterials.HAZMAT, ArmorItem.Type.LEGGINGS, new Item.Properties(), IC2VariantStacks::variantKey);
             case "rubber_boots" -> new HazmatArmorItem(
                     path, LegacyArmorMaterials.RUBBER_BOOTS, ArmorItem.Type.BOOTS, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "re_battery", "advanced_re_battery", "energy_crystal", "lapotron_crystal" -> new EuElectricItem(
+                    path, EuElectricItemSpec.fromItemPath(path), new Item.Properties().stacksTo(16), IC2VariantStacks::variantKey);
             case "iodine_tablet" -> new IodineTabletItem(
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
             case "nuclear" -> new RadioactiveItem(

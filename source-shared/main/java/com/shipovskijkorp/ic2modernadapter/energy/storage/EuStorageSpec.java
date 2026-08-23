@@ -15,6 +15,7 @@ public enum EuStorageSpec {
 
     private static final Map<Integer, EuStorageSpec> BY_VARIANT = new HashMap<>();
     private static final Map<String, EuStorageSpec> BY_BLOCK_ENTITY_PATH = new HashMap<>();
+    private static final Map<String, EuStorageSpec> BY_VARIANT_KEY = new HashMap<>();
 
     static {
         for (EuStorageSpec spec : values()) {
@@ -23,6 +24,9 @@ public enum EuStorageSpec {
             }
             if (BY_BLOCK_ENTITY_PATH.put(spec.blockEntityPath, spec) != null) {
                 throw new IllegalStateException("Duplicate IC2 EU storage block entity path: " + spec.blockEntityPath);
+            }
+            if (BY_VARIANT_KEY.put(spec.variantKey, spec) != null) {
+                throw new IllegalStateException("Duplicate IC2 EU storage variant key: " + spec.variantKey);
             }
         }
     }
@@ -97,5 +101,9 @@ public enum EuStorageSpec {
 
     public static @Nullable EuStorageSpec fromBlockEntityPath(String path) {
         return BY_BLOCK_ENTITY_PATH.get(path);
+    }
+
+    public static @Nullable EuStorageSpec fromVariantKey(String variantKey) {
+        return BY_VARIANT_KEY.get(variantKey);
     }
 }

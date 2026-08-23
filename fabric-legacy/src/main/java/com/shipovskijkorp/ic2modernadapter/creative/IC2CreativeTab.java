@@ -1,6 +1,8 @@
 package com.shipovskijkorp.ic2modernadapter.creative;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalCreativeTabLayout;
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuElectricItemSpec;
+import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -25,10 +27,38 @@ public final class IC2CreativeTab {
                         .get()
                         .getDefaultInstance())
                 .displayItems((parameters, output) -> OriginalCreativeTabLayout.entries().forEach(entry ->
-                        output.accept(createStack(entry))))
+                        acceptEntry(output, entry)))
                 .build();
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, id("ic2"), tab);
         registered = true;
+    }
+
+    private static void acceptEntry(CreativeModeTab.Output output, OriginalCreativeTabLayout.Entry entry) {
+        output.accept(createStack(entry));
+        ItemStack chargedOrFilled = createChargedOrFilledStack(entry);
+        if (!chargedOrFilled.isEmpty()) {
+            output.accept(chargedOrFilled);
+        }
+    }
+
+    private static ItemStack createChargedOrFilledStack(OriginalCreativeTabLayout.Entry entry) {
+        if (entry.hasVariant()) {
+            EuStorageSpec storage = EuStorageSpec.fromVariantKey(entry.variantKey());
+            if (storage == null) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack filled = IC2VariantStacks.create(entry.variantKey());
+            IC2VariantStacks.setBlockEntityEnergy(filled, storage.capacityEu());
+            return filled;
+        }
+
+        EuElectricItemSpec electric = EuElectricItemSpec.fromItemPath(entry.itemPath());
+        if (electric == null) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack charged = new ItemStack(IC2ContentRegistries.item(entry.itemPath()).get());
+        IC2VariantStacks.setEuStored(charged, electric.capacityEu());
+        return charged;
     }
 
     private static ItemStack createStack(OriginalCreativeTabLayout.Entry entry) {
