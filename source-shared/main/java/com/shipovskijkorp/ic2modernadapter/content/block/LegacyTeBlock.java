@@ -9,6 +9,8 @@ import com.shipovskijkorp.ic2modernadapter.furnace.AbstractIronFurnaceBlockEntit
 import com.shipovskijkorp.ic2modernadapter.furnace.AbstractInductionFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.AbstractElectricFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractStandardMachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.AbstractMetalFormerBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.AbstractOreWashingPlantBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import java.util.List;
@@ -86,7 +88,16 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
     }
 
     public static boolean isStandardMachine(BlockState state) {
-        return MachineSpec.fromBlockState(state) != null;
+        MachineSpec machine = MachineSpec.fromBlockState(state);
+        return machine != null && machine.kind() == MachineSpec.Kind.STANDARD;
+    }
+
+    public static boolean isMetalFormer(BlockState state) {
+        return MachineSpec.fromBlockState(state) == MachineSpec.METAL_FORMER;
+    }
+
+    public static boolean isOreWashingPlant(BlockState state) {
+        return MachineSpec.fromBlockState(state) == MachineSpec.ORE_WASHING_PLANT;
     }
 
     public static boolean isImplementedFurnace(BlockState state) {
@@ -179,10 +190,15 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                 }
             };
         }
-        if (isStandardMachine(state)) {
+        MachineSpec machineSpec = MachineSpec.fromBlockState(state);
+        if (machineSpec != null) {
             return (tickLevel, pos, tickState, blockEntity) -> {
                 if (blockEntity instanceof AbstractStandardMachineBlockEntity machine) {
                     machine.serverTick();
+                } else if (blockEntity instanceof AbstractMetalFormerBlockEntity metalFormer) {
+                    metalFormer.serverTick();
+                } else if (blockEntity instanceof AbstractOreWashingPlantBlockEntity oreWasher) {
+                    oreWasher.serverTick();
                 }
             };
         }
@@ -221,6 +237,10 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                 Containers.dropContents(level, pos, storage);
             } else if (blockEntity instanceof AbstractStandardMachineBlockEntity machine) {
                 Containers.dropContents(level, pos, machine);
+            } else if (blockEntity instanceof AbstractMetalFormerBlockEntity metalFormer) {
+                Containers.dropContents(level, pos, metalFormer);
+            } else if (blockEntity instanceof AbstractOreWashingPlantBlockEntity oreWasher) {
+                Containers.dropContents(level, pos, oreWasher);
             } else if (blockEntity instanceof AbstractIronFurnaceBlockEntity furnace) {
                 Containers.dropContents(level, pos, furnace);
             } else if (blockEntity instanceof AbstractElectricFurnaceBlockEntity furnace) {

@@ -9,6 +9,8 @@ import com.shipovskijkorp.ic2modernadapter.furnace.IronFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.ElectricFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.InductionFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.MetalFormerBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.OreWashingPlantBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
@@ -37,6 +39,7 @@ import com.shipovskijkorp.ic2modernadapter.content.item.IodineTabletItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.EuElectricItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.RadioactiveItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
+import com.shipovskijkorp.ic2modernadapter.toolbox.ToolBoxItem;
 import com.shipovskijkorp.ic2modernadapter.radiation.RadioactivitySpec;
 import com.shipovskijkorp.ic2modernadapter.radiation.RadiationEffect;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyCraftingRecipe;
@@ -154,7 +157,7 @@ public final class IC2ContentRegistries {
                         (pos, state) -> new EuStorageBlockEntity(storage, pos, state), teBlock).build(null);
             } else if (machine != null) {
                 type = BlockEntityType.Builder.of(
-                        (pos, state) -> new MachineBlockEntity(machine, pos, state), teBlock).build(null);
+                        (pos, state) -> createMachineBlockEntity(machine, pos, state), teBlock).build(null);
             } else if (furnace != null) {
                 type = BlockEntityType.Builder.of(
                         (pos, state) -> createFurnaceBlockEntity(furnace, pos, state), teBlock).build(null);
@@ -211,7 +214,7 @@ public final class IC2ContentRegistries {
                     IC2VariantStacks::placementVariantIndex,
                     GeneratorBlockEntity::new,
                     EuStorageBlockEntity::new,
-                    MachineBlockEntity::new,
+                    IC2ContentRegistries::createMachineBlockEntity,
                     IC2ContentRegistries::createFurnaceBlockEntity,
                     IC2VariantStacks::create);
         }
@@ -243,6 +246,14 @@ public final class IC2ContentRegistries {
             properties.noOcclusion();
         }
         return properties;
+    }
+
+    private static BlockEntity createMachineBlockEntity(MachineSpec spec, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+        return switch (spec.kind()) {
+            case STANDARD -> new MachineBlockEntity(spec, pos, state);
+            case METAL_FORMER -> new MetalFormerBlockEntity(pos, state);
+            case ORE_WASHING -> new OreWashingPlantBlockEntity(pos, state);
+        };
     }
 
     private static BlockEntity createFurnaceBlockEntity(FurnaceSpec spec, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
@@ -291,6 +302,8 @@ public final class IC2ContentRegistries {
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
             case "cutter" -> new WireCutterItem(
                     path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
+            case "tool_box" -> new ToolBoxItem(
+                    path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
             case "forge_hammer" -> new LegacyCraftingToolItem(
                     path, new Item.Properties().durability(80), IC2VariantStacks::variantKey);
             case "cf_pack", "jetpack" -> new LegacyTranslatedItem(

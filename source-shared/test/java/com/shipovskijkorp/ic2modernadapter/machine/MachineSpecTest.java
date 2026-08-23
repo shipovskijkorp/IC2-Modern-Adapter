@@ -8,12 +8,16 @@ import org.junit.jupiter.api.Test;
 
 class MachineSpecTest {
     @Test
-    void matchesCanonicalStandardMachines() {
+    void matchesCanonicalImplementedMachines() {
         assertMachine(MachineSpec.COMPRESSOR, "compressor", "te/compressor", 42, 43,
-                MachineSpec.ProgressStyle.TRIANGLE);
+                2L, 300, 600L, 1, MachineSpec.ProgressStyle.TRIANGLE, MachineSpec.Kind.STANDARD);
         assertMachine(MachineSpec.MACERATOR, "macerator", "te/macerator", 46, 47,
-                MachineSpec.ProgressStyle.CRUSH);
-        assertEquals(2, MachineSpec.values().length);
+                2L, 300, 600L, 1, MachineSpec.ProgressStyle.CRUSH, MachineSpec.Kind.STANDARD);
+        assertMachine(MachineSpec.METAL_FORMER, "metal_former", "te/metal_former", 54, 55,
+                10L, 200, 2_000L, 1, MachineSpec.ProgressStyle.METAL_FORMER, MachineSpec.Kind.METAL_FORMER);
+        assertMachine(MachineSpec.ORE_WASHING_PLANT, "ore_washing_plant", "te/ore_washing_plant", 55, 56,
+                16L, 500, 8_000L, 1, MachineSpec.ProgressStyle.ORE_WASHING, MachineSpec.Kind.ORE_WASHING);
+        assertEquals(4, MachineSpec.values().length);
     }
 
     @Test
@@ -32,15 +36,21 @@ class MachineSpecTest {
             String variantKey,
             int variantIndex,
             int legacyMeta,
-            MachineSpec.ProgressStyle progressStyle) {
+            long euPerTick,
+            int operationTicks,
+            long capacityEu,
+            int tier,
+            MachineSpec.ProgressStyle progressStyle,
+            MachineSpec.Kind kind) {
         assertEquals(path, spec.blockEntityPath());
         assertEquals(variantKey, spec.variantKey());
         assertEquals(variantIndex, spec.variantIndex());
         assertEquals(legacyMeta, spec.legacyMeta());
-        assertEquals(1, spec.tier());
-        assertEquals(2L, spec.euPerTick());
-        assertEquals(600L, spec.capacityEu());
-        assertEquals(300, spec.operationTicks());
+        assertEquals(tier, spec.tier());
+        assertEquals(euPerTick, spec.euPerTick());
+        assertEquals(capacityEu, spec.capacityEu());
+        assertEquals(operationTicks, spec.operationTicks());
         assertEquals(progressStyle, spec.progressStyle());
+        assertEquals(kind, spec.kind());
     }
 }

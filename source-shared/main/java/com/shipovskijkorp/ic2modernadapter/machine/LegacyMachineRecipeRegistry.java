@@ -24,10 +24,17 @@ public final class LegacyMachineRecipeRegistry {
     }
 
     public static LegacyMachineRecipeDefinition find(MachineSpec machine, ItemStack input) {
+        return find(machine, input, null);
+    }
+
+    public static LegacyMachineRecipeDefinition find(MachineSpec machine, ItemStack input, String sourcePrefix) {
         if (input == null || input.isEmpty()) {
             return null;
         }
         for (LegacyMachineRecipeDefinition recipe : recipes(machine)) {
+            if (sourcePrefix != null && !recipe.source().startsWith(sourcePrefix)) {
+                continue;
+            }
             if (input.getCount() >= recipe.inputCount()
                     && LegacyRecipeRuntime.matchesIngredient(recipe.input(), input, LegacyRecipeStacks.INSTANCE)) {
                 return recipe;

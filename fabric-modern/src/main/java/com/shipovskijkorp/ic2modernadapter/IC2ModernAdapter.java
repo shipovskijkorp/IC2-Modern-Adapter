@@ -5,6 +5,7 @@ import com.shipovskijkorp.ic2modernadapter.energy.FabricEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorPlatform;
 import com.shipovskijkorp.ic2modernadapter.furnace.FurnacePlatform;
 import com.shipovskijkorp.ic2modernadapter.machine.MachinePlatform;
+import com.shipovskijkorp.ic2modernadapter.toolbox.ToolBoxPlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
@@ -22,6 +23,7 @@ public final class IC2ModernAdapter implements ModInitializer {
         FurnacePlatform.register();
         EuStoragePlatform.register();
         MachinePlatform.register();
+        ToolBoxPlatform.register();
         IC2CreativeTab.register();
         FabricEuNetworkLifecycle.register();
     }

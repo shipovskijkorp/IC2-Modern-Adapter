@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.machine;
 
+import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantFacingBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.api.IEuEnergyStorage;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBounds;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageItemHooks;
@@ -52,7 +53,7 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
     private static final int[] BOTTOM_SLOTS = {SLOT_OUTPUT};
 
     private final MachineSpec spec;
-    private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> items;
     private long energy;
     protected int progress;
     protected int maxProgress;
@@ -66,7 +67,9 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
                 case DATA_PROGRESS -> AbstractElectricMachineBlockEntity.this.progress;
                 case DATA_MAX_PROGRESS -> AbstractElectricMachineBlockEntity.this.maxProgress;
                 case DATA_MACHINE -> spec.ordinal();
-                default -> 0;
+                default -> index >= DATA_COUNT && index < DATA_COUNT + getExtraDataCount()
+                        ? getExtraData(index - DATA_COUNT)
+                        : 0;
             };
         }
 
@@ -77,13 +80,16 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
                 case DATA_PROGRESS -> AbstractElectricMachineBlockEntity.this.progress = Math.max(0, value);
                 case DATA_MAX_PROGRESS -> AbstractElectricMachineBlockEntity.this.maxProgress = Math.max(1, value);
                 default -> {
+                    if (index >= DATA_COUNT && index < DATA_COUNT + getExtraDataCount()) {
+                        setExtraData(index - DATA_COUNT, value);
+                    }
                 }
             }
         }
 
         @Override
         public int getCount() {
-            return DATA_COUNT;
+            return DATA_COUNT + getExtraDataCount();
         }
     };
 
@@ -92,7 +98,20 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
             MachineSpec spec,
             BlockPos pos,
             BlockState state) {
+        this(type, spec, pos, state, SLOT_COUNT);
+    }
+
+    protected AbstractElectricMachineBlockEntity(
+            BlockEntityType<?> type,
+            MachineSpec spec,
+            BlockPos pos,
+            BlockState state,
+            int slotCount) {
         super(type, pos, state);
+        if (slotCount < SLOT_COUNT) {
+            throw new IllegalArgumentException("Machine slot count must be at least " + SLOT_COUNT + ": " + slotCount);
+        }
+        this.items = NonNullList.withSize(slotCount, ItemStack.EMPTY);
         this.spec = spec;
         this.maxProgress = spec.operationTicks();
         MachineSpec stateSpec = MachineSpec.fromBlockState(state);
@@ -104,6 +123,17 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
     }
 
     protected abstract MenuType<?> machineMenuType();
+
+    protected int getExtraDataCount() {
+        return 0;
+    }
+
+    protected int getExtraData(int index) {
+        return 0;
+    }
+
+    protected void setExtraData(int index, int value) {
+    }
 
     public final MachineSpec spec() {
         return spec;
@@ -201,7 +231,7 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
 
     @Override
     public int getContainerSize() {
-        return SLOT_COUNT;
+        return items.size();
     }
 
     @Override
@@ -354,6 +384,19 @@ public abstract class AbstractElectricMachineBlockEntity extends BlockEntity
 
     protected final NonNullList<ItemStack> mutableItems() {
         return items;
+    }
+
+    protected final void setMachineActive(boolean active) {
+        Level level = getLevel();
+        if (level == null) {
+            return;
+        }
+        BlockState state = getBlockState();
+        if (!state.hasProperty(LegacyVariantFacingBlock.ACTIVE)
+                || state.getValue(LegacyVariantFacingBlock.ACTIVE) == active) {
+            return;
+        }
+        level.setBlock(worldPosition, state.setValue(LegacyVariantFacingBlock.ACTIVE, active), 3);
     }
 
     protected final void saveMachineState(CompoundTag tag) {

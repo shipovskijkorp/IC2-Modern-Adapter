@@ -7,8 +7,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /** Canonical IC2 Experimental standard-machine definitions implemented by IC2MA. */
 public enum MachineSpec {
-    COMPRESSOR("compressor", "te/compressor", 2L, 300, 600L, 1, ProgressStyle.TRIANGLE),
-    MACERATOR("macerator", "te/macerator", 2L, 300, 600L, 1, ProgressStyle.CRUSH);
+    COMPRESSOR("compressor", "te/compressor", 2L, 300, 600L, 1, ProgressStyle.TRIANGLE, Kind.STANDARD),
+    MACERATOR("macerator", "te/macerator", 2L, 300, 600L, 1, ProgressStyle.CRUSH, Kind.STANDARD),
+    METAL_FORMER("metal_former", "te/metal_former", 10L, 200, 2_000L, 1, ProgressStyle.METAL_FORMER, Kind.METAL_FORMER),
+    ORE_WASHING_PLANT("ore_washing_plant", "te/ore_washing_plant", 16L, 500, 8_000L, 1, ProgressStyle.ORE_WASHING, Kind.ORE_WASHING);
 
     private final String blockEntityPath;
     private final String variantKey;
@@ -17,6 +19,7 @@ public enum MachineSpec {
     private final long capacityEu;
     private final int tier;
     private final ProgressStyle progressStyle;
+    private final Kind kind;
     private final int variantIndex;
     private final int legacyMeta;
 
@@ -27,7 +30,8 @@ public enum MachineSpec {
             int operationTicks,
             long capacityEu,
             int tier,
-            ProgressStyle progressStyle) {
+            ProgressStyle progressStyle,
+            Kind kind) {
         this.blockEntityPath = blockEntityPath;
         this.variantKey = variantKey;
         this.euPerTick = euPerTick;
@@ -35,6 +39,7 @@ public enum MachineSpec {
         this.capacityEu = capacityEu;
         this.tier = tier;
         this.progressStyle = progressStyle;
+        this.kind = kind;
         OriginalContentManifest manifest = OriginalContentManifest.get();
         this.variantIndex = manifest.stackVariantIndex(variantKey);
         this.legacyMeta = manifest.stackVariant(variantKey).legacyMeta();
@@ -66,6 +71,14 @@ public enum MachineSpec {
 
     public ProgressStyle progressStyle() {
         return progressStyle;
+    }
+
+    public Kind kind() {
+        return kind;
+    }
+
+    public boolean isStandard() {
+        return kind == Kind.STANDARD;
     }
 
     public int variantIndex() {
@@ -126,6 +139,14 @@ public enum MachineSpec {
 
     public enum ProgressStyle {
         CRUSH,
-        TRIANGLE
+        TRIANGLE,
+        METAL_FORMER,
+        ORE_WASHING
+    }
+
+    public enum Kind {
+        STANDARD,
+        METAL_FORMER,
+        ORE_WASHING
     }
 }

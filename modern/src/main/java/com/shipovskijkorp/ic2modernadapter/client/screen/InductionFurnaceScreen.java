@@ -115,7 +115,7 @@ public final class InductionFurnaceScreen extends AbstractContainerScreen<Induct
         blit(graphics, x - 5, y, 160, 0, 32, 16);
         int width = (int) Math.floor(22.0F * clamp01(ratio));
         if (width > 0) {
-            blit(graphics, x, y + 1, 165, 16, width, 15);
+            blit(graphics, x, y, 165, 16, width, 15);
         }
     }
 

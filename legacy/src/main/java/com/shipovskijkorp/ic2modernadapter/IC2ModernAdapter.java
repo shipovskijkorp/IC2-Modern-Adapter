@@ -6,6 +6,7 @@ import com.shipovskijkorp.ic2modernadapter.energy.ForgeEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorPlatform;
 import com.shipovskijkorp.ic2modernadapter.furnace.FurnacePlatform;
 import com.shipovskijkorp.ic2modernadapter.machine.MachinePlatform;
+import com.shipovskijkorp.ic2modernadapter.toolbox.ToolBoxPlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
@@ -24,6 +25,7 @@ public final class IC2ModernAdapter {
         FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);
         MachinePlatform.register(modEventBus);
+        ToolBoxPlatform.register(modEventBus);
         IC2CreativeTab.register(modEventBus);
         modEventBus.addListener(IC2RuntimeResources::onAddPackFinders);
         MinecraftForge.EVENT_BUS.addListener(InDevTooltips::onItemTooltip);

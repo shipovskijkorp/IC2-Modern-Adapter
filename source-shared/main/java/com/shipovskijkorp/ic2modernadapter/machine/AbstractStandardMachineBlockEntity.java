@@ -1,6 +1,5 @@
 package com.shipovskijkorp.ic2modernadapter.machine;
 
-import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantFacingBlock;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyRecipeRuntime;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyRecipeStacks;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public abstract class AbstractStandardMachineBlockEntity extends AbstractElectri
         if (changed || active) {
             setChanged();
         }
-        setActive(active);
+        setMachineActive(active);
     }
 
     private boolean processStandardMachine() {
@@ -120,16 +119,4 @@ public abstract class AbstractStandardMachineBlockEntity extends AbstractElectri
         return true;
     }
 
-    private void setActive(boolean active) {
-        Level level = getLevel();
-        if (level == null) {
-            return;
-        }
-        BlockState state = getBlockState();
-        if (!state.hasProperty(LegacyVariantFacingBlock.ACTIVE)
-                || state.getValue(LegacyVariantFacingBlock.ACTIVE) == active) {
-            return;
-        }
-        level.setBlock(worldPosition, state.setValue(LegacyVariantFacingBlock.ACTIVE, active), 3);
-    }
 }

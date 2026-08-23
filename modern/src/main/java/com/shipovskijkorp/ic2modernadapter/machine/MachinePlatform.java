@@ -2,6 +2,8 @@ package com.shipovskijkorp.ic2modernadapter.machine;
 
 import com.shipovskijkorp.ic2modernadapter.IC2ModernAdapter;
 import com.shipovskijkorp.ic2modernadapter.menu.MachineMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.MetalFormerMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.OreWashingPlantMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -17,20 +19,38 @@ public final class MachinePlatform {
     private static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(Registries.MENU, IC2ModernAdapter.MOD_ID);
     private static final java.util.function.Supplier<MenuType<MachineMenu>> MACERATOR_MENU =
-            registerMenu(MachineSpec.MACERATOR);
+            registerStandardMenu(MachineSpec.MACERATOR);
     private static final java.util.function.Supplier<MenuType<MachineMenu>> COMPRESSOR_MENU =
-            registerMenu(MachineSpec.COMPRESSOR);
+            registerStandardMenu(MachineSpec.COMPRESSOR);
+    private static final java.util.function.Supplier<MenuType<MetalFormerMenu>> METAL_FORMER_MENU = MENUS.register(
+            "metal_former",
+            () -> new MenuType<>((id, inventory) -> new MetalFormerMenu(menuType(MachineSpec.METAL_FORMER), id, inventory),
+                    FeatureFlags.DEFAULT_FLAGS));
+    private static final java.util.function.Supplier<MenuType<OreWashingPlantMenu>> ORE_WASHING_MENU = MENUS.register(
+            "ore_washing_plant",
+            () -> new MenuType<>((id, inventory) -> new OreWashingPlantMenu(menuType(MachineSpec.ORE_WASHING_PLANT), id, inventory),
+                    FeatureFlags.DEFAULT_FLAGS));
 
     public static void register(IEventBus modEventBus) {
         MENUS.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(MachinePlatform::onRightClickBlock);
     }
 
-    public static MenuType<MachineMenu> menuType(MachineSpec spec) {
-        return spec == MachineSpec.COMPRESSOR ? COMPRESSOR_MENU.get() : MACERATOR_MENU.get();
+    @SuppressWarnings("unchecked")
+    public static <T extends net.minecraft.world.inventory.AbstractContainerMenu> MenuType<T> menuType(MachineSpec spec) {
+        if (spec == MachineSpec.COMPRESSOR) {
+            return (MenuType<T>) COMPRESSOR_MENU.get();
+        }
+        if (spec == MachineSpec.METAL_FORMER) {
+            return (MenuType<T>) METAL_FORMER_MENU.get();
+        }
+        if (spec == MachineSpec.ORE_WASHING_PLANT) {
+            return (MenuType<T>) ORE_WASHING_MENU.get();
+        }
+        return (MenuType<T>) MACERATOR_MENU.get();
     }
 
-    private static java.util.function.Supplier<MenuType<MachineMenu>> registerMenu(MachineSpec spec) {
+    private static java.util.function.Supplier<MenuType<MachineMenu>> registerStandardMenu(MachineSpec spec) {
         return MENUS.register(
                 "standard_machine_" + spec.recipeIdPrefix(),
                 () -> new MenuType<>((id, inventory) -> new MachineMenu(menuType(spec), id, inventory, spec),
@@ -44,7 +64,7 @@ public final class MachinePlatform {
         if (player.isShiftKeyDown()) {
             return;
         }
-        if (!(event.getLevel().getBlockEntity(event.getPos()) instanceof AbstractStandardMachineBlockEntity machine)) {
+        if (!(event.getLevel().getBlockEntity(event.getPos()) instanceof AbstractElectricMachineBlockEntity machine)) {
             return;
         }
         player.openMenu(machine);

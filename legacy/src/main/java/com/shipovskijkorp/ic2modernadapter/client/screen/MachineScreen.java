@@ -80,7 +80,7 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             blit(graphics, x - 5, y, 160, 64, 32, 16);
             int width = (int) Math.floor(22.0F * clamp01(ratio));
             if (width > 0) {
-                blit(graphics, x, y + 1, 165, 80, width, 15);
+                blit(graphics, x, y, 165, 80, width, 15);
             }
         } else {
             int x = leftPos + 80;

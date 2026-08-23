@@ -15,6 +15,7 @@ public final class IC2ModernAdapterClient implements ClientModInitializer {
         EuStorageClientRegistration.register();
         MachineClientRegistration.register();
         FurnaceClientRegistration.register();
+        ToolBoxClientRegistration.register();
         IC2PlaceholderColors.register();
         InDevTooltips.register();
         registerRenderLayers();

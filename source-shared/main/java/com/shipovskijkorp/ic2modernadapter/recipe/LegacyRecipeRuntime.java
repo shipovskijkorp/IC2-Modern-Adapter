@@ -402,6 +402,8 @@ public final class LegacyRecipeRuntime {
 
     private static boolean matchesOre(String ore, ItemStack stack, StackAccess stacks) {
         return switch (ore) {
+            case "blockBronze" -> matchesVariantOrCommonTag(stack, stacks, "resource/bronze_block", "storage_blocks/bronze");
+            case "blockSteel" -> matchesVariantOrCommonTag(stack, stacks, "resource/steel_block", "storage_blocks/steel");
             case "chestWood" -> matchesIdOrTags(stack,
                     List.of("minecraft:chest", "minecraft:trapped_chest"),
                     List.of("forge:chests/wooden", "c:chests/wooden"));
@@ -409,6 +411,13 @@ public final class LegacyRecipeRuntime {
             case "circuitBasic" -> matchesVariant(stack, stacks, "crafting/circuit");
             case "craftingToolForgeHammer" -> "ic2:forge_hammer".equals(itemId(stack));
             case "craftingToolWireCutter" -> "ic2:cutter".equals(itemId(stack));
+            case "crushedCopper" -> matchesVariantOrCommonTag(stack, stacks, "crushed/copper", "crushed_ores/copper");
+            case "crushedGold" -> matchesVariantOrCommonTag(stack, stacks, "crushed/gold", "crushed_ores/gold");
+            case "crushedIron" -> matchesVariantOrCommonTag(stack, stacks, "crushed/iron", "crushed_ores/iron");
+            case "crushedLead" -> matchesVariantOrCommonTag(stack, stacks, "crushed/lead", "crushed_ores/lead");
+            case "crushedSilver" -> matchesVariantOrCommonTag(stack, stacks, "crushed/silver", "crushed_ores/silver");
+            case "crushedTin" -> matchesVariantOrCommonTag(stack, stacks, "crushed/tin", "crushed_ores/tin");
+            case "crushedUranium" -> matchesVariantOrCommonTag(stack, stacks, "crushed/uranium", "crushed_ores/uranium");
             case "dustCoal" -> matchesVariantOrCommonTag(stack, stacks, "dust/coal", "dusts/coal");
             case "dustCopper" -> matchesVariantOrCommonTag(stack, stacks, "dust/copper", "dusts/copper");
             case "dustDiamond" -> matchesVariantOrCommonTag(stack, stacks, "dust/diamond", "dusts/diamond");
@@ -634,6 +643,15 @@ public final class LegacyRecipeRuntime {
         String variant = switch (ore) {
             case "circuitAdvanced" -> "crafting/advanced_circuit";
             case "circuitBasic" -> "crafting/circuit";
+            case "blockBronze" -> "resource/bronze_block";
+            case "blockSteel" -> "resource/steel_block";
+            case "crushedCopper" -> "crushed/copper";
+            case "crushedGold" -> "crushed/gold";
+            case "crushedIron" -> "crushed/iron";
+            case "crushedLead" -> "crushed/lead";
+            case "crushedSilver" -> "crushed/silver";
+            case "crushedTin" -> "crushed/tin";
+            case "crushedUranium" -> "crushed/uranium";
             case "dustCoal" -> "dust/coal";
             case "dustCopper" -> "dust/copper";
             case "dustDiamond" -> "dust/diamond";
@@ -770,7 +788,7 @@ public final class LegacyRecipeRuntime {
         return key == null ? "minecraft:air" : key.toString();
     }
 
-    private static ItemStack stackForItemId(String id) {
+    public static ItemStack stackForItemId(String id) {
         ResourceLocation location = ResourceLocation.tryParse(id);
         if (location == null) {
             return ItemStack.EMPTY;

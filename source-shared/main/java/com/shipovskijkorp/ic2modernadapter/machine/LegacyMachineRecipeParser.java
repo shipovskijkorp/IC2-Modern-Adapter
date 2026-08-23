@@ -15,6 +15,14 @@ public final class LegacyMachineRecipeParser {
             MachineSpec machine,
             String fileName,
             byte[] ini) {
+        return parse(machine, fileName, ini, false);
+    }
+
+    public static List<LegacyMachineRecipeDefinition> parse(
+            MachineSpec machine,
+            String fileName,
+            byte[] ini,
+            boolean parseFluidAmount) {
         List<LegacyMachineRecipeDefinition> result = new ArrayList<>();
         int logicalLine = 0;
         for (String rawLine : logicalLines(ini)) {
@@ -31,8 +39,17 @@ public final class LegacyMachineRecipeParser {
             CountedToken input = parseCounted(stripMachineAttributes(line.substring(0, equals)), logicalLine, rawLine);
             String outputText = line.substring(equals + 1).trim();
             List<LegacyMachineRecipeDefinition.Output> outputs = new ArrayList<>();
-            for (String rawOutput : outputText.split(",")) {
-                CountedToken output = parseCounted(stripMachineAttributes(rawOutput), logicalLine, rawLine);
+            int fluidMb = 0;
+            for (String rawOutput : splitOutputs(outputText)) {
+                String token = rawOutput.trim();
+                if (token.isEmpty()) {
+                    continue;
+                }
+                if (parseFluidAmount && token.startsWith("@fluid:")) {
+                    fluidMb = parseFluidAmount(token, logicalLine, rawLine);
+                    continue;
+                }
+                CountedToken output = parseCounted(stripMachineAttributes(token), logicalLine, rawLine);
                 outputs.add(new LegacyMachineRecipeDefinition.Output(
                         LegacyIniRecipeParser.normalizeOutput(output.token()), output.count()));
             }
@@ -42,9 +59,26 @@ public final class LegacyMachineRecipeParser {
                     fileName + ":" + logicalLine,
                     LegacyIniRecipeParser.normalizeIngredient(input.token()),
                     input.count(),
-                    outputs));
+                    outputs,
+                    fluidMb));
         }
         return List.copyOf(result);
+    }
+
+    private static List<String> splitOutputs(String text) {
+        String normalized = text.trim().replaceAll(",\\s+", " ");
+        if (normalized.isEmpty()) {
+            return List.of();
+        }
+        return List.of(normalized.split("\\s+"));
+    }
+
+    private static int parseFluidAmount(String token, int lineNumber, String rawLine) {
+        try {
+            return Integer.parseInt(token.substring("@fluid:".length()));
+        } catch (NumberFormatException e) {
+            throw parseError("Invalid fluid amount", lineNumber, rawLine);
+        }
     }
 
     private static CountedToken parseCounted(String text, int lineNumber, String rawLine) {

@@ -51,7 +51,6 @@
     "ic2:frequency_transmitter",
     "ic2:meter",
     "ic2:remote",
-    "ic2:tool_box",
     "ic2:treetap",
     "ic2:wrench",
     "ic2:wrench_new",
@@ -152,6 +151,8 @@
     "te/mfsu",
     "te/iron_furnace",
     "te/electric_furnace",
-    "te/induction_furnace"
+    "te/induction_furnace",
+    "te/metal_former",
+    "te/ore_washing_plant"
   ]
 }

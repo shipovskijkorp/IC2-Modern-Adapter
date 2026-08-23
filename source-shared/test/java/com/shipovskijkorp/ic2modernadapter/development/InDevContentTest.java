@@ -17,6 +17,8 @@ class InDevContentTest {
                 "te/iron_furnace",
                 "te/electric_furnace",
                 "te/induction_furnace",
+                "te/metal_former",
+                "te/ore_washing_plant",
                 "te/batbox",
                 "te/cesu",
                 "te/mfe",
@@ -28,6 +30,7 @@ class InDevContentTest {
         assertFalse(InDevContent.isItem("ic2", "cutter"), "insulation cutter is implemented");
         assertFalse(InDevContent.isItem("ic2", "forge_hammer"), "forge hammer crafting behavior is implemented");
         assertFalse(InDevContent.isItem("ic2", "iodine_tablet"), "iodine tablet radiation reduction is implemented");
+        assertFalse(InDevContent.isItem("ic2", "tool_box"), "tool box inventory behavior is implemented");
     }
 
     @Test
