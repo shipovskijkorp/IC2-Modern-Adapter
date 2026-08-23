@@ -4,6 +4,7 @@ import com.shipovskijkorp.ic2modernadapter.IC2ModernAdapter;
 import com.shipovskijkorp.ic2modernadapter.menu.MachineMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.MetalFormerMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.OreWashingPlantMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.ThermalCentrifugeMenu;
 import java.util.EnumMap;
 import java.util.Map;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -22,8 +23,10 @@ public final class MachinePlatform {
     public static void register() {
         registerStandardMenu(MachineSpec.MACERATOR);
         registerStandardMenu(MachineSpec.COMPRESSOR);
+        registerStandardMenu(MachineSpec.EXTRACTOR);
         registerMetalFormerMenu();
         registerOreWashingMenu();
+        registerThermalCentrifugeMenu();
         UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
             if (player.isShiftKeyDown()) {
                 return InteractionResult.PASS;
@@ -73,6 +76,16 @@ public final class MachinePlatform {
                 new MenuType<>((id, inventory) -> new OreWashingPlantMenu(menuType(MachineSpec.ORE_WASHING_PLANT), id, inventory),
                         FeatureFlags.DEFAULT_FLAGS));
         MACHINE_MENUS.put(MachineSpec.ORE_WASHING_PLANT, menu);
+    }
+
+
+    private static void registerThermalCentrifugeMenu() {
+        MenuType<ThermalCentrifugeMenu> menu = Registry.register(
+                BuiltInRegistries.MENU,
+                new ResourceLocation(IC2ModernAdapter.MOD_ID, "thermal_centrifuge"),
+                new MenuType<>((id, inventory) -> new ThermalCentrifugeMenu(menuType(MachineSpec.THERMAL_CENTRIFUGE), id, inventory),
+                        FeatureFlags.DEFAULT_FLAGS));
+        MACHINE_MENUS.put(MachineSpec.THERMAL_CENTRIFUGE, menu);
     }
 
     private MachinePlatform() {

@@ -4,6 +4,7 @@ import com.shipovskijkorp.ic2modernadapter.IC2ModernAdapter;
 import com.shipovskijkorp.ic2modernadapter.menu.MachineMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.MetalFormerMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.OreWashingPlantMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.ThermalCentrifugeMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -22,6 +23,8 @@ public final class MachinePlatform {
             registerStandardMenu(MachineSpec.MACERATOR);
     private static final java.util.function.Supplier<MenuType<MachineMenu>> COMPRESSOR_MENU =
             registerStandardMenu(MachineSpec.COMPRESSOR);
+    private static final java.util.function.Supplier<MenuType<MachineMenu>> EXTRACTOR_MENU =
+            registerStandardMenu(MachineSpec.EXTRACTOR);
     private static final java.util.function.Supplier<MenuType<MetalFormerMenu>> METAL_FORMER_MENU = MENUS.register(
             "metal_former",
             () -> new MenuType<>((id, inventory) -> new MetalFormerMenu(menuType(MachineSpec.METAL_FORMER), id, inventory),
@@ -29,6 +32,10 @@ public final class MachinePlatform {
     private static final java.util.function.Supplier<MenuType<OreWashingPlantMenu>> ORE_WASHING_MENU = MENUS.register(
             "ore_washing_plant",
             () -> new MenuType<>((id, inventory) -> new OreWashingPlantMenu(menuType(MachineSpec.ORE_WASHING_PLANT), id, inventory),
+                    FeatureFlags.DEFAULT_FLAGS));
+    private static final java.util.function.Supplier<MenuType<ThermalCentrifugeMenu>> THERMAL_CENTRIFUGE_MENU = MENUS.register(
+            "thermal_centrifuge",
+            () -> new MenuType<>((id, inventory) -> new ThermalCentrifugeMenu(menuType(MachineSpec.THERMAL_CENTRIFUGE), id, inventory),
                     FeatureFlags.DEFAULT_FLAGS));
 
     public static void register(IEventBus modEventBus) {
@@ -41,11 +48,17 @@ public final class MachinePlatform {
         if (spec == MachineSpec.COMPRESSOR) {
             return (MenuType<T>) COMPRESSOR_MENU.get();
         }
+        if (spec == MachineSpec.EXTRACTOR) {
+            return (MenuType<T>) EXTRACTOR_MENU.get();
+        }
         if (spec == MachineSpec.METAL_FORMER) {
             return (MenuType<T>) METAL_FORMER_MENU.get();
         }
         if (spec == MachineSpec.ORE_WASHING_PLANT) {
             return (MenuType<T>) ORE_WASHING_MENU.get();
+        }
+        if (spec == MachineSpec.THERMAL_CENTRIFUGE) {
+            return (MenuType<T>) THERMAL_CENTRIFUGE_MENU.get();
         }
         return (MenuType<T>) MACERATOR_MENU.get();
     }

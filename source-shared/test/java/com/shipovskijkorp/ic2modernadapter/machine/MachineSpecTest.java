@@ -11,13 +11,17 @@ class MachineSpecTest {
     void matchesCanonicalImplementedMachines() {
         assertMachine(MachineSpec.COMPRESSOR, "compressor", "te/compressor", 42, 43,
                 2L, 300, 600L, 1, MachineSpec.ProgressStyle.TRIANGLE, MachineSpec.Kind.STANDARD);
+        assertMachine(MachineSpec.EXTRACTOR, "extractor", "te/extractor", 44, 45,
+                2L, 300, 600L, 1, MachineSpec.ProgressStyle.DROP, MachineSpec.Kind.STANDARD);
         assertMachine(MachineSpec.MACERATOR, "macerator", "te/macerator", 46, 47,
                 2L, 300, 600L, 1, MachineSpec.ProgressStyle.CRUSH, MachineSpec.Kind.STANDARD);
         assertMachine(MachineSpec.METAL_FORMER, "metal_former", "te/metal_former", 54, 55,
                 10L, 200, 2_000L, 1, MachineSpec.ProgressStyle.METAL_FORMER, MachineSpec.Kind.METAL_FORMER);
         assertMachine(MachineSpec.ORE_WASHING_PLANT, "ore_washing_plant", "te/ore_washing_plant", 55, 56,
                 16L, 500, 8_000L, 1, MachineSpec.ProgressStyle.ORE_WASHING, MachineSpec.Kind.ORE_WASHING);
-        assertEquals(4, MachineSpec.values().length);
+        assertMachine(MachineSpec.THERMAL_CENTRIFUGE, "centrifuge", "te/centrifuge", 51, 52,
+                48L, 500, 10_000L, 2, MachineSpec.ProgressStyle.CENTRIFUGE, MachineSpec.Kind.THERMAL_CENTRIFUGE);
+        assertEquals(6, MachineSpec.values().length);
     }
 
     @Test

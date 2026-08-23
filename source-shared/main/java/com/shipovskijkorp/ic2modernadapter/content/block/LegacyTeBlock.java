@@ -11,6 +11,7 @@ import com.shipovskijkorp.ic2modernadapter.furnace.AbstractElectricFurnaceBlockE
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractStandardMachineBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractMetalFormerBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractOreWashingPlantBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.AbstractThermalCentrifugeBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import java.util.List;
@@ -199,6 +200,8 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                     metalFormer.serverTick();
                 } else if (blockEntity instanceof AbstractOreWashingPlantBlockEntity oreWasher) {
                     oreWasher.serverTick();
+                } else if (blockEntity instanceof AbstractThermalCentrifugeBlockEntity centrifuge) {
+                    centrifuge.serverTick();
                 }
             };
         }
@@ -241,6 +244,8 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                 Containers.dropContents(level, pos, metalFormer);
             } else if (blockEntity instanceof AbstractOreWashingPlantBlockEntity oreWasher) {
                 Containers.dropContents(level, pos, oreWasher);
+            } else if (blockEntity instanceof AbstractThermalCentrifugeBlockEntity centrifuge) {
+                Containers.dropContents(level, pos, centrifuge);
             } else if (blockEntity instanceof AbstractIronFurnaceBlockEntity furnace) {
                 Containers.dropContents(level, pos, furnace);
             } else if (blockEntity instanceof AbstractElectricFurnaceBlockEntity furnace) {

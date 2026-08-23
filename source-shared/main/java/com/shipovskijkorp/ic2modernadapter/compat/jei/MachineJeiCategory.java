@@ -31,6 +31,8 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
             "ic2_modern_adapter", "macerator", LegacyMachineRecipeDefinition.class);
     public static final RecipeType<LegacyMachineRecipeDefinition> COMPRESSOR = RecipeType.create(
             "ic2_modern_adapter", "compressor", LegacyMachineRecipeDefinition.class);
+    public static final RecipeType<LegacyMachineRecipeDefinition> EXTRACTOR = RecipeType.create(
+            "ic2_modern_adapter", "extractor", LegacyMachineRecipeDefinition.class);
     public static final RecipeType<LegacyMachineRecipeDefinition> METAL_FORMER_EXTRUDING = RecipeType.create(
             "ic2_modern_adapter", "metal_former_extruding", LegacyMachineRecipeDefinition.class);
     public static final RecipeType<LegacyMachineRecipeDefinition> METAL_FORMER_ROLLING = RecipeType.create(
@@ -39,11 +41,15 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
             "ic2_modern_adapter", "metal_former_cutting", LegacyMachineRecipeDefinition.class);
     public static final RecipeType<LegacyMachineRecipeDefinition> ORE_WASHING_PLANT = RecipeType.create(
             "ic2_modern_adapter", "ore_washing_plant", LegacyMachineRecipeDefinition.class);
+    public static final RecipeType<LegacyMachineRecipeDefinition> THERMAL_CENTRIFUGE = RecipeType.create(
+            "ic2_modern_adapter", "thermal_centrifuge", LegacyMachineRecipeDefinition.class);
 
     private static final ResourceLocation COMMON = Objects.requireNonNull(
             ResourceLocation.tryParse("ic2:textures/gui/common.png"));
     private static final ResourceLocation ORE_WASHING_GUI = Objects.requireNonNull(
             ResourceLocation.tryParse("ic2:textures/gui/guiorewashingplant.png"));
+    private static final ResourceLocation THERMAL_CENTRIFUGE_GUI = Objects.requireNonNull(
+            ResourceLocation.tryParse("ic2:textures/gui/guitermalcentrifuge.png"));
 
     private static final int WIDTH = 160;
     private static final int HEIGHT = 60;
@@ -54,6 +60,13 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
     private static final int ORE_WASHING_IMAGE_V = 16;
     private static final int ORE_WASHING_IMAGE_WIDTH = 87;
     private static final int ORE_WASHING_IMAGE_HEIGHT = 60;
+
+    private static final int CENTRIFUGE_IMAGE_X = 40;
+    private static final int CENTRIFUGE_IMAGE_Y = 2;
+    private static final int CENTRIFUGE_IMAGE_U = 40;
+    private static final int CENTRIFUGE_IMAGE_V = 18;
+    private static final int CENTRIFUGE_IMAGE_WIDTH = 80;
+    private static final int CENTRIFUGE_IMAGE_HEIGHT = 60;
 
     private final MachineSpec spec;
     private final MetalFormerMode metalFormerMode;
@@ -80,8 +93,10 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
     public static RecipeType<LegacyMachineRecipeDefinition> typeFor(MachineSpec spec) {
         return switch (spec) {
             case COMPRESSOR -> COMPRESSOR;
+            case EXTRACTOR -> EXTRACTOR;
             case METAL_FORMER -> METAL_FORMER_EXTRUDING;
             case ORE_WASHING_PLANT -> ORE_WASHING_PLANT;
+            case THERMAL_CENTRIFUGE -> THERMAL_CENTRIFUGE;
             default -> MACERATOR;
         };
     }
@@ -139,6 +154,10 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
             setOreWashingRecipe(builder, recipe);
             return;
         }
+        if (spec == MachineSpec.THERMAL_CENTRIFUGE) {
+            setThermalCentrifugeRecipe(builder, recipe);
+            return;
+        }
         if (spec == MachineSpec.METAL_FORMER) {
             setMetalFormerRecipe(builder, recipe);
             return;
@@ -158,6 +177,10 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
             double mouseY) {
         if (spec == MachineSpec.ORE_WASHING_PLANT) {
             drawOreWashingPlantFrame(graphics);
+            return;
+        }
+        if (spec == MachineSpec.THERMAL_CENTRIFUGE) {
+            drawThermalCentrifugeFrame(graphics, recipe);
             return;
         }
         if (spec == MachineSpec.METAL_FORMER) {
@@ -180,6 +203,16 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
         List<ItemStack> outputs = displayOutputs(recipe);
         for (int i = 0; i < Math.min(3, outputs.size()); i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 86 + i * 18, 46)
+                    .addItemStack(outputs.get(i));
+        }
+    }
+
+    private void setThermalCentrifugeRecipe(IRecipeLayoutBuilder builder, LegacyMachineRecipeDefinition recipe) {
+        builder.addSlot(RecipeIngredientRole.INPUT, 11, 2)
+                .addItemStacks(displayInputs(recipe));
+        List<ItemStack> outputs = displayOutputs(recipe);
+        for (int i = 0; i < Math.min(3, outputs.size()); i++) {
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 124, 2 + i * 18)
                     .addItemStack(outputs.get(i));
         }
     }
@@ -237,6 +270,25 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
         drawOreWashingProgress(graphics, 103, 23);
     }
 
+    private static void drawThermalCentrifugeFrame(GuiGraphics graphics, LegacyMachineRecipeDefinition recipe) {
+        graphics.blit(
+                THERMAL_CENTRIFUGE_GUI,
+                CENTRIFUGE_IMAGE_X,
+                CENTRIFUGE_IMAGE_Y,
+                CENTRIFUGE_IMAGE_U,
+                CENTRIFUGE_IMAGE_V,
+                CENTRIFUGE_IMAGE_WIDTH,
+                CENTRIFUGE_IMAGE_HEIGHT);
+        drawSlot(graphics, 10, 1);
+        drawSlot(graphics, 10, 37);
+        drawSlot(graphics, 123, 1);
+        drawSlot(graphics, 123, 19);
+        drawSlot(graphics, 123, 37);
+        drawEnergyBolt(graphics, 15, 22);
+        drawCentrifugeProgress(graphics, 84, 9);
+        drawHeatGauge(graphics, 68, 51, recipe.heat());
+    }
+
     private static void drawSimpleMachineFrame(GuiGraphics graphics, MachineSpec.ProgressStyle progressStyle) {
         drawSlot(graphics, 55, 0);
         drawLargeSlot(graphics, 111, 14);
@@ -244,6 +296,8 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
         drawEnergyBolt(graphics, 59, 21);
         if (progressStyle == MachineSpec.ProgressStyle.TRIANGLE) {
             drawTriangleProgress(graphics, 80, 19);
+        } else if (progressStyle == MachineSpec.ProgressStyle.DROP) {
+            drawDropProgress(graphics, 80, 19);
         } else {
             drawCrushProgress(graphics, 80, 22);
         }
@@ -274,6 +328,11 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
         blitCommon(graphics, x, y + 1, 165, 80, animatedSize(22, 66), 15);
     }
 
+    private static void drawDropProgress(GuiGraphics graphics, int x, int y) {
+        blitCommon(graphics, x - 5, y, 160, 96, 32, 16);
+        blitCommon(graphics, x, y + 1, 165, 112, animatedSize(22, 66), 15);
+    }
+
     private static void drawMetalFormerProgress(GuiGraphics graphics, int x, int y) {
         blitCommon(graphics, x - 8, y - 3, 192, 0, 64, 16);
         blitCommon(graphics, x, y, 200, 19, animatedSize(46, 100), 9);
@@ -282,6 +341,21 @@ public final class MachineJeiCategory implements IRecipeCategory<LegacyMachineRe
     private static void drawOreWashingProgress(GuiGraphics graphics, int x, int y) {
         graphics.blit(ORE_WASHING_GUI, x - 1, y - 1, 102, 38, 20, 19);
         graphics.blit(ORE_WASHING_GUI, x, y, 177, 118, animatedSize(18, 100), 18);
+    }
+
+    private static void drawCentrifugeProgress(GuiGraphics graphics, int x, int y) {
+        blitCommon(graphics, x - 1, y - 1, 246, 32, 5, 30);
+        int height = animatedSize(28, 100);
+        int offset = 28 - height;
+        blitCommon(graphics, x, y + offset, 252, 33 + offset, 3, height);
+    }
+
+    private static void drawHeatGauge(GuiGraphics graphics, int x, int y, int heat) {
+        blitCommon(graphics, x - 1, y - 1, 224, 47, 22, 6);
+        int width = Math.round(20.0F * Math.min(1.0F, heat / 5000.0F));
+        if (width > 0) {
+            blitCommon(graphics, x, y, 225, 54, width, 4);
+        }
     }
 
     private static int animatedSize(int max, int ticks) {

@@ -82,6 +82,14 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             if (width > 0) {
                 blit(graphics, x, y, 165, 80, width, 15);
             }
+        } else if (spec.progressStyle() == MachineSpec.ProgressStyle.DROP) {
+            int x = leftPos + 80;
+            int y = topPos + 35;
+            blit(graphics, x - 5, y, 160, 96, 32, 16);
+            int width = (int) Math.floor(22.0F * clamp01(ratio));
+            if (width > 0) {
+                blit(graphics, x, y, 165, 112, width, 15);
+            }
         } else {
             int x = leftPos + 80;
             int y = topPos + 38;

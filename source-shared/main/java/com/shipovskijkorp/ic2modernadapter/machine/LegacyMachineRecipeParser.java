@@ -15,7 +15,7 @@ public final class LegacyMachineRecipeParser {
             MachineSpec machine,
             String fileName,
             byte[] ini) {
-        return parse(machine, fileName, ini, false);
+        return parse(machine, fileName, ini, false, false);
     }
 
     public static List<LegacyMachineRecipeDefinition> parse(
@@ -23,6 +23,15 @@ public final class LegacyMachineRecipeParser {
             String fileName,
             byte[] ini,
             boolean parseFluidAmount) {
+        return parse(machine, fileName, ini, parseFluidAmount, false);
+    }
+
+    public static List<LegacyMachineRecipeDefinition> parse(
+            MachineSpec machine,
+            String fileName,
+            byte[] ini,
+            boolean parseFluidAmount,
+            boolean parseHeat) {
         List<LegacyMachineRecipeDefinition> result = new ArrayList<>();
         int logicalLine = 0;
         for (String rawLine : logicalLines(ini)) {
@@ -40,13 +49,21 @@ public final class LegacyMachineRecipeParser {
             String outputText = line.substring(equals + 1).trim();
             List<LegacyMachineRecipeDefinition.Output> outputs = new ArrayList<>();
             int fluidMb = 0;
+            int heat = 0;
             for (String rawOutput : splitOutputs(outputText)) {
                 String token = rawOutput.trim();
                 if (token.isEmpty()) {
                     continue;
                 }
                 if (parseFluidAmount && token.startsWith("@fluid:")) {
-                    fluidMb = parseFluidAmount(token, logicalLine, rawLine);
+                    fluidMb = parseIntAttribute(token, "@fluid:", "Invalid fluid amount", logicalLine, rawLine);
+                    continue;
+                }
+                if (parseHeat && token.startsWith("@heat:")) {
+                    heat = parseIntAttribute(token, "@heat:", "Invalid heat amount", logicalLine, rawLine);
+                    continue;
+                }
+                if (isMachineAttribute(token)) {
                     continue;
                 }
                 CountedToken output = parseCounted(stripMachineAttributes(token), logicalLine, rawLine);
@@ -60,7 +77,8 @@ public final class LegacyMachineRecipeParser {
                     LegacyIniRecipeParser.normalizeIngredient(input.token()),
                     input.count(),
                     outputs,
-                    fluidMb));
+                    fluidMb,
+                    heat));
         }
         return List.copyOf(result);
     }
@@ -73,11 +91,11 @@ public final class LegacyMachineRecipeParser {
         return List.of(normalized.split("\\s+"));
     }
 
-    private static int parseFluidAmount(String token, int lineNumber, String rawLine) {
+    private static int parseIntAttribute(String token, String prefix, String error, int lineNumber, String rawLine) {
         try {
-            return Integer.parseInt(token.substring("@fluid:".length()));
+            return Integer.parseInt(token.substring(prefix.length()));
         } catch (NumberFormatException e) {
-            throw parseError("Invalid fluid amount", lineNumber, rawLine);
+            throw parseError(error, lineNumber, rawLine);
         }
     }
 
@@ -97,12 +115,17 @@ public final class LegacyMachineRecipeParser {
     private static String stripMachineAttributes(String text) {
         List<String> kept = new ArrayList<>();
         for (String part : text.trim().split("\\s+")) {
-            if (part.isEmpty() || part.startsWith("@")) {
+            if (part.isEmpty() || isMachineAttribute(part)) {
                 continue;
             }
             kept.add(part);
         }
         return String.join(" ", kept);
+    }
+
+
+    private static boolean isMachineAttribute(String token) {
+        return token.startsWith("@");
     }
 
     private static List<String> logicalLines(byte[] bytes) {

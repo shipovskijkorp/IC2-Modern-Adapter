@@ -144,6 +144,7 @@
   "completedVariants": [
     "te/generator",
     "te/compressor",
+    "te/extractor",
     "te/macerator",
     "te/batbox",
     "te/cesu",
@@ -153,6 +154,7 @@
     "te/electric_furnace",
     "te/induction_furnace",
     "te/metal_former",
-    "te/ore_washing_plant"
+    "te/ore_washing_plant",
+    "te/centrifuge"
   ]
 }

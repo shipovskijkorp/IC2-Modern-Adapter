@@ -10,14 +10,25 @@ public record LegacyMachineRecipeDefinition(
         String input,
         int inputCount,
         List<Output> outputs,
-        int fluidMb) {
+        int fluidMb,
+        int heat) {
     public LegacyMachineRecipeDefinition(
             MachineSpec machine,
             String source,
             String input,
             int inputCount,
             List<Output> outputs) {
-        this(machine, source, input, inputCount, outputs, 0);
+        this(machine, source, input, inputCount, outputs, 0, 0);
+    }
+
+    public LegacyMachineRecipeDefinition(
+            MachineSpec machine,
+            String source,
+            String input,
+            int inputCount,
+            List<Output> outputs,
+            int fluidMb) {
+        this(machine, source, input, inputCount, outputs, fluidMb, 0);
     }
 
     public LegacyMachineRecipeDefinition {
@@ -39,6 +50,9 @@ public record LegacyMachineRecipeDefinition(
         }
         if (fluidMb < 0) {
             throw new IllegalArgumentException("Invalid machine recipe fluid amount " + fluidMb + " in " + source);
+        }
+        if (heat < 0) {
+            throw new IllegalArgumentException("Invalid machine recipe heat " + heat + " in " + source);
         }
     }
 

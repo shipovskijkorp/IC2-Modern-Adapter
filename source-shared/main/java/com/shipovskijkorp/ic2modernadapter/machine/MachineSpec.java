@@ -8,9 +8,11 @@ import net.minecraft.world.level.block.state.BlockState;
 /** Canonical IC2 Experimental standard-machine definitions implemented by IC2MA. */
 public enum MachineSpec {
     COMPRESSOR("compressor", "te/compressor", 2L, 300, 600L, 1, ProgressStyle.TRIANGLE, Kind.STANDARD),
+    EXTRACTOR("extractor", "te/extractor", 2L, 300, 600L, 1, ProgressStyle.DROP, Kind.STANDARD),
     MACERATOR("macerator", "te/macerator", 2L, 300, 600L, 1, ProgressStyle.CRUSH, Kind.STANDARD),
     METAL_FORMER("metal_former", "te/metal_former", 10L, 200, 2_000L, 1, ProgressStyle.METAL_FORMER, Kind.METAL_FORMER),
-    ORE_WASHING_PLANT("ore_washing_plant", "te/ore_washing_plant", 16L, 500, 8_000L, 1, ProgressStyle.ORE_WASHING, Kind.ORE_WASHING);
+    ORE_WASHING_PLANT("ore_washing_plant", "te/ore_washing_plant", 16L, 500, 8_000L, 1, ProgressStyle.ORE_WASHING, Kind.ORE_WASHING),
+    THERMAL_CENTRIFUGE("centrifuge", "te/centrifuge", 48L, 500, 10_000L, 2, ProgressStyle.CENTRIFUGE, Kind.THERMAL_CENTRIFUGE);
 
     private final String blockEntityPath;
     private final String variantKey;
@@ -140,13 +142,16 @@ public enum MachineSpec {
     public enum ProgressStyle {
         CRUSH,
         TRIANGLE,
+        DROP,
         METAL_FORMER,
-        ORE_WASHING
+        ORE_WASHING,
+        CENTRIFUGE
     }
 
     public enum Kind {
         STANDARD,
         METAL_FORMER,
-        ORE_WASHING
+        ORE_WASHING,
+        THERMAL_CENTRIFUGE
     }
 }
