@@ -39,6 +39,28 @@ class InDevContentTest {
         }
     }
 
+
+    @Test
+    void completedBronzeCompositeAndHazmatEquipmentAreProductionReady() {
+        for (String path : Set.of(
+                "bronze_axe",
+                "bronze_hoe",
+                "bronze_pickaxe",
+                "bronze_shovel",
+                "bronze_sword",
+                "bronze_helmet",
+                "bronze_chestplate",
+                "bronze_leggings",
+                "bronze_boots",
+                "alloy_chestplate",
+                "hazmat_helmet",
+                "hazmat_chestplate",
+                "hazmat_leggings",
+                "rubber_boots")) {
+            assertFalse(InDevContent.isItem("ic2", path), path + " now has functional equipment behavior");
+        }
+    }
+
     @Test
     void unfinishedFunctionalItemsRemainMarked() {
         for (String path : Set.of(

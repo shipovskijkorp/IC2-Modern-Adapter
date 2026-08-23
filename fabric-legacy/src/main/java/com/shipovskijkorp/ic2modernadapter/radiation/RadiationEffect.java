@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.radiation;
 
+import com.shipovskijkorp.ic2modernadapter.content.item.armor.HazmatSuit;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,6 +13,10 @@ public final class RadiationEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
+        if (HazmatSuit.hasCompleteSuit(entity)) {
+            RadiationPlatform.clear(entity);
+            return;
+        }
         entity.hurt(RadiationDamage.source(entity), (amplifier / 100.0F) + 0.5F);
     }
 

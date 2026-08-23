@@ -19,6 +19,15 @@ import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockIte
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedDoubleHighBlockItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyCraftingToolItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.armor.ModernArmorMaterials;
+import com.shipovskijkorp.ic2modernadapter.content.item.armor.HazmatArmorItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.armor.TranslatedArmorItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.tool.BronzeToolMaterial;
+import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedAxeItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedHoeItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedPickaxeItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedShovelItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.tool.TranslatedSwordItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.IodineTabletItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.RadioactiveItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
@@ -37,6 +46,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
@@ -97,29 +107,8 @@ public final class IC2ContentRegistries {
                 item = new CableItem(new Item.Properties(), cableBlock, IC2VariantStacks::variantKey);
             } else if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
                 item = createBlockItem(path, requireBlock(path).get());
-            } else if ("iodine_tablet".equals(path)) {
-                item = new IodineTabletItem(
-                        path, new Item.Properties(), IC2VariantStacks::variantKey);
-            } else if ("nuclear".equals(path) || RadioactivitySpec.radioactiveFuelRods().contains(path)) {
-                item = new RadioactiveItem(
-                        path, new Item.Properties(), IC2VariantStacks::variantKey);
-            } else if ("cutter".equals(path)) {
-                item = new WireCutterItem(
-                        path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
-            } else if ("forge_hammer".equals(path)) {
-                item = new LegacyCraftingToolItem(
-                        path, new Item.Properties().durability(80), IC2VariantStacks::variantKey);
-            } else if ("cf_pack".equals(path) || "jetpack".equals(path)) {
-                item = new LegacyTranslatedItem(
-                        path, new Item.Properties().durability(27), IC2VariantStacks::variantKey);
-            } else if ("rsh_condensator".equals(path)) {
-                item = new LegacyTranslatedItem(
-                        path, new Item.Properties().durability(20_000), IC2VariantStacks::variantKey);
-            } else if ("lzh_condensator".equals(path)) {
-                item = new LegacyTranslatedItem(
-                        path, new Item.Properties().durability(100_000), IC2VariantStacks::variantKey);
             } else {
-                item = new LegacyTranslatedItem(path, new Item.Properties(), IC2VariantStacks::variantKey);
+                item = createStandaloneItem(path);
             }
             Item registeredItem = Registry.register(BuiltInRegistries.ITEM, id(path), item);
             ITEMS_BY_PATH.put(path, () -> registeredItem);
@@ -243,6 +232,74 @@ public final class IC2ContentRegistries {
             properties.noOcclusion();
         }
         return properties;
+    }
+
+    private static Item createStandaloneItem(String path) {
+        return switch (path) {
+            case "bronze_sword" -> new TranslatedSwordItem(
+                    path, BronzeToolMaterial.INSTANCE, 5, -2.4F, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "bronze_pickaxe" -> new TranslatedPickaxeItem(
+                    path, BronzeToolMaterial.INSTANCE, 1, -2.8F, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "bronze_shovel" -> new TranslatedShovelItem(
+                    path, BronzeToolMaterial.INSTANCE, 1.5F, -3.0F, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "bronze_axe" -> new TranslatedAxeItem(
+                    path, BronzeToolMaterial.INSTANCE, 8.0F, -3.1F, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "bronze_hoe" -> new TranslatedHoeItem(
+                    path, BronzeToolMaterial.INSTANCE, 0, -3.0F, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "bronze_helmet" -> new TranslatedArmorItem(
+                    path, ModernArmorMaterials.BRONZE.holder(), ArmorItem.Type.HELMET,
+                    new Item.Properties().durability(ModernArmorMaterials.BRONZE.durability(ArmorItem.Type.HELMET)),
+                    IC2VariantStacks::variantKey);
+            case "bronze_chestplate" -> new TranslatedArmorItem(
+                    path, ModernArmorMaterials.BRONZE.holder(), ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties().durability(ModernArmorMaterials.BRONZE.durability(ArmorItem.Type.CHESTPLATE)),
+                    IC2VariantStacks::variantKey);
+            case "bronze_leggings" -> new TranslatedArmorItem(
+                    path, ModernArmorMaterials.BRONZE.holder(), ArmorItem.Type.LEGGINGS,
+                    new Item.Properties().durability(ModernArmorMaterials.BRONZE.durability(ArmorItem.Type.LEGGINGS)),
+                    IC2VariantStacks::variantKey);
+            case "bronze_boots" -> new TranslatedArmorItem(
+                    path, ModernArmorMaterials.BRONZE.holder(), ArmorItem.Type.BOOTS,
+                    new Item.Properties().durability(ModernArmorMaterials.BRONZE.durability(ArmorItem.Type.BOOTS)),
+                    IC2VariantStacks::variantKey);
+            case "alloy_chestplate" -> new TranslatedArmorItem(
+                    path, ModernArmorMaterials.ALLOY.holder(), ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties().durability(ModernArmorMaterials.ALLOY.durability(ArmorItem.Type.CHESTPLATE)),
+                    IC2VariantStacks::variantKey);
+            case "hazmat_helmet" -> new HazmatArmorItem(
+                    path, ModernArmorMaterials.HAZMAT.holder(), ArmorItem.Type.HELMET,
+                    new Item.Properties().durability(ModernArmorMaterials.HAZMAT.durability(ArmorItem.Type.HELMET)),
+                    IC2VariantStacks::variantKey);
+            case "hazmat_chestplate" -> new HazmatArmorItem(
+                    path, ModernArmorMaterials.HAZMAT.holder(), ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties().durability(ModernArmorMaterials.HAZMAT.durability(ArmorItem.Type.CHESTPLATE)),
+                    IC2VariantStacks::variantKey);
+            case "hazmat_leggings" -> new HazmatArmorItem(
+                    path, ModernArmorMaterials.HAZMAT.holder(), ArmorItem.Type.LEGGINGS,
+                    new Item.Properties().durability(ModernArmorMaterials.HAZMAT.durability(ArmorItem.Type.LEGGINGS)),
+                    IC2VariantStacks::variantKey);
+            case "rubber_boots" -> new HazmatArmorItem(
+                    path, ModernArmorMaterials.RUBBER_BOOTS.holder(), ArmorItem.Type.BOOTS,
+                    new Item.Properties().durability(ModernArmorMaterials.RUBBER_BOOTS.durability(ArmorItem.Type.BOOTS)),
+                    IC2VariantStacks::variantKey);
+            case "iodine_tablet" -> new IodineTabletItem(
+                    path, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "nuclear" -> new RadioactiveItem(
+                    path, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "cutter" -> new WireCutterItem(
+                    path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
+            case "forge_hammer" -> new LegacyCraftingToolItem(
+                    path, new Item.Properties().durability(80), IC2VariantStacks::variantKey);
+            case "cf_pack", "jetpack" -> new LegacyTranslatedItem(
+                    path, new Item.Properties().durability(27), IC2VariantStacks::variantKey);
+            case "rsh_condensator" -> new LegacyTranslatedItem(
+                    path, new Item.Properties().durability(20_000), IC2VariantStacks::variantKey);
+            case "lzh_condensator" -> new LegacyTranslatedItem(
+                    path, new Item.Properties().durability(100_000), IC2VariantStacks::variantKey);
+            default -> RadioactivitySpec.radioactiveFuelRods().contains(path)
+                    ? new RadioactiveItem(path, new Item.Properties(), IC2VariantStacks::variantKey)
+                    : new LegacyTranslatedItem(path, new Item.Properties(), IC2VariantStacks::variantKey);
+        };
     }
 
     private static Item createBlockItem(String path, Block block) {

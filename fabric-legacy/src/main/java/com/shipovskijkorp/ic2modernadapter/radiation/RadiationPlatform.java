@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.radiation;
 
+import com.shipovskijkorp.ic2modernadapter.content.item.armor.HazmatSuit;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,7 +12,21 @@ public final class RadiationPlatform {
         if (durationTicks <= 0) {
             return;
         }
+        if (HazmatSuit.hasCompleteSuit(entity)) {
+            clear(entity);
+            return;
+        }
         entity.addEffect(new MobEffectInstance(radiation(), durationTicks, amplifier));
+    }
+
+    public static void clearIfProtected(LivingEntity entity) {
+        if (HazmatSuit.hasCompleteSuit(entity)) {
+            clear(entity);
+        }
+    }
+
+    public static void clear(LivingEntity entity) {
+        entity.removeEffect(radiation());
     }
 
     public static int reduceRadiationByIodine(LivingEntity entity, int availableTablets) {

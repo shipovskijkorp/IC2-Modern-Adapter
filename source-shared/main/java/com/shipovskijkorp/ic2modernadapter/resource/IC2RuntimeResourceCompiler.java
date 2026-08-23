@@ -75,6 +75,7 @@ public final class IC2RuntimeResourceCompiler {
         }
 
         normalizeLegacyTextureLayout(resources);
+        normalizeLegacyArmorTextures(resources);
         normalizeLegacyModelTextures(resources);
         compileLanguages(archive, resources);
 
@@ -121,6 +122,24 @@ public final class IC2RuntimeResourceCompiler {
             return "textures/item/" + path.substring("textures/items/".length());
         }
         return path;
+    }
+
+
+    /** Publishes IC2 1.12 worn-armor layers at the vanilla modern armor texture paths. */
+    private static void normalizeLegacyArmorTextures(Map<String, byte[]> resources) {
+        Map<String, String> layers = Map.ofEntries(
+                Map.entry("textures/armor/bronze_1.png", "textures/models/armor/bronze_layer_1.png"),
+                Map.entry("textures/armor/bronze_2.png", "textures/models/armor/bronze_layer_2.png"),
+                Map.entry("textures/armor/alloy_1.png", "textures/models/armor/alloy_layer_1.png"),
+                Map.entry("textures/armor/hazmat_1.png", "textures/models/armor/hazmat_layer_1.png"),
+                Map.entry("textures/armor/hazmat_2.png", "textures/models/armor/hazmat_layer_2.png"),
+                Map.entry("textures/armor/rubber_1.png", "textures/models/armor/rubber_layer_1.png"));
+        for (Map.Entry<String, String> entry : layers.entrySet()) {
+            byte[] data = resources.get(entry.getKey());
+            if (data != null) {
+                resources.putIfAbsent(entry.getValue(), data);
+            }
+        }
     }
 
     /** Rewrites every original item/block texture reference to the modern singular atlas path. */
