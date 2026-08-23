@@ -10,6 +10,8 @@
 # Stonecutter generated/version workspaces
 legacy/versions/*/src/
 modern/versions/*/src/
+legacy/versions/1.20.1-forge/logs/
+modern/versions/1.21.1-neoforge/logs/
 
 # Bootstrap-downloaded Gradle wrapper binaries
 legacy/gradle/wrapper/gradle-wrapper.jar

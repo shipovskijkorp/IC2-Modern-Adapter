@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.client;
 
 import com.shipovskijkorp.ic2modernadapter.development.InDevContent;
+import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,7 +15,8 @@ public final class InDevTooltips {
     public static void register() {
         ItemTooltipCallback.EVENT.register((stack, context, flags, lines) -> {
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-            if (id != null && InDevContent.isItem(id.getNamespace(), id.getPath())) {
+            if (id != null && InDevContent.isItem(
+                    id.getNamespace(), id.getPath(), IC2VariantStacks.variantKey(stack))) {
                 lines.add(Math.min(1, lines.size()), IN_DEV);
             }
         });

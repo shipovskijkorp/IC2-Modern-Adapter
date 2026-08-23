@@ -2,7 +2,15 @@ package com.shipovskijkorp.ic2modernadapter.registry;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
-import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantFacingBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.LegacyTeBlock;
+import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlock;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.CableCarrierBlock;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.CableItem;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
 import com.shipovskijkorp.ic2modernadapter.content.block.PlaceholderDynamiteBlock;
 import com.shipovskijkorp.ic2modernadapter.content.block.PlaceholderDoorBlock;
 import com.shipovskijkorp.ic2modernadapter.content.item.LegacyTranslatedBlockItem;
@@ -24,6 +32,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -55,9 +64,20 @@ public final class IC2ContentRegistries {
             BLOCKS_BY_PATH.put(path, () -> block);
         }
 
+        CableBlock cableBlock = Registry.register(
+                BuiltInRegistries.BLOCK,
+                id("cable"),
+                new CableCarrierBlock(
+                        BlockBehaviour.Properties.of().strength(0.2F).sound(SoundType.WOOL).noOcclusion(),
+                        IC2VariantStacks::variantKey,
+                        IC2VariantStacks::create,
+                        CableBlockEntity::new));
+
         for (String path : MANIFEST.registries().items()) {
             Item item;
-            if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
+            if ("cable".equals(path)) {
+                item = new CableItem(new Item.Properties(), cableBlock, IC2VariantStacks::variantKey);
+            } else if (BLOCK_ITEM_PATHS.contains(path) || "dynamite".equals(path)) {
                 item = createBlockItem(path, requireBlock(path).get());
             } else {
                 item = new LegacyTranslatedItem(path, new Item.Properties(), IC2VariantStacks::variantKey);
@@ -89,10 +109,25 @@ public final class IC2ContentRegistries {
 
         Block teBlock = requireBlock("te").get();
         for (String path : MANIFEST.registries().blockEntities()) {
+            EuStorageSpec storage = EuStorageSpec.fromBlockEntityPath(path);
+            BlockEntityType<?> type;
+            if ("generator".equals(path)) {
+                type = BlockEntityType.Builder.of(GeneratorBlockEntity::new, teBlock).build(null);
+            } else if (storage != null) {
+                type = BlockEntityType.Builder.of(
+                        (pos, state) -> new EuStorageBlockEntity(storage, pos, state), teBlock).build(null);
+            } else if ("cable".equals(path) || "detector_cable".equals(path) || "splitter_cable".equals(path)) {
+                type = BlockEntityType.Builder.of(
+                        (pos, state) -> new CableBlockEntity(
+                                java.util.Objects.requireNonNull(EuCableVariant.fromBlockState(state)), pos, state),
+                        cableBlock).build(null);
+            } else {
+                type = BlockEntityType.Builder.<BlockEntity>of((pos, state) -> null, teBlock).build(null);
+            }
             BlockEntityType<?> value = Registry.register(
                     BuiltInRegistries.BLOCK_ENTITY_TYPE,
                     id(path),
-                    BlockEntityType.Builder.<BlockEntity>of((pos, state) -> null, teBlock).build(null));
+                    type);
             BLOCK_ENTITIES_BY_PATH.put(path, () -> value);
         }
 
@@ -128,7 +163,13 @@ public final class IC2ContentRegistries {
         BlockBehaviour.Properties properties = placeholderProperties(path);
         int variantCount = MANIFEST.stackVariants(path).size();
         if ("te".equals(path)) {
-            return new LegacyVariantFacingBlock(properties, variantCount, IC2VariantStacks::placementVariantIndex);
+            return new LegacyTeBlock(
+                    properties,
+                    variantCount,
+                    IC2VariantStacks::placementVariantIndex,
+                    GeneratorBlockEntity::new,
+                    EuStorageBlockEntity::new,
+                    IC2VariantStacks::create);
         }
         if (variantCount > 1) {
             return new LegacyVariantBlock(properties, variantCount, IC2VariantStacks::placementVariantIndex);

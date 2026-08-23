@@ -10,6 +10,7 @@ import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalItemModels;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalTranslationKeys;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -76,6 +77,7 @@ public final class IC2RuntimeResourceCompiler {
 
         Map<String, JsonObject> legacyBlockstates = loadLegacyBlockstates(archive);
         compileBlockstates(resources, legacyBlockstates);
+        compileCableBlockstate(resources);
         compileBlockItemModels(resources, legacyBlockstates);
         compileStandaloneItemModels(resources);
         assignCutoutRenderTypes(resources);
@@ -263,6 +265,130 @@ public final class IC2RuntimeResourceCompiler {
         }
     }
 
+    /**
+     * Generates a modern multipart blockstate for the internal {@code ic2:cable} carrier block.
+     * The textures remain sourced from the original IC2 archive; only the thin center/arm geometry
+     * is synthesized at runtime because the 1.12 cable used a custom baked model.
+     */
+    static void compileCableBlockstate(Map<String, byte[]> output) {
+        com.google.gson.JsonArray multipart = new com.google.gson.JsonArray();
+
+        for (EuCableVariant cable : EuCableVariant.values()) {
+            for (boolean active : List.of(false, true)) {
+                String generatedRoot = "ic2ma_generated/cable/" + cable.stateVariantIndex()
+                        + "/" + (active ? "active" : "idle");
+                String textureStem = cable.blockModelStem(active);
+                String textureId = "ic2:block/wiring/cable/" + textureStem;
+                requireOutput(output, "textures/block/wiring/cable/" + textureStem + ".png");
+
+                putJson(output,
+                        "models/block/" + generatedRoot + "/center.json",
+                        cablePartModel(cable.visualWidth(), null, textureId));
+
+                JsonObject centerWhen = new JsonObject();
+                centerWhen.addProperty("variant", Integer.toString(cable.stateVariantIndex()));
+                centerWhen.addProperty("active", Boolean.toString(active));
+                JsonObject centerApply = new JsonObject();
+                centerApply.addProperty("model", "ic2:block/" + generatedRoot + "/center");
+                JsonObject centerPart = new JsonObject();
+                centerPart.add("when", centerWhen);
+                centerPart.add("apply", centerApply);
+                multipart.add(centerPart);
+
+                for (String directionName : List.of("down", "up", "north", "south", "west", "east")) {
+                    putJson(output,
+                            "models/block/" + generatedRoot + "/" + directionName + ".json",
+                            cablePartModel(cable.visualWidth(), directionName, textureId));
+
+                    JsonObject when = new JsonObject();
+                    when.addProperty("variant", Integer.toString(cable.stateVariantIndex()));
+                    when.addProperty("active", Boolean.toString(active));
+                    when.addProperty(directionName, "true");
+
+                    JsonObject apply = new JsonObject();
+                    apply.addProperty("model", "ic2:block/" + generatedRoot + "/" + directionName);
+
+                    JsonObject part = new JsonObject();
+                    part.add("when", when);
+                    part.add("apply", apply);
+                    multipart.add(part);
+                }
+            }
+        }
+
+        JsonObject blockstate = new JsonObject();
+        blockstate.add("multipart", multipart);
+        putJson(output, "blockstates/cable.json", blockstate);
+    }
+
+    private static JsonObject cablePartModel(float width, String directionName, String textureId) {
+        double min = 8.0D - width * 8.0D;
+        double max = 8.0D + width * 8.0D;
+
+        double x1 = min;
+        double y1 = min;
+        double z1 = min;
+        double x2 = max;
+        double y2 = max;
+        double z2 = max;
+
+        if (directionName != null) {
+            switch (directionName) {
+                case "down" -> y1 = 0.0D;
+                case "up" -> y2 = 16.0D;
+                case "north" -> z1 = 0.0D;
+                case "south" -> z2 = 16.0D;
+                case "west" -> x1 = 0.0D;
+                case "east" -> x2 = 16.0D;
+                default -> throw new IllegalArgumentException("Unknown cable direction: " + directionName);
+            }
+            switch (directionName) {
+                case "down" -> y2 = min;
+                case "up" -> y1 = max;
+                case "north" -> z2 = min;
+                case "south" -> z1 = max;
+                case "west" -> x2 = min;
+                case "east" -> x1 = max;
+                default -> {
+                }
+            }
+        }
+
+        JsonObject model = new JsonObject();
+        model.addProperty("parent", "minecraft:block/block");
+        model.addProperty("ambientocclusion", false);
+
+        JsonObject textures = new JsonObject();
+        textures.addProperty("cable", textureId);
+        textures.addProperty("particle", textureId);
+        model.add("textures", textures);
+
+        JsonObject element = new JsonObject();
+        element.add("from", jsonVector(x1, y1, z1));
+        element.add("to", jsonVector(x2, y2, z2));
+
+        JsonObject faces = new JsonObject();
+        for (String faceName : List.of("down", "up", "north", "south", "west", "east")) {
+            JsonObject face = new JsonObject();
+            face.addProperty("texture", "#cable");
+            faces.add(faceName, face);
+        }
+        element.add("faces", faces);
+
+        com.google.gson.JsonArray elements = new com.google.gson.JsonArray();
+        elements.add(element);
+        model.add("elements", elements);
+        return model;
+    }
+
+    private static com.google.gson.JsonArray jsonVector(double x, double y, double z) {
+        com.google.gson.JsonArray vector = new com.google.gson.JsonArray();
+        vector.add(x);
+        vector.add(y);
+        vector.add(z);
+        return vector;
+    }
+
     private static JsonObject compileTypeVariants(String blockPath, JsonObject oldState) {
         JsonObject typeMap = requireObject(requireObject(oldState, "variants"), "type");
         List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(blockPath);
@@ -294,17 +420,30 @@ public final class IC2RuntimeResourceCompiler {
         List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(blockPath);
 
         JsonObject modernVariants = new JsonObject();
-        JsonObject fallback = normalizeModelDescriptor(
-                requireElement(typeMap, suffix(variants.get(0).key()))).getAsJsonObject();
+        String fallbackName = suffix(variants.get(0).key());
+        JsonObject fallback = normalizeModelDescriptor(requireElement(typeMap, fallbackName)).getAsJsonObject();
         for (int index = 0; index <= LegacyVariantBlock.MAX_VARIANT_INDEX; index++) {
-            JsonObject base = index < variants.size()
-                    ? normalizeModelDescriptor(requireElement(typeMap, suffix(variants.get(index).key())))
-                            .getAsJsonObject()
+            String sourceName = index < variants.size() ? suffix(variants.get(index).key()) : fallbackName;
+            JsonObject inactive = index < variants.size()
+                    ? normalizeModelDescriptor(requireElement(typeMap, sourceName)).getAsJsonObject()
                     : fallback;
+            JsonObject active = typeMap.has(sourceName + "_active")
+                    ? normalizeModelDescriptor(requireElement(typeMap, sourceName + "_active")).getAsJsonObject()
+                    : inactive;
+
             for (String facing : List.of("down", "up", "north", "south", "west", "east")) {
-                JsonObject descriptor = base.deepCopy();
-                mergeModelTransform(descriptor, requireElement(facingMap, facing));
-                modernVariants.add("variant=" + index + ",facing=" + facing, descriptor);
+                JsonElement facingTransform = requireElement(facingMap, facing);
+                JsonObject inactiveDescriptor = inactive.deepCopy();
+                mergeModelTransform(inactiveDescriptor, facingTransform);
+                modernVariants.add(
+                        "variant=" + index + ",facing=" + facing + ",active=false",
+                        inactiveDescriptor);
+
+                JsonObject activeDescriptor = active.deepCopy();
+                mergeModelTransform(activeDescriptor, facingTransform);
+                modernVariants.add(
+                        "variant=" + index + ",facing=" + facing + ",active=true",
+                        activeDescriptor);
             }
         }
 
@@ -866,6 +1005,8 @@ public final class IC2RuntimeResourceCompiler {
         }
 
         Set<String> modelIds = new java.util.LinkedHashSet<>();
+        requireOutput(resources, "blockstates/cable.json");
+        collectModelIds(parseJsonObject(resources.get("blockstates/cable.json"), "blockstates/cable.json"), modelIds);
         for (String block : MANIFEST.registries().blocks()) {
             String statePath = "blockstates/" + block + ".json";
             requireOutput(resources, statePath);

@@ -15,9 +15,10 @@ import java.util.Set;
 /**
  * Central list of item identities that are still considered unfinished.
  *
- * <p>The list deliberately uses full registry IDs rather than Java classes or legacy subtype keys.
- * Every NBT/meta variant of a listed root item therefore inherits the same development marker.
- * Remove an ID from {@code in-dev-content.json} when that content is considered production-ready.</p>
+ * <p>The list deliberately uses full registry IDs rather than Java classes. Legacy roots such as
+ * {@code ic2:te} normally mark all of their NBT/meta variants at once, while
+ * {@code completedVariants} can exempt individual finished subtypes without incorrectly marking
+ * every sibling as production-ready.</p>
  */
 public final class InDevContent {
     public static final String RESOURCE = "/ic2ma/development/in-dev-content.json";
@@ -25,9 +26,19 @@ public final class InDevContent {
     private static final Gson GSON = new GsonBuilder().create();
     private static final InDevManifest MANIFEST = load();
     private static final Set<String> ITEM_IDS = Set.copyOf(MANIFEST.items);
+    private static final Set<String> COMPLETED_VARIANTS = Set.copyOf(MANIFEST.completedVariants);
 
     public static boolean isItem(String namespace, String path) {
         return ITEM_IDS.contains(namespace + ":" + path);
+    }
+
+    /**
+     * Variant-aware development state for legacy root items such as {@code ic2:te}.
+     * A completed subtype may leave development while unfinished siblings keep the root marker.
+     */
+    public static boolean isItem(String namespace, String path, String variantKey) {
+        return isItem(namespace, path)
+                && (variantKey == null || !COMPLETED_VARIANTS.contains(variantKey));
     }
 
     public static boolean isItem(String registryId) {
@@ -36,6 +47,10 @@ public final class InDevContent {
 
     public static Set<String> items() {
         return ITEM_IDS;
+    }
+
+    public static Set<String> completedVariants() {
+        return COMPLETED_VARIANTS;
     }
 
     private static InDevManifest load() {
@@ -56,6 +71,9 @@ public final class InDevContent {
     private static void validate(InDevManifest manifest) {
         Objects.requireNonNull(manifest, "in-dev manifest");
         Objects.requireNonNull(manifest.items, "in-dev items");
+        if (manifest.completedVariants == null) {
+            manifest.completedVariants = List.of();
+        }
 
         Set<String> unique = new LinkedHashSet<>();
         for (String id : manifest.items) {
@@ -84,10 +102,34 @@ public final class InDevContent {
         if (!unknown.isEmpty()) {
             throw new IllegalStateException("In-dev list references unregistered IC2 items: " + unknown);
         }
+
+        Set<String> variantKeys = new LinkedHashSet<>();
+        for (OriginalContentManifest.StackVariant variant : content.stackVariants()) {
+            variantKeys.add(variant.key());
+        }
+        Set<String> completed = new LinkedHashSet<>();
+        for (String variantKey : manifest.completedVariants) {
+            if (variantKey == null || variantKey.isBlank()) {
+                throw new IllegalStateException("Blank completed variant in " + RESOURCE);
+            }
+            if (!completed.add(variantKey)) {
+                throw new IllegalStateException("Duplicate completed variant: " + variantKey);
+            }
+            if (!variantKeys.contains(variantKey)) {
+                throw new IllegalStateException("Completed variant is not registered by IC2MA: " + variantKey);
+            }
+            OriginalContentManifest.StackVariant variant = content.stackVariant(variantKey);
+            String rootId = content.namespace() + ":" + variant.item();
+            if (!unique.contains(rootId)) {
+                throw new IllegalStateException(
+                        "Completed variant " + variantKey + " belongs to non-development root item " + rootId);
+            }
+        }
     }
 
     private static final class InDevManifest {
         private List<String> items;
+        private List<String> completedVariants;
     }
 
     private InDevContent() {

@@ -1,12 +1,9 @@
 package com.shipovskijkorp.ic2modernadapter.energy.cable;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
-import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.util.EuUtil;
 import java.util.List;
 import java.util.Locale;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -85,6 +82,53 @@ public enum EuCableVariant {
         return tier;
     }
 
+    /** Stable original item-variant identity. */
+    public String variantKey() {
+        return "cable/" + family + "_" + insulation;
+    }
+
+    public String blockEntityPath() {
+        if (isDetector()) {
+            return "detector_cable";
+        }
+        if (isSplitter()) {
+            return "splitter_cable";
+        }
+        return "cable";
+    }
+
+    /** IC2 rendered thickness: conductor width plus two insulation layers of 1/16 each. */
+    public float visualWidth() {
+        float base = switch (family) {
+            case "gold" -> 0.1875F;
+            case "iron" -> 0.375F;
+            case "detector", "splitter" -> 0.5F;
+            default -> 0.25F;
+        };
+        return Math.max(0.125F, Math.min(1.0F, base + insulation * 0.125F));
+    }
+
+    /** Original IC2 block texture/model stem for the default (black/uncoloured) cable state. */
+    public String blockModelStem(boolean active) {
+        String stem;
+        if (isDetector()) {
+            stem = "detector_cable";
+        } else if (isSplitter()) {
+            stem = "splitter_cable";
+        } else if (family.equals("glass")) {
+            stem = "glass_cable_black";
+        } else {
+            stem = family + "_cable_" + insulation;
+            if (insulation > 0) {
+                stem += "_black";
+            }
+        }
+        if (active && (isDetector() || isSplitter())) {
+            stem += "_active";
+        }
+        return stem;
+    }
+
     public boolean isDetector() {
         return this == DETECTOR_0;
     }
@@ -120,6 +164,14 @@ public enum EuCableVariant {
         return valueOf(target);
     }
 
+    public EuCableVariant withOneInsulationLayer() {
+        if (insulation >= maxInsulation) {
+            return this;
+        }
+        String target = family.toUpperCase(Locale.ROOT) + "_" + (insulation + 1);
+        return valueOf(target);
+    }
+
     public int stateVariantIndex() {
         return ordinal();
     }
@@ -133,14 +185,22 @@ public enum EuCableVariant {
 
     /** Resolve a placed IC2 cable without depending on Forge/NeoForge/Fabric APIs. */
     public static EuCableVariant fromBlockState(BlockState state) {
-        if (state == null || !state.hasProperty(LegacyVariantBlock.VARIANT)) {
+        if (state == null || !(state.getBlock() instanceof CableBlock) || !state.hasProperty(CableBlock.VARIANT)) {
             return null;
         }
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
-        if (id == null || !"ic2".equals(id.getNamespace()) || !"cable".equals(id.getPath())) {
+        return fromStateVariant(state.getValue(CableBlock.VARIANT));
+    }
+
+    public static EuCableVariant fromVariantKey(String variantKey) {
+        if (variantKey == null || !variantKey.startsWith("cable/")) {
             return null;
         }
-        return fromStateVariant(state.getValue(LegacyVariantBlock.VARIANT));
+        for (EuCableVariant value : values()) {
+            if (value.variantKey().equals(variantKey)) {
+                return value;
+            }
+        }
+        return null;
     }
 
     private static int readByteNbt(OriginalContentManifest.StackVariant variant, String path) {

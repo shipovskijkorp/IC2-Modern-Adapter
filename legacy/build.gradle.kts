@@ -71,7 +71,7 @@ dependencies {
     add("minecraft", "net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testRuntimeOnly("com.google.code.gson:gson:$gsonVersion")
+    testImplementation("com.google.code.gson:gson:$gsonVersion")
 }
 
 tasks.processResources {

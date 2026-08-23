@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.RenderType;
 public final class IC2ModernAdapterClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        GeneratorClientRegistration.register();
+        EuStorageClientRegistration.register();
         IC2PlaceholderColors.register();
         InDevTooltips.register();
         registerRenderLayers();

@@ -1,6 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.energy.grid;
 
-import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -52,13 +52,7 @@ final class OverVoltageProcessor {
             level.destroyBlock(pos, false);
         }
         for (BlockPos pos : strip) {
-            BlockState state = level.getBlockState(pos);
-            EuCableVariant cable = EuCableVariant.fromBlockState(state);
-            if (cable == null || !state.hasProperty(LegacyVariantBlock.VARIANT)) {
-                continue;
-            }
-            EuCableVariant stripped = cable.withoutOneInsulationLayer();
-            level.setBlockAndUpdate(pos, state.setValue(LegacyVariantBlock.VARIANT, stripped.stateVariantIndex()));
+            CableBlock.tryRemoveInsulation(level, pos);
         }
 
         localShock.forEach((entity, energy) -> shockEnergyMap.merge(entity, energy, Double::sum));

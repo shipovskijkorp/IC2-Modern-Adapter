@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.energy.grid;
 
 import com.shipovskijkorp.ic2modernadapter.energy.api.IEuEnergyStorage;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +75,9 @@ final class EnergyGridPathFinder {
 
                 BlockEntity neighborEntity = level.getBlockEntity(nextPos);
                 if (neighborEntity instanceof IEuEnergyStorage) {
+                    if (!CableBlock.connectsTo(level, current.pos, level.getBlockState(current.pos), direction)) {
+                        continue;
+                    }
                     double endLinkLoss = (current.innerLoss + ENDPOINT_INNER_LOSS) / 2.0;
                     double totalLoss = current.loss + endLinkLoss;
                     Direction intoSink = direction.getOpposite();
@@ -89,7 +93,8 @@ final class EnergyGridPathFinder {
 
                 BlockState nextState = level.getBlockState(nextPos);
                 EuCableVariant nextCable = EuCableVariant.fromBlockState(nextState);
-                if (nextCable == null || isCableDisabled(level, nextPos, nextCable)) {
+                if (nextCable == null || isCableDisabled(level, nextPos, nextCable)
+                        || !CableBlock.canCablesInteract(level, current.pos, direction)) {
                     continue;
                 }
 

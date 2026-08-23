@@ -95,7 +95,6 @@
     "ic2:painter",
     "ic2:fluid_cell",
     "ic2:cell",
-    "ic2:cable",
     "ic2:upgrade",
     "ic2:advanced_batpack",
     "ic2:alloy_chestplate",
@@ -169,5 +168,12 @@
     "ic2:oxygen",
     "ic2:heavy_water",
     "ic2:milk"
+  ],
+  "completedVariants": [
+    "te/generator",
+    "te/batbox",
+    "te/cesu",
+    "te/mfe",
+    "te/mfsu"
   ]
 }

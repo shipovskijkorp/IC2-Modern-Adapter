@@ -1,7 +1,15 @@
 package com.shipovskijkorp.ic2modernadapter.resource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class IC2RuntimeResourceCompilerTest {
@@ -34,6 +42,32 @@ class IC2RuntimeResourceCompilerTest {
         assertEquals("textures/item/armor/advanced_batpack.png",
                 IC2RuntimeResourceCompiler.textureResourcePath(
                         "ic2:items/armor/advanced_batpack"));
+    }
+
+    @Test
+    void generatesCableMultipartModelsFromOriginalTextures() {
+        Map<String, byte[]> output = new LinkedHashMap<>();
+        for (EuCableVariant cable : EuCableVariant.values()) {
+            for (boolean active : java.util.List.of(false, true)) {
+                output.put(
+                        "textures/block/wiring/cable/" + cable.blockModelStem(active) + ".png",
+                        new byte[] {1});
+            }
+        }
+
+        IC2RuntimeResourceCompiler.compileCableBlockstate(output);
+
+        JsonObject blockstate = JsonParser.parseString(new String(
+                        output.get("blockstates/cable.json"), StandardCharsets.UTF_8))
+                .getAsJsonObject();
+        assertFalse(blockstate.has("variants"));
+        assertTrue(blockstate.has("multipart"));
+        assertEquals(EuCableVariant.values().length * 2 * 7,
+                blockstate.getAsJsonArray("multipart").size());
+        assertTrue(output.containsKey(
+                "models/block/ic2ma_generated/cable/0/idle/center.json"));
+        assertTrue(output.containsKey(
+                "models/block/ic2ma_generated/cable/13/active/east.json"));
     }
 
     @Test
