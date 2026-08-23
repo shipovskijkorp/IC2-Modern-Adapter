@@ -1,11 +1,9 @@
 package com.shipovskijkorp.ic2modernadapter.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -21,6 +19,7 @@ public final class LegacySmeltingRecipe extends AbstractCookingRecipe {
     public LegacySmeltingRecipe(ResourceLocation id, LegacyRecipeDefinition definition, RecipeSerializer<?> serializer) {
         super(
                 RecipeType.SMELTING,
+                id,
                 "ic2_original",
                 CookingBookCategory.MISC,
                 LegacyRecipeRuntime.representativeIngredient(definition.ingredients().get(0), LegacyRecipeStacks.INSTANCE),

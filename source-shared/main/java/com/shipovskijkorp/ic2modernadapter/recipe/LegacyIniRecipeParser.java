@@ -170,7 +170,7 @@ public final class LegacyIniRecipeParser {
      * Converts a 1.12 recipe reference into the adapter's compact runtime token format.
      * Alternatives remain separated by {@code |}; each alternative is resolved independently.
      */
-    static String normalizeIngredient(String raw) {
+    public static String normalizeIngredient(String raw) {
         String value = raw.trim();
         if (value.isEmpty()) {
             return value;
@@ -183,7 +183,7 @@ public final class LegacyIniRecipeParser {
         return String.join("|", normalized);
     }
 
-    static String normalizeOutput(String raw) {
+    public static String normalizeOutput(String raw) {
         return normalizeSingle(raw.trim(), true);
     }
 
@@ -302,6 +302,12 @@ public final class LegacyIniRecipeParser {
         }
         if ("brick_block".equals(path)) {
             return "item:minecraft:bricks";
+        }
+        if ("netherbrick".equals(path)) {
+            return "item:minecraft:nether_brick";
+        }
+        if ("nether_brick".equals(path)) {
+            return "item:minecraft:nether_bricks";
         }
         if ("trapdoor".equals(path)) {
             return "item:minecraft:oak_trapdoor";

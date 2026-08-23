@@ -30,6 +30,8 @@ val modAuthors = commonProperty("common.mod.authors")
 val modLicense = commonProperty("common.mod.license")
 val junitVersion = commonProperty("common.deps.junit")
 val gsonVersion = commonProperty("common.deps.gson")
+val jeiProject = commonProperty("common.deps.modrinth.jei_project")
+val jeiVersion = commonProperty("common.deps.modrinth.jei_1_21_1_neoforge")
 val sharedSourceRoot = commonProperty("common.source.shared_root")
 
 val minecraftVersion = property("minecraft_version").toString()
@@ -78,9 +80,20 @@ neoForge {
 
 repositories {
     mavenCentral()
+    exclusiveContent {
+        forRepository {
+            maven("https://api.modrinth.com/maven") {
+                name = "Modrinth"
+            }
+        }
+        filter {
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 dependencies {
+    compileOnly("maven.modrinth:$jeiProject:$jeiVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("com.google.code.gson:gson:$gsonVersion")

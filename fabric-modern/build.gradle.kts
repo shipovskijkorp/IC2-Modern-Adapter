@@ -28,6 +28,8 @@ val modAuthors = commonProperty("common.mod.authors")
 val modLicense = commonProperty("common.mod.license")
 val junitVersion = commonProperty("common.deps.junit")
 val gsonVersion = commonProperty("common.deps.gson")
+val jeiProject = commonProperty("common.deps.modrinth.jei_project")
+val jeiVersion = commonProperty("common.deps.modrinth.jei_1_21_1_fabric")
 val sharedSourceRoot = commonProperty("common.source.shared_root")
 
 val minecraftVersion = property("minecraft_version").toString()
@@ -78,7 +80,10 @@ dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
     mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
+    // Fabric API stays on the official Fabric Maven for development builds: the Modrinth artifact is
+    // the distributable bundled mod jar and does not expose Fabric API modules/access wideners to Loom's compile classpath.
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
+    modCompileOnly("maven.modrinth:$jeiProject:$jeiVersion")
 
     // BRRP publishes the converted original IC2 assets as an in-memory client resource pack.
     // It is nested into IC2MA so players only need Fabric API as an external dependency.

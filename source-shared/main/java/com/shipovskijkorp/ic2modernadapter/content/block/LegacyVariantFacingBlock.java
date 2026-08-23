@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.content.block;
 
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorConstants;
+import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import java.util.function.ToIntFunction;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -51,7 +52,7 @@ public class LegacyVariantFacingBlock extends Block {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         int variant = resolvePlacementVariant(context.getItemInHand());
-        Direction facing = variant == GeneratorConstants.VARIANT_INDEX
+        Direction facing = variant == GeneratorConstants.VARIANT_INDEX || MachineSpec.isMachineVariantIndex(variant)
                 ? context.getHorizontalDirection().getOpposite()
                 : context.getNearestLookingDirection().getOpposite();
         return defaultBlockState()

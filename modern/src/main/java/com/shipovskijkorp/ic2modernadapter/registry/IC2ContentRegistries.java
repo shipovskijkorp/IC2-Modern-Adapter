@@ -4,6 +4,8 @@ import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyTeBlock;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.MachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlock;
@@ -156,6 +158,12 @@ public final class IC2ContentRegistries {
                             (pos, state) -> new EuStorageBlockEntity(storage, pos, state),
                             teBlock.get()).build(null);
                 }
+                MachineSpec machine = MachineSpec.fromBlockEntityPath(path);
+                if (machine != null) {
+                    return BlockEntityType.Builder.of(
+                            (pos, state) -> new MachineBlockEntity(machine, pos, state),
+                            teBlock.get()).build(null);
+                }
                 if ("cable".equals(path) || "detector_cable".equals(path) || "splitter_cable".equals(path)) {
                     return BlockEntityType.Builder.of(
                             (pos, state) -> new CableBlockEntity(
@@ -213,6 +221,7 @@ public final class IC2ContentRegistries {
                     IC2VariantStacks::placementVariantIndex,
                     GeneratorBlockEntity::new,
                     EuStorageBlockEntity::new,
+                    MachineBlockEntity::new,
                     IC2VariantStacks::create);
         }
         if (variantCount > 1) {

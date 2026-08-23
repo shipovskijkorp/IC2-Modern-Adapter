@@ -11,6 +11,8 @@ import com.shipovskijkorp.ic2modernadapter.content.OriginalItemModels;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalTranslationKeys;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
+import com.shipovskijkorp.ic2modernadapter.machine.LegacyMachineRecipeCompiler;
+import com.shipovskijkorp.ic2modernadapter.machine.LegacyMachineRecipeRegistry;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyRecipeCompiler;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -87,6 +89,8 @@ public final class IC2RuntimeResourceCompiler {
         // Crafting/smelting data is intentionally compiled from the original archive at runtime,
         // just like the visual resources. No recipe tables from the original mod are redistributed.
         LegacyRecipeCompiler.Result recipes = LegacyRecipeCompiler.compile(archive);
+        LegacyMachineRecipeCompiler.Result machineRecipes = LegacyMachineRecipeCompiler.compile(archive);
+        LegacyMachineRecipeRegistry.replaceAll(machineRecipes.byMachine());
         return new CompiledIc2ResourcePack(archive.path(), resources, recipes.resources());
     }
 

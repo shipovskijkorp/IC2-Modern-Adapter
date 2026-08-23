@@ -4,6 +4,8 @@ import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyTeBlock;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.MachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.CableBlock;
@@ -138,12 +140,16 @@ public final class IC2ContentRegistries {
         Block teBlock = requireBlock("te").get();
         for (String path : MANIFEST.registries().blockEntities()) {
             EuStorageSpec storage = EuStorageSpec.fromBlockEntityPath(path);
+            MachineSpec machine = MachineSpec.fromBlockEntityPath(path);
             BlockEntityType<?> type;
             if ("generator".equals(path)) {
                 type = BlockEntityType.Builder.of(GeneratorBlockEntity::new, teBlock).build(null);
             } else if (storage != null) {
                 type = BlockEntityType.Builder.of(
                         (pos, state) -> new EuStorageBlockEntity(storage, pos, state), teBlock).build(null);
+            } else if (machine != null) {
+                type = BlockEntityType.Builder.of(
+                        (pos, state) -> new MachineBlockEntity(machine, pos, state), teBlock).build(null);
             } else if ("cable".equals(path) || "detector_cable".equals(path) || "splitter_cable".equals(path)) {
                 type = BlockEntityType.Builder.of(
                         (pos, state) -> new CableBlockEntity(
@@ -197,6 +203,7 @@ public final class IC2ContentRegistries {
                     IC2VariantStacks::placementVariantIndex,
                     GeneratorBlockEntity::new,
                     EuStorageBlockEntity::new,
+                    MachineBlockEntity::new,
                     IC2VariantStacks::create);
         }
         if (variantCount > 1) {

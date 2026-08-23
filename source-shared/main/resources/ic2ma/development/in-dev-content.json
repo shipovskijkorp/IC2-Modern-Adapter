@@ -1,16 +1,7 @@
 {
   "items": [
     "ic2:boat",
-    "ic2:crushed",
-    "ic2:purified",
-    "ic2:dust",
-    "ic2:ingot",
-    "ic2:plate",
-    "ic2:casing",
-    "ic2:nuclear",
-    "ic2:misc_resource",
     "ic2:block_cutting_blade",
-    "ic2:crafting",
     "ic2:crystal_memory",
     "ic2:upgrade_kit",
     "ic2:crop_res",
@@ -135,7 +126,6 @@
     "ic2:cover",
     "ic2:coke",
     "ic2:te",
-    "ic2:resource",
     "ic2:leaves",
     "ic2:rubber_wood",
     "ic2:sapling",
@@ -169,6 +159,8 @@
   ],
   "completedVariants": [
     "te/generator",
+    "te/compressor",
+    "te/macerator",
     "te/batbox",
     "te/cesu",
     "te/mfe",

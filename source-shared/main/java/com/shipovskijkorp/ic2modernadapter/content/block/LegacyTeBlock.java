@@ -4,6 +4,8 @@ import com.shipovskijkorp.ic2modernadapter.energy.storage.AbstractEuStorageBlock
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntityBase;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorConstants;
+import com.shipovskijkorp.ic2modernadapter.machine.AbstractStandardMachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -36,8 +38,14 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
         BlockEntity create(EuStorageSpec spec, BlockPos pos, BlockState state);
     }
 
+    @FunctionalInterface
+    public interface MachineFactory {
+        BlockEntity create(MachineSpec spec, BlockPos pos, BlockState state);
+    }
+
     private final BiFunction<BlockPos, BlockState, ? extends BlockEntity> generatorFactory;
     private final StorageFactory storageFactory;
+    private final MachineFactory machineFactory;
     private final Function<String, ItemStack> variantStackFactory;
 
     public LegacyTeBlock(
@@ -46,10 +54,12 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
             ToIntFunction<ItemStack> variantResolver,
             BiFunction<BlockPos, BlockState, ? extends BlockEntity> generatorFactory,
             StorageFactory storageFactory,
+            MachineFactory machineFactory,
             Function<String, ItemStack> variantStackFactory) {
         super(properties, variantCount, variantResolver);
         this.generatorFactory = generatorFactory;
         this.storageFactory = storageFactory;
+        this.machineFactory = machineFactory;
         this.variantStackFactory = variantStackFactory;
     }
 
@@ -61,6 +71,10 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
         return EuStorageSpec.isStorage(state);
     }
 
+    public static boolean isStandardMachine(BlockState state) {
+        return MachineSpec.fromBlockState(state) != null;
+    }
+
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         String implementedVariant = null;
@@ -70,6 +84,11 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
             EuStorageSpec storage = EuStorageSpec.fromBlockState(state);
             if (storage != null) {
                 implementedVariant = storage.variantKey();
+            } else {
+                MachineSpec machine = MachineSpec.fromBlockState(state);
+                if (machine != null) {
+                    implementedVariant = machine.variantKey();
+                }
             }
         }
         if (implementedVariant == null) {
@@ -85,7 +104,11 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
             return generatorFactory.apply(pos, state);
         }
         EuStorageSpec storage = EuStorageSpec.fromBlockState(state);
-        return storage == null ? null : storageFactory.create(storage, pos, state);
+        if (storage != null) {
+            return storageFactory.create(storage, pos, state);
+        }
+        MachineSpec machine = MachineSpec.fromBlockState(state);
+        return machine == null ? null : machineFactory.create(machine, pos, state);
     }
 
     @Override
@@ -109,6 +132,13 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                 }
             };
         }
+        if (isStandardMachine(state)) {
+            return (tickLevel, pos, tickState, blockEntity) -> {
+                if (blockEntity instanceof AbstractStandardMachineBlockEntity machine) {
+                    machine.serverTick();
+                }
+            };
+        }
         return null;
     }
 
@@ -118,13 +148,18 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
         EuStorageSpec oldStorage = EuStorageSpec.fromBlockState(state);
         EuStorageSpec newStorage = newState.is(this) ? EuStorageSpec.fromBlockState(newState) : null;
         boolean removeStorage = oldStorage != null && oldStorage != newStorage;
+        MachineSpec oldMachine = MachineSpec.fromBlockState(state);
+        MachineSpec newMachine = newState.is(this) ? MachineSpec.fromBlockState(newState) : null;
+        boolean removeMachine = oldMachine != null && oldMachine != newMachine;
 
-        if ((removeGenerator || removeStorage) && !level.isClientSide()) {
+        if ((removeGenerator || removeStorage || removeMachine) && !level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof GeneratorBlockEntityBase generator) {
                 Containers.dropContents(level, pos, generator);
             } else if (blockEntity instanceof AbstractEuStorageBlockEntity storage) {
                 Containers.dropContents(level, pos, storage);
+            } else if (blockEntity instanceof AbstractStandardMachineBlockEntity machine) {
+                Containers.dropContents(level, pos, machine);
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);

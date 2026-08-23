@@ -40,6 +40,11 @@ public final class IC2RuntimeResources {
         });
     }
 
+    /** Ensures runtime IC2 data tables are available before client integrations query them. */
+    public static void ensureCompiled() {
+        compiled();
+    }
+
     private static CompiledIc2ResourcePack compiled() {
         CompiledIc2ResourcePack value = compiled;
         if (value != null) {
