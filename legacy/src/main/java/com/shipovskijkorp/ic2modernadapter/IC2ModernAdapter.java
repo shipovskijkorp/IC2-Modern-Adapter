@@ -4,6 +4,7 @@ import com.shipovskijkorp.ic2modernadapter.client.InDevTooltips;
 import com.shipovskijkorp.ic2modernadapter.creative.IC2CreativeTab;
 import com.shipovskijkorp.ic2modernadapter.energy.ForgeEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorPlatform;
+import com.shipovskijkorp.ic2modernadapter.furnace.FurnacePlatform;
 import com.shipovskijkorp.ic2modernadapter.machine.MachinePlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
@@ -20,6 +21,7 @@ public final class IC2ModernAdapter {
         var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IC2ContentRegistries.register(modEventBus);
         GeneratorPlatform.register(modEventBus);
+        FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);
         MachinePlatform.register(modEventBus);
         IC2CreativeTab.register(modEventBus);

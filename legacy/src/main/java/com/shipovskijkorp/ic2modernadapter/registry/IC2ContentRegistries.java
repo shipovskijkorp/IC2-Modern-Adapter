@@ -4,6 +4,10 @@ import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyTeBlock;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.furnace.FurnaceSpec;
+import com.shipovskijkorp.ic2modernadapter.furnace.IronFurnaceBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.furnace.ElectricFurnaceBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.furnace.InductionFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageBlockEntity;
@@ -162,6 +166,12 @@ public final class IC2ContentRegistries {
                             (pos, state) -> new MachineBlockEntity(machine, pos, state),
                             teBlock.get()).build(null);
                 }
+                FurnaceSpec furnace = FurnaceSpec.fromBlockEntityPath(path);
+                if (furnace != null) {
+                    return BlockEntityType.Builder.of(
+                            (pos, state) -> createFurnaceBlockEntity(furnace, pos, state),
+                            teBlock.get()).build(null);
+                }
                 if ("cable".equals(path) || "detector_cable".equals(path) || "splitter_cable".equals(path)) {
                     return BlockEntityType.Builder.of(
                             (pos, state) -> new CableBlockEntity(
@@ -220,6 +230,7 @@ public final class IC2ContentRegistries {
                     GeneratorBlockEntity::new,
                     EuStorageBlockEntity::new,
                     MachineBlockEntity::new,
+                    IC2ContentRegistries::createFurnaceBlockEntity,
                     IC2VariantStacks::create);
         }
         if (variantCount > 1) {
@@ -250,6 +261,14 @@ public final class IC2ContentRegistries {
             properties.noOcclusion();
         }
         return properties;
+    }
+
+    private static BlockEntity createFurnaceBlockEntity(FurnaceSpec spec, net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+        return switch (spec) {
+            case IRON -> new IronFurnaceBlockEntity(pos, state);
+            case ELECTRIC -> new ElectricFurnaceBlockEntity(pos, state);
+            case INDUCTION -> new InductionFurnaceBlockEntity(pos, state);
+        };
     }
 
     private static Item createStandaloneItem(String path) {

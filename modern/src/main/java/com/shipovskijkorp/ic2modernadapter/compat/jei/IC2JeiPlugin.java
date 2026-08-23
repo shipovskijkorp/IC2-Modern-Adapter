@@ -1,6 +1,9 @@
 package com.shipovskijkorp.ic2modernadapter.compat.jei;
 
 import com.shipovskijkorp.ic2modernadapter.client.screen.CompressorScreen;
+import com.shipovskijkorp.ic2modernadapter.client.screen.IronFurnaceScreen;
+import com.shipovskijkorp.ic2modernadapter.client.screen.InductionFurnaceScreen;
+import com.shipovskijkorp.ic2modernadapter.client.screen.ElectricFurnaceScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.MaceratorScreen;
 import com.shipovskijkorp.ic2modernadapter.content.LegacyJeiSubtypes;
 import com.shipovskijkorp.ic2modernadapter.machine.LegacyMachineRecipeRegistry;
@@ -10,6 +13,7 @@ import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -51,6 +55,9 @@ public final class IC2JeiPlugin implements IModPlugin {
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(MaceratorScreen.class, 80, 38, 21, 11, MachineJeiCategory.MACERATOR);
         registration.addRecipeClickArea(CompressorScreen.class, 80, 35, 22, 15, MachineJeiCategory.COMPRESSOR);
+        registration.addRecipeClickArea(IronFurnaceScreen.class, 80, 35, 22, 15, RecipeTypes.SMELTING);
+        registration.addRecipeClickArea(ElectricFurnaceScreen.class, 80, 35, 22, 15, RecipeTypes.SMELTING);
+        registration.addRecipeClickArea(InductionFurnaceScreen.class, 81, 35, 22, 15, RecipeTypes.SMELTING);
     }
 
     @Override

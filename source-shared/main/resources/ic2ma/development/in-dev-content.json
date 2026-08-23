@@ -149,6 +149,9 @@
     "te/batbox",
     "te/cesu",
     "te/mfe",
-    "te/mfsu"
+    "te/mfsu",
+    "te/iron_furnace",
+    "te/electric_furnace",
+    "te/induction_furnace"
   ]
 }

@@ -11,11 +11,19 @@ class InDevContentTest {
     void completedEnergyVariantsLeaveDevelopmentWithoutCompletingOtherTeVariants() {
         assertTrue(InDevContent.isItem("ic2", "te"));
         for (String variant : Set.of(
-                "te/generator", "te/compressor", "te/macerator", "te/batbox", "te/cesu", "te/mfe", "te/mfsu")) {
+                "te/generator",
+                "te/compressor",
+                "te/macerator",
+                "te/iron_furnace",
+                "te/electric_furnace",
+                "te/induction_furnace",
+                "te/batbox",
+                "te/cesu",
+                "te/mfe",
+                "te/mfsu")) {
             assertFalse(InDevContent.isItem("ic2", "te", variant), variant + " should be implemented");
             assertTrue(InDevContent.completedVariants().contains(variant));
         }
-        assertTrue(InDevContent.isItem("ic2", "te", "te/electric_furnace"));
         assertFalse(InDevContent.isItem("ic2", "cable"), "all fourteen cable variants are implemented");
         assertFalse(InDevContent.isItem("ic2", "cutter"), "insulation cutter is implemented");
         assertFalse(InDevContent.isItem("ic2", "forge_hammer"), "forge hammer crafting behavior is implemented");

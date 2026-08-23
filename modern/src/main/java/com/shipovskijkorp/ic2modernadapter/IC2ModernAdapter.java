@@ -4,6 +4,7 @@ import com.shipovskijkorp.ic2modernadapter.client.InDevTooltips;
 import com.shipovskijkorp.ic2modernadapter.creative.IC2CreativeTab;
 import com.shipovskijkorp.ic2modernadapter.energy.NeoForgeEuNetworkLifecycle;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorPlatform;
+import com.shipovskijkorp.ic2modernadapter.furnace.FurnacePlatform;
 import com.shipovskijkorp.ic2modernadapter.machine.MachinePlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
@@ -19,6 +20,7 @@ public final class IC2ModernAdapter {
     public IC2ModernAdapter(IEventBus modEventBus) {
         IC2ContentRegistries.register(modEventBus);
         GeneratorPlatform.register(modEventBus);
+        FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);
         MachinePlatform.register(modEventBus);
         IC2CreativeTab.register(modEventBus);
