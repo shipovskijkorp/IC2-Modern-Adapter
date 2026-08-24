@@ -111,6 +111,8 @@ public final class LegacyRecipeRuntime {
             }
         } else if (normalizedToken.startsWith("item:")) {
             result = stackForItemId(normalizedToken.substring("item:".length()));
+        } else if (normalizedToken.startsWith("legacy:")) {
+            result = representativeStack(normalizedToken, stacks);
         } else {
             throw new IllegalArgumentException("Unsupported IC2 recipe output token: " + normalizedToken);
         }

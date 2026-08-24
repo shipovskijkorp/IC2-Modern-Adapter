@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.compat.jei;
 
 import com.shipovskijkorp.ic2modernadapter.client.screen.CompressorScreen;
+import com.shipovskijkorp.ic2modernadapter.client.screen.CannerScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.ExtractorScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.ElectricFurnaceScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.InductionFurnaceScreen;
@@ -9,8 +10,10 @@ import com.shipovskijkorp.ic2modernadapter.client.screen.MaceratorScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.MetalFormerScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.OreWashingPlantScreen;
 import com.shipovskijkorp.ic2modernadapter.client.screen.ThermalCentrifugeScreen;
+import com.shipovskijkorp.ic2modernadapter.client.screen.SolidCannerScreen;
 import com.shipovskijkorp.ic2modernadapter.content.LegacyJeiSubtypes;
 import com.shipovskijkorp.ic2modernadapter.machine.LegacyMachineRecipeRegistry;
+import com.shipovskijkorp.ic2modernadapter.machine.CannerRecipeRegistry;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineSpec;
 import com.shipovskijkorp.ic2modernadapter.machine.MetalFormerMode;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
@@ -56,6 +59,9 @@ public final class IC2JeiPlugin implements IModPlugin {
                 new MachineJeiCategory(MachineSpec.MACERATOR, guiHelper),
                 new MachineJeiCategory(MachineSpec.COMPRESSOR, guiHelper),
                 new MachineJeiCategory(MachineSpec.EXTRACTOR, guiHelper),
+                new CannerJeiCategory(guiHelper),
+                new CannerEnrichJeiCategory(guiHelper),
+                new SolidCannerJeiCategory(guiHelper),
                 new MachineJeiCategory(MetalFormerMode.EXTRUDING, guiHelper),
                 new MachineJeiCategory(MetalFormerMode.ROLLING, guiHelper),
                 new MachineJeiCategory(MetalFormerMode.CUTTING, guiHelper),
@@ -68,6 +74,11 @@ public final class IC2JeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(MaceratorScreen.class, 80, 38, 21, 11, MachineJeiCategory.MACERATOR);
         registration.addRecipeClickArea(CompressorScreen.class, 80, 35, 22, 15, MachineJeiCategory.COMPRESSOR);
         registration.addRecipeClickArea(ExtractorScreen.class, 80, 35, 22, 15, MachineJeiCategory.EXTRACTOR);
+        registration.addRecipeClickArea(CannerScreen.class, 74, 22, 23, 14,
+                CannerJeiCategory.CANNING,
+                CannerEnrichJeiCategory.ENRICHING);
+        registration.addRecipeClickArea(SolidCannerScreen.class, 88, 35, 22, 15,
+                SolidCannerJeiCategory.SOLID_CANNING);
         registration.addRecipeClickArea(MetalFormerScreen.class, 52, 39, 46, 9,
                 MachineJeiCategory.METAL_FORMER_EXTRUDING,
                 MachineJeiCategory.METAL_FORMER_ROLLING,
@@ -94,6 +105,15 @@ public final class IC2JeiPlugin implements IModPlugin {
                 MachineJeiCategory.EXTRACTOR,
                 LegacyMachineRecipeRegistry.recipes(MachineSpec.EXTRACTOR));
         registration.addRecipes(
+                CannerJeiCategory.CANNING,
+                CannerRecipeRegistry.bottleRecipes());
+        registration.addRecipes(
+                CannerEnrichJeiCategory.ENRICHING,
+                CannerRecipeRegistry.enrichRecipes());
+        registration.addRecipes(
+                SolidCannerJeiCategory.SOLID_CANNING,
+                CannerRecipeRegistry.bottleRecipes());
+        registration.addRecipes(
                 MachineJeiCategory.METAL_FORMER_EXTRUDING,
                 MachineJeiCategory.recipesForMetalFormerMode(MetalFormerMode.EXTRUDING));
         registration.addRecipes(
@@ -115,6 +135,9 @@ public final class IC2JeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.MACERATOR.variantKey()), MachineJeiCategory.MACERATOR);
         registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.COMPRESSOR.variantKey()), MachineJeiCategory.COMPRESSOR);
         registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.EXTRACTOR.variantKey()), MachineJeiCategory.EXTRACTOR);
+        registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.CANNER.variantKey()), CannerJeiCategory.CANNING);
+        registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.CANNER.variantKey()), CannerEnrichJeiCategory.ENRICHING);
+        registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.SOLID_CANNER.variantKey()), SolidCannerJeiCategory.SOLID_CANNING);
         registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.METAL_FORMER.variantKey()), MachineJeiCategory.METAL_FORMER_EXTRUDING);
         registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.METAL_FORMER.variantKey()), MachineJeiCategory.METAL_FORMER_ROLLING);
         registration.addRecipeCatalyst(IC2VariantStacks.create(MachineSpec.METAL_FORMER.variantKey()), MachineJeiCategory.METAL_FORMER_CUTTING);

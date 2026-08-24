@@ -155,6 +155,8 @@
     "te/induction_furnace",
     "te/metal_former",
     "te/ore_washing_plant",
-    "te/centrifuge"
+    "te/centrifuge",
+    "te/canner",
+    "te/solid_canner"
   ]
 }

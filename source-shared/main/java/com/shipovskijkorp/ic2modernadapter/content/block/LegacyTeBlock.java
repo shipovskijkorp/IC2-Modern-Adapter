@@ -9,6 +9,8 @@ import com.shipovskijkorp.ic2modernadapter.furnace.AbstractIronFurnaceBlockEntit
 import com.shipovskijkorp.ic2modernadapter.furnace.AbstractInductionFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.AbstractElectricFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractStandardMachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.AbstractCannerBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.AbstractSolidCannerBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractMetalFormerBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractOreWashingPlantBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.AbstractThermalCentrifugeBlockEntity;
@@ -202,6 +204,10 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                     oreWasher.serverTick();
                 } else if (blockEntity instanceof AbstractThermalCentrifugeBlockEntity centrifuge) {
                     centrifuge.serverTick();
+                } else if (blockEntity instanceof AbstractCannerBlockEntity canner) {
+                    canner.serverTick();
+                } else if (blockEntity instanceof AbstractSolidCannerBlockEntity solidCanner) {
+                    solidCanner.serverTick();
                 }
             };
         }
@@ -246,6 +252,10 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
                 Containers.dropContents(level, pos, oreWasher);
             } else if (blockEntity instanceof AbstractThermalCentrifugeBlockEntity centrifuge) {
                 Containers.dropContents(level, pos, centrifuge);
+            } else if (blockEntity instanceof AbstractCannerBlockEntity canner) {
+                Containers.dropContents(level, pos, canner);
+            } else if (blockEntity instanceof AbstractSolidCannerBlockEntity solidCanner) {
+                Containers.dropContents(level, pos, solidCanner);
             } else if (blockEntity instanceof AbstractIronFurnaceBlockEntity furnace) {
                 Containers.dropContents(level, pos, furnace);
             } else if (blockEntity instanceof AbstractElectricFurnaceBlockEntity furnace) {

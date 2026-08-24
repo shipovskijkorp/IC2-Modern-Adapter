@@ -2,6 +2,8 @@ package com.shipovskijkorp.ic2modernadapter.machine;
 
 import com.shipovskijkorp.ic2modernadapter.IC2ModernAdapter;
 import com.shipovskijkorp.ic2modernadapter.menu.MachineMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.CannerMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.SolidCannerMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.MetalFormerMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.OreWashingPlantMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.ThermalCentrifugeMenu;
@@ -23,6 +25,14 @@ public final class MachinePlatform {
     private static final RegistryObject<MenuType<MachineMenu>> MACERATOR_MENU = registerStandardMenu(MachineSpec.MACERATOR);
     private static final RegistryObject<MenuType<MachineMenu>> COMPRESSOR_MENU = registerStandardMenu(MachineSpec.COMPRESSOR);
     private static final RegistryObject<MenuType<MachineMenu>> EXTRACTOR_MENU = registerStandardMenu(MachineSpec.EXTRACTOR);
+    private static final RegistryObject<MenuType<CannerMenu>> CANNER_MENU = MENUS.register(
+            "canner",
+            () -> new MenuType<>((id, inventory) -> new CannerMenu(menuType(MachineSpec.CANNER), id, inventory),
+                    FeatureFlags.DEFAULT_FLAGS));
+    private static final RegistryObject<MenuType<SolidCannerMenu>> SOLID_CANNER_MENU = MENUS.register(
+            "solid_canner",
+            () -> new MenuType<>((id, inventory) -> new SolidCannerMenu(menuType(MachineSpec.SOLID_CANNER), id, inventory),
+                    FeatureFlags.DEFAULT_FLAGS));
     private static final RegistryObject<MenuType<MetalFormerMenu>> METAL_FORMER_MENU = MENUS.register(
             "metal_former",
             () -> new MenuType<>((id, inventory) -> new MetalFormerMenu(menuType(MachineSpec.METAL_FORMER), id, inventory),
@@ -48,6 +58,12 @@ public final class MachinePlatform {
         }
         if (spec == MachineSpec.EXTRACTOR) {
             return (MenuType<T>) EXTRACTOR_MENU.get();
+        }
+        if (spec == MachineSpec.CANNER) {
+            return (MenuType<T>) CANNER_MENU.get();
+        }
+        if (spec == MachineSpec.SOLID_CANNER) {
+            return (MenuType<T>) SOLID_CANNER_MENU.get();
         }
         if (spec == MachineSpec.METAL_FORMER) {
             return (MenuType<T>) METAL_FORMER_MENU.get();

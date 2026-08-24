@@ -1,4 +1,9 @@
 {
   "ic2.potion.radiation": "Radiation",
-  "death.attack.radiation": "%1$s died from radiation"
+  "death.attack.radiation": "%1$s died from radiation",
+  "ic2.Canner.gui.switch.BottleSolid": "Canning",
+  "ic2.Canner.gui.switch.EmptyLiquid": "drain from Cell into Tank",
+  "ic2.Canner.gui.switch.BottleLiquid": "fill Cell from Tank",
+  "ic2.Canner.gui.switch.EnrichLiquid": "fluid enrich (Tank or Cell)",
+  "ic2.Canner.gui.switchTanks": "Switch Tanks"
 }

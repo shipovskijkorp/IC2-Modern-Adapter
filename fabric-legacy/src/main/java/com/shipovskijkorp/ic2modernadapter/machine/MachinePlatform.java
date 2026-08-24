@@ -2,6 +2,8 @@ package com.shipovskijkorp.ic2modernadapter.machine;
 
 import com.shipovskijkorp.ic2modernadapter.IC2ModernAdapter;
 import com.shipovskijkorp.ic2modernadapter.menu.MachineMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.CannerMenu;
+import com.shipovskijkorp.ic2modernadapter.menu.SolidCannerMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.MetalFormerMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.OreWashingPlantMenu;
 import com.shipovskijkorp.ic2modernadapter.menu.ThermalCentrifugeMenu;
@@ -24,6 +26,8 @@ public final class MachinePlatform {
         registerStandardMenu(MachineSpec.MACERATOR);
         registerStandardMenu(MachineSpec.COMPRESSOR);
         registerStandardMenu(MachineSpec.EXTRACTOR);
+        registerCannerMenu();
+        registerSolidCannerMenu();
         registerMetalFormerMenu();
         registerOreWashingMenu();
         registerThermalCentrifugeMenu();
@@ -58,6 +62,25 @@ public final class MachinePlatform {
                 new MenuType<>((id, inventory) -> new MachineMenu(menuType(spec), id, inventory, spec),
                         FeatureFlags.DEFAULT_FLAGS));
         MACHINE_MENUS.put(spec, menu);
+    }
+
+
+    private static void registerCannerMenu() {
+        MenuType<CannerMenu> menu = Registry.register(
+                BuiltInRegistries.MENU,
+                new ResourceLocation(IC2ModernAdapter.MOD_ID, "canner"),
+                new MenuType<>((id, inventory) -> new CannerMenu(menuType(MachineSpec.CANNER), id, inventory),
+                        FeatureFlags.DEFAULT_FLAGS));
+        MACHINE_MENUS.put(MachineSpec.CANNER, menu);
+    }
+
+    private static void registerSolidCannerMenu() {
+        MenuType<SolidCannerMenu> menu = Registry.register(
+                BuiltInRegistries.MENU,
+                new ResourceLocation(IC2ModernAdapter.MOD_ID, "solid_canner"),
+                new MenuType<>((id, inventory) -> new SolidCannerMenu(menuType(MachineSpec.SOLID_CANNER), id, inventory),
+                        FeatureFlags.DEFAULT_FLAGS));
+        MACHINE_MENUS.put(MachineSpec.SOLID_CANNER, menu);
     }
 
     private static void registerMetalFormerMenu() {

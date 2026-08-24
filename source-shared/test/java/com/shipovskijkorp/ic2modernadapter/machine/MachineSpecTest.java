@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 class MachineSpecTest {
     @Test
     void matchesCanonicalImplementedMachines() {
+        assertMachine(MachineSpec.CANNER, "canner", "te/canner", 41, 42,
+                4L, 200, 800L, 1, MachineSpec.ProgressStyle.CANNING, MachineSpec.Kind.CANNER);
         assertMachine(MachineSpec.COMPRESSOR, "compressor", "te/compressor", 42, 43,
                 2L, 300, 600L, 1, MachineSpec.ProgressStyle.TRIANGLE, MachineSpec.Kind.STANDARD);
         assertMachine(MachineSpec.EXTRACTOR, "extractor", "te/extractor", 44, 45,
@@ -19,9 +21,11 @@ class MachineSpecTest {
                 10L, 200, 2_000L, 1, MachineSpec.ProgressStyle.METAL_FORMER, MachineSpec.Kind.METAL_FORMER);
         assertMachine(MachineSpec.ORE_WASHING_PLANT, "ore_washing_plant", "te/ore_washing_plant", 55, 56,
                 16L, 500, 8_000L, 1, MachineSpec.ProgressStyle.ORE_WASHING, MachineSpec.Kind.ORE_WASHING);
+        assertMachine(MachineSpec.SOLID_CANNER, "solid_canner", "te/solid_canner", 48, 49,
+                2L, 200, 400L, 1, MachineSpec.ProgressStyle.CANNING, MachineSpec.Kind.SOLID_CANNER);
         assertMachine(MachineSpec.THERMAL_CENTRIFUGE, "centrifuge", "te/centrifuge", 51, 52,
                 48L, 500, 10_000L, 2, MachineSpec.ProgressStyle.CENTRIFUGE, MachineSpec.Kind.THERMAL_CENTRIFUGE);
-        assertEquals(6, MachineSpec.values().length);
+        assertEquals(8, MachineSpec.values().length);
     }
 
     @Test

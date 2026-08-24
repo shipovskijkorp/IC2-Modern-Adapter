@@ -18,6 +18,8 @@ class InDevContentTest {
                 "te/iron_furnace",
                 "te/electric_furnace",
                 "te/induction_furnace",
+                "te/canner",
+                "te/solid_canner",
                 "te/metal_former",
                 "te/ore_washing_plant",
                 "te/centrifuge",

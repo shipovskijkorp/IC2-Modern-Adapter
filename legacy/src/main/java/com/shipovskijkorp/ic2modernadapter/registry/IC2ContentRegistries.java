@@ -9,6 +9,8 @@ import com.shipovskijkorp.ic2modernadapter.furnace.IronFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.ElectricFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.InductionFurnaceBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MachineBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.CannerBlockEntity;
+import com.shipovskijkorp.ic2modernadapter.machine.SolidCannerBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.MetalFormerBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.OreWashingPlantBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.machine.ThermalCentrifugeBlockEntity;
@@ -273,6 +275,8 @@ public final class IC2ContentRegistries {
             case METAL_FORMER -> new MetalFormerBlockEntity(pos, state);
             case ORE_WASHING -> new OreWashingPlantBlockEntity(pos, state);
             case THERMAL_CENTRIFUGE -> new ThermalCentrifugeBlockEntity(pos, state);
+            case CANNER -> new CannerBlockEntity(pos, state);
+            case SOLID_CANNER -> new SolidCannerBlockEntity(pos, state);
         };
     }
 
