@@ -476,7 +476,7 @@ public final class LegacyRecipeRuntime {
             case "oreCopper" -> "minecraft:copper_ore".equals(itemId(stack)) || matchesCommonTag(stack, "ores/copper");
             case "oreTin" -> matchesVariantOrCommonTag(stack, stacks, "resource/tin_ore", "ores/tin");
             case "oreLead" -> matchesVariantOrCommonTag(stack, stacks, "resource/lead_ore", "ores/lead");
-            case "oreSilver" -> matchesCommonTag(stack, "ores/silver");
+            case "oreSilver" -> matchesVariantOrCommonTag(stack, stacks, "resource/silver_ore", "ores/silver");
             case "oreUranium" -> matchesVariantOrCommonTag(stack, stacks, "resource/uranium_ore", "ores/uranium");
             case "enderpearl" -> "minecraft:ender_pearl".equals(itemId(stack)) || matchesCommonTag(stack, "ender_pearls");
             case "plateDenseBronze" -> matchesVariant(stack, stacks, "plate/dense_bronze");
@@ -717,7 +717,7 @@ public final class LegacyRecipeRuntime {
             case "oreGold" -> stackForItemId("minecraft:gold_ore");
             case "oreIron" -> stackForItemId("minecraft:iron_ore");
             case "oreCopper" -> stackForItemId("minecraft:copper_ore");
-            case "oreSilver" -> ItemStack.EMPTY;
+            case "oreSilver" -> stacks.createVariant("resource/silver_ore");
             case "enderpearl" -> stackForItemId("minecraft:ender_pearl");
             case "ingotCopper" -> stackForItemId("minecraft:copper_ingot");
             case "ingotIron" -> stackForItemId("minecraft:iron_ingot");

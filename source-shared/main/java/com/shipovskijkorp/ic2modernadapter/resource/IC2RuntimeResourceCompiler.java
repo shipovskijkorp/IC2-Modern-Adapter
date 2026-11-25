@@ -13,10 +13,12 @@ import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
 import com.shipovskijkorp.ic2modernadapter.machine.LegacyMachineRecipeCompiler;
 import com.shipovskijkorp.ic2modernadapter.machine.LegacyMachineRecipeRegistry;
+import com.shipovskijkorp.ic2modernadapter.worldgen.SilverOreVariant;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyRecipeCompiler;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -38,6 +40,7 @@ import javax.imageio.ImageIO;
  * Nothing is written to disk and no original IC2 class is loaded.</p>
  */
 public final class IC2RuntimeResourceCompiler {
+    private static final String SILVER_MODEL = "ic2:block/ic2ma_generated/silver_ore";
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     private static final OriginalContentManifest MANIFEST = OriginalContentManifest.get();
     private static final List<String> LEGACY_BLOCKSTATE_NAMES = List.of(
@@ -77,6 +80,7 @@ public final class IC2RuntimeResourceCompiler {
         normalizeLegacyTextureLayout(resources);
         normalizeLegacyArmorTextures(resources);
         normalizeLegacyModelTextures(resources);
+        compileSilverOreAssets(resources);
         compileLanguages(archive, resources);
 
         Map<String, JsonObject> legacyBlockstates = loadLegacyBlockstates(archive);
@@ -193,6 +197,21 @@ public final class IC2RuntimeResourceCompiler {
         return id;
     }
 
+    /** The extension model shares the original ic2:resource registry identity. */
+    static void compileSilverOreAssets(Map<String, byte[]> output) throws IOException {
+        String source = "/assets/ic2_modern_adapter/textures/block/silver_ore.png";
+        try (InputStream stream = IC2RuntimeResourceCompiler.class.getResourceAsStream(source)) {
+            if (stream == null) throw new IOException("Silver ore texture is missing: " + source);
+            output.put("textures/block/ic2ma_generated/silver_ore.png", stream.readAllBytes());
+        }
+        JsonObject model = new JsonObject();
+        model.addProperty("parent", "minecraft:block/cube_all");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("all", "ic2:block/ic2ma_generated/silver_ore");
+        model.add("textures", textures);
+        putJson(output, "models/block/ic2ma_generated/silver_ore.json", model);
+    }
+
     /** Converts IC2's custom UTF-8 property bundles into modern Minecraft language JSON. */
     private static void compileLanguages(OriginalIc2Archive archive, Map<String, byte[]> output) throws IOException {
         int converted = 0;
@@ -218,6 +237,8 @@ public final class IC2RuntimeResourceCompiler {
             // always sourced from the user's original language file.
             OriginalTranslationKeys.generatedCompatibilityTranslations()
                     .forEach((key, value) -> language.addProperty(key, value));
+            if ("ru_ru".equals(locale)) language.addProperty("ic2.resource.silver_ore", "Серебряная руда");
+            if ("en_us".equals(locale)) language.addProperty("ic2.resource.silver_ore", "Silver Ore");
 
             putJson(output, "lang/" + locale + ".json", language);
             converted++;
@@ -429,9 +450,16 @@ public final class IC2RuntimeResourceCompiler {
             JsonElement fallback = normalizeModelDescriptor(
                     requireElement(typeMap, suffix(variants.get(0).key())));
             for (int index = 0; index <= LegacyVariantBlock.MAX_VARIANT_INDEX; index++) {
-                JsonElement descriptor = index < variants.size()
-                        ? normalizeModelDescriptor(requireElement(typeMap, suffix(variants.get(index).key())))
-                        : fallback.deepCopy();
+                JsonElement descriptor;
+                if ("resource".equals(blockPath) && index == SilverOreVariant.INDEX) {
+                    JsonObject silver = new JsonObject();
+                    silver.addProperty("model", SILVER_MODEL);
+                    descriptor = silver;
+                } else {
+                    descriptor = index < variants.size()
+                            ? normalizeModelDescriptor(requireElement(typeMap, suffix(variants.get(index).key())))
+                            : fallback.deepCopy();
+                }
                 modernVariants.add("variant=" + index, descriptor);
             }
         }
@@ -589,6 +617,14 @@ public final class IC2RuntimeResourceCompiler {
             override.add("predicate", predicate);
             override.addProperty("model", model);
             overrides.add(override);
+        }
+        if ("resource".equals(blockPath)) {
+            JsonObject silver = new JsonObject();
+            JsonObject predicate = new JsonObject();
+            predicate.addProperty("custom_model_data", SilverOreVariant.MODEL_DATA);
+            silver.add("predicate", predicate);
+            silver.addProperty("model", SILVER_MODEL);
+            overrides.add(silver);
         }
         result.add("overrides", overrides);
         return result;

@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:stony_peaks",
+    "minecraft:jagged_peaks",
+    "minecraft:frozen_peaks",
+    "minecraft:snowy_slopes",
+    "minecraft:grove",
+    "minecraft:meadow"
+  ],
+  "features": "ic2_modern_adapter:silver_ore_mountains",
+  "step": "underground_ores"
+}

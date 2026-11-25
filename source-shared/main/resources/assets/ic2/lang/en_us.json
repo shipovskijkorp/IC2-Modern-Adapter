@@ -5,5 +5,6 @@
   "ic2.Canner.gui.switch.EmptyLiquid": "drain from Cell into Tank",
   "ic2.Canner.gui.switch.BottleLiquid": "fill Cell from Tank",
   "ic2.Canner.gui.switch.EnrichLiquid": "fluid enrich (Tank or Cell)",
-  "ic2.Canner.gui.switchTanks": "Switch Tanks"
+  "ic2.Canner.gui.switchTanks": "Switch Tanks",
+  "ic2.resource.silver_ore": "Silver Ore"
 }

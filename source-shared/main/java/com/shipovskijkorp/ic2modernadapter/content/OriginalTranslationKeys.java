@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.content;
 
+import com.shipovskijkorp.ic2modernadapter.worldgen.SilverOreVariant;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,9 @@ public final class OriginalTranslationKeys {
      * IC2's old localization loader added its {@code ic2.} namespace prefix.
      */
     public static String legacyItemKey(String itemPath, String variantKey) {
+        if ("resource".equals(itemPath) && SilverOreVariant.KEY.equals(variantKey)) {
+            return "resource.silver_ore";
+        }
         if (variantKey != null && !variantKey.isBlank()) {
             try {
                 OriginalContentManifest.StackVariant variant = MANIFEST.stackVariant(variantKey);

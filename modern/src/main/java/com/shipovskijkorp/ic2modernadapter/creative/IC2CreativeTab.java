@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.creative;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalCreativeTabLayout;
+import com.shipovskijkorp.ic2modernadapter.worldgen.OreContent;
 import com.shipovskijkorp.ic2modernadapter.energy.item.EuElectricItemSpec;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
@@ -23,8 +24,10 @@ public final class IC2CreativeTab {
                 .icon(() -> IC2ContentRegistries.item(OriginalCreativeTabLayout.ICON_ITEM_PATH)
                         .get()
                         .getDefaultInstance())
-                .displayItems((parameters, output) -> OriginalCreativeTabLayout.entries().forEach(entry ->
-                        acceptEntry(output, entry)))
+                .displayItems((parameters, output) -> {
+                    OriginalCreativeTabLayout.entries().forEach(entry -> acceptEntry(output, entry));
+                    OreContent.creativeItems().forEach(output::accept);
+                })
                 .build());
     }
 

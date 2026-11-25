@@ -8,6 +8,8 @@ import com.shipovskijkorp.ic2modernadapter.machine.MachinePlatform;
 import com.shipovskijkorp.ic2modernadapter.toolbox.ToolBoxPlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
+import com.shipovskijkorp.ic2modernadapter.worldgen.OreContent;
+import com.shipovskijkorp.ic2modernadapter.worldgen.OreWorldGen;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
 import net.fabricmc.api.ModInitializer;
 
@@ -18,6 +20,8 @@ public final class IC2ModernAdapter implements ModInitializer {
     @Override
     public void onInitialize() {
         IC2ContentRegistries.register();
+        OreContent.register();
+        OreWorldGen.register();
         IC2RuntimeResources.register();
         GeneratorPlatform.register();
         FurnacePlatform.register();

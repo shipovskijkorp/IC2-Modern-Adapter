@@ -2,6 +2,8 @@ package com.shipovskijkorp.ic2modernadapter.registry;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.PickableLegacyVariantBlock;
+import com.shipovskijkorp.ic2modernadapter.worldgen.SilverOreVariant;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyTeBlock;
 import com.shipovskijkorp.ic2modernadapter.generator.GeneratorBlockEntity;
 import com.shipovskijkorp.ic2modernadapter.furnace.FurnaceSpec;
@@ -228,7 +230,7 @@ public final class IC2ContentRegistries {
 
     private static Block createPlaceholderBlock(String path) {
         BlockBehaviour.Properties properties = placeholderProperties(path);
-        int variantCount = MANIFEST.stackVariants(path).size();
+        int variantCount = SilverOreVariant.variantCount(path, MANIFEST.stackVariants(path).size());
         if ("te".equals(path)) {
             return new LegacyTeBlock(
                     properties,
@@ -241,7 +243,7 @@ public final class IC2ContentRegistries {
                     IC2VariantStacks::create);
         }
         if (variantCount > 1) {
-            return new LegacyVariantBlock(properties, variantCount, IC2VariantStacks::placementVariantIndex);
+            return new PickableLegacyVariantBlock(properties, path, variantCount, IC2VariantStacks::placementVariantIndex);
         }
         return switch (path) {
             case "rubber_wood" -> new RotatedPillarBlock(properties);
@@ -253,7 +255,9 @@ public final class IC2ContentRegistries {
     }
 
     private static BlockBehaviour.Properties placeholderProperties(String path) {
-        BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().strength(1.0F);
+        BlockBehaviour.Properties properties = "resource".equals(path)
+                ? BlockBehaviour.Properties.of().strength(3.0F).requiresCorrectToolForDrops()
+                : BlockBehaviour.Properties.of().strength(1.0F);
         if ("te".equals(path)
                 || "leaves".equals(path)
                 || "sapling".equals(path)

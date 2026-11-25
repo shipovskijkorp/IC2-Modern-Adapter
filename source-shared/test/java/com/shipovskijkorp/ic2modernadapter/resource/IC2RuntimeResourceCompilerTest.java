@@ -71,6 +71,18 @@ class IC2RuntimeResourceCompilerTest {
     }
 
     @Test
+    void publishesSilverAsAnIc2ResourceBlockModel() throws java.io.IOException {
+        Map<String, byte[]> output = new LinkedHashMap<>();
+        IC2RuntimeResourceCompiler.compileSilverOreAssets(output);
+        assertTrue(output.get("textures/block/ic2ma_generated/silver_ore.png").length > 0);
+        JsonObject model = JsonParser.parseString(new String(
+                output.get("models/block/ic2ma_generated/silver_ore.json"), StandardCharsets.UTF_8))
+                .getAsJsonObject();
+        assertEquals("ic2:block/ic2ma_generated/silver_ore",
+                model.getAsJsonObject("textures").get("all").getAsString());
+    }
+
+    @Test
     void leavesNonIc2TextureIdsUntouched() {
         assertEquals("minecraft:block/stone",
                 IC2RuntimeResourceCompiler.normalizeLegacyTextureId("minecraft:block/stone"));

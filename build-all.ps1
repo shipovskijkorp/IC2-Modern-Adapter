@@ -1,3 +1,7 @@
+param(
+    [switch]$SkipModernTests
+)
+
 $ErrorActionPreference = "Stop"
 
 $root = $PSScriptRoot
@@ -42,7 +46,13 @@ foreach ($family in $families) {
     Write-Host "==> Building $family family"
     Push-Location $familyDir
     try {
-        & .\gradlew.bat buildAndCollect --no-daemon
+        $gradleArgs = @("buildAndCollect", "--no-daemon")
+        if ($SkipModernTests -and $family -eq "modern") {
+            Write-Host "==> Skipping modern unit tests; disabling configuration cache for this invocation"
+            $gradleArgs += @("--no-configuration-cache", "-x", "test")
+        }
+
+        & .\gradlew.bat @gradleArgs
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     } finally {
         Pop-Location

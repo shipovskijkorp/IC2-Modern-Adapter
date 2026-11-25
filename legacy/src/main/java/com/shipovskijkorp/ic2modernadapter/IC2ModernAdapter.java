@@ -9,6 +9,7 @@ import com.shipovskijkorp.ic2modernadapter.machine.MachinePlatform;
 import com.shipovskijkorp.ic2modernadapter.toolbox.ToolBoxPlatform;
 import com.shipovskijkorp.ic2modernadapter.energy.storage.EuStoragePlatform;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2ContentRegistries;
+import com.shipovskijkorp.ic2modernadapter.worldgen.OreContent;
 import com.shipovskijkorp.ic2modernadapter.resource.IC2RuntimeResources;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,7 @@ public final class IC2ModernAdapter {
     public IC2ModernAdapter() {
         var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IC2ContentRegistries.register(modEventBus);
+        OreContent.register(modEventBus);
         GeneratorPlatform.register(modEventBus);
         FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);

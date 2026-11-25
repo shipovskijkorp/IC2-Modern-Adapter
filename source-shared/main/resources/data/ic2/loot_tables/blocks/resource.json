@@ -1,0 +1,410 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "0"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:0,ic2ma_variant:\"resource/basalt\",CustomModelData:1}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "1"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:2,ic2ma_variant:\"resource/lead_ore\",CustomModelData:2}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "2"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:3,ic2ma_variant:\"resource/tin_ore\",CustomModelData:3}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "3"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:4,ic2ma_variant:\"resource/uranium_ore\",CustomModelData:4}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "4"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:5,ic2ma_variant:\"resource/bronze_block\",CustomModelData:5}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "5"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:7,ic2ma_variant:\"resource/lead_block\",CustomModelData:6}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "6"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:8,ic2ma_variant:\"resource/steel_block\",CustomModelData:7}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "7"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:9,ic2ma_variant:\"resource/tin_block\",CustomModelData:8}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "8"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:10,ic2ma_variant:\"resource/uranium_block\",CustomModelData:9}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "9"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:11,ic2ma_variant:\"resource/reinforced_stone\",CustomModelData:10}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "10"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:12,ic2ma_variant:\"resource/machine\",CustomModelData:11}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "11"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:13,ic2ma_variant:\"resource/advanced_machine\",CustomModelData:12}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "12"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:14,ic2ma_variant:\"resource/reactor_vessel\",CustomModelData:13}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "13"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:15,ic2ma_variant:\"resource/silver_block\",CustomModelData:14}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:resource",
+          "properties": {
+            "variant": "14"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:resource",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{ic2ma_legacy_meta:16,ic2ma_variant:\"resource/silver_ore\",CustomModelData:15}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

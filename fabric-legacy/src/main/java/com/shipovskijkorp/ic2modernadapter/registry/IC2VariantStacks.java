@@ -2,6 +2,7 @@ package com.shipovskijkorp.ic2modernadapter.registry;
 
 import com.shipovskijkorp.ic2modernadapter.content.LegacyVariantNbt;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
+import com.shipovskijkorp.ic2modernadapter.worldgen.SilverOreVariant;
 import java.util.List;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,12 @@ public final class IC2VariantStacks {
     private static final OriginalContentManifest MANIFEST = OriginalContentManifest.get();
 
     public static ItemStack create(String variantKey) {
+        if (SilverOreVariant.KEY.equals(variantKey)) {
+            ItemStack stack = createDynamicVariant("resource", variantKey);
+            stack.getOrCreateTag().putInt(LegacyVariantNbt.LEGACY_META_KEY, SilverOreVariant.LEGACY_META);
+            stack.getOrCreateTag().putInt("CustomModelData", SilverOreVariant.MODEL_DATA);
+            return stack;
+        }
         return create(MANIFEST.stackVariant(variantKey));
     }
 
@@ -54,6 +61,9 @@ public final class IC2VariantStacks {
         String key = variantKey(stack);
         if (key == null) {
             return 0;
+        }
+        if (SilverOreVariant.KEY.equals(key)) {
+            return SilverOreVariant.INDEX;
         }
         try {
             return MANIFEST.stackVariantIndex(key);
