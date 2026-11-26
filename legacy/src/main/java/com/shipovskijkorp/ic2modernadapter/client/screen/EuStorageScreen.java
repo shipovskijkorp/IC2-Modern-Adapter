@@ -58,7 +58,7 @@ public final class EuStorageScreen extends AbstractContainerScreen<EuStorageMenu
         if (isHovering(REDSTONE_X, REDSTONE_Y, REDSTONE_SIZE, REDSTONE_SIZE, mouseX, mouseY)) {
             graphics.renderTooltip(
                     font,
-                    Component.translatable("ic2.EUStorage.gui.mod.redstone" + menu.getRedstoneMode()),
+                    Component.translatable((menu.isChargepad() ? "ic2.blockChargepad.gui.mod.redstone" : "ic2.EUStorage.gui.mod.redstone") + menu.getRedstoneMode()),
                     mouseX,
                     mouseY);
         }

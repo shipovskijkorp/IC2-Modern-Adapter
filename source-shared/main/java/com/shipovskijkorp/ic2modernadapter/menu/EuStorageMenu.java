@@ -40,6 +40,7 @@ public final class EuStorageMenu extends AbstractContainerMenu {
 
         // ContainerElectricBlock: charge at 56/17, discharge at 56/53.
         addSlot(new Slot(container, AbstractEuStorageBlockEntity.SLOT_CHARGE, 56, 17) {
+            @Override public int getMaxStackSize() { return 1; }
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return container.canPlaceItem(AbstractEuStorageBlockEntity.SLOT_CHARGE, stack);
@@ -155,6 +156,8 @@ public final class EuStorageMenu extends AbstractContainerMenu {
     public int getOutputEuPerTick() {
         return data.get(AbstractEuStorageBlockEntity.DATA_OUTPUT);
     }
+
+    public boolean isChargepad() { return data.get(AbstractEuStorageBlockEntity.DATA_CHARGEPAD) != 0; }
 
     public int getRedstoneMode() {
         return data.get(AbstractEuStorageBlockEntity.DATA_REDSTONE_MODE);

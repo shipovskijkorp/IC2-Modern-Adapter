@@ -227,6 +227,9 @@ public final class OriginalCreativeTabLayout {
             }
 
             for (OriginalContentManifest.StackVariant variant : variants) {
+                if (VanillaBasalt.LEGACY_KEY.equals(variant.key())) {
+                    continue;
+                }
                 if (!includeHidden && !variant.creativeVisible()) {
                     continue;
                 }

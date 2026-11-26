@@ -75,6 +75,17 @@ class OriginalCreativeTabLayoutTest {
     }
 
     @Test
+    void retiredBasaltIsAbsentFromBothCataloguesButItsIndexIsReserved() {
+        assertFalse(OriginalCreativeTabLayout.entries().stream()
+                .anyMatch(entry -> VanillaBasalt.LEGACY_KEY.equals(entry.variantKey())));
+        assertFalse(OriginalCreativeTabLayout.allEntries().stream()
+                .anyMatch(entry -> VanillaBasalt.LEGACY_KEY.equals(entry.variantKey())));
+        assertEquals(0, MANIFEST.stackVariantIndex(VanillaBasalt.LEGACY_KEY));
+        assertEquals(1, MANIFEST.stackVariantIndex("resource/lead_ore"));
+        assertEquals(2, MANIFEST.stackVariantIndex("resource/tin_ore"));
+    }
+
+    @Test
     void usesOriginalTabIdentity() {
         assertEquals("itemGroup.IC2", OriginalCreativeTabLayout.TITLE_TRANSLATION_KEY);
         assertEquals("mining_laser", OriginalCreativeTabLayout.ICON_ITEM_PATH);

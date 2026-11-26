@@ -108,6 +108,20 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
     }
 
     @Override
+    public net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext context) {
+        EuStorageSpec spec = EuStorageSpec.fromBlockState(state);
+        return spec != null && spec.isChargepad() ? box(0, 0, 0, 16, 15, 16) : super.getShape(state, level, pos, context);
+    }
+
+    @Override
+    public net.minecraft.world.phys.shapes.VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
+            net.minecraft.world.phys.shapes.CollisionContext context) {
+        EuStorageSpec spec = EuStorageSpec.fromBlockState(state);
+        return spec != null && spec.isChargepad() ? box(0, 0, 0, 16, 15, 16) : super.getCollisionShape(state, level, pos, context);
+    }
+
+    @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         String implementedVariant = null;
         if (isGenerator(state)) {
@@ -304,6 +318,15 @@ public final class LegacyTeBlock extends LegacyVariantFacingBlock implements Ent
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
+        EuStorageSpec storage = EuStorageSpec.fromBlockState(state);
+        if (storage != null && storage.isChargepad()) {
+            if (state.getValue(ACTIVE) && random.nextInt(8) == 0) {
+                for (int i = 0; i < 20; i++) level.addParticle(ParticleTypes.ELECTRIC_SPARK,
+                        pos.getX() + random.nextDouble(), pos.getY() + 0.94 + random.nextDouble(),
+                        pos.getZ() + random.nextDouble(), 0, 0.1, 0);
+            }
+            return;
+        }
         boolean showFlames = isGenerator(state) || FurnaceSpec.fromBlockState(state) == FurnaceSpec.IRON;
         if (!showFlames || !state.getValue(ACTIVE) || random.nextInt(8) != 0) {
             return;

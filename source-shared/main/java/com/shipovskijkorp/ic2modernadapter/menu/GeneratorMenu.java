@@ -40,6 +40,7 @@ public final class GeneratorMenu extends AbstractContainerMenu {
 
         // guidef/generator.xml stores the 18x18 frame at x=56/y=16 and x=56/y=52.
         addSlot(new Slot(container, GeneratorBlockEntityBase.SLOT_CHARGE, 57, 17) {
+            @Override public int getMaxStackSize() { return 1; }
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return GeneratorBlockEntityBase.isChargeItem(stack);

@@ -1,6 +1,8 @@
 package com.shipovskijkorp.ic2modernadapter.registry;
 
 import com.shipovskijkorp.ic2modernadapter.content.LegacyVariantNbt;
+import com.shipovskijkorp.ic2modernadapter.content.VanillaBasalt;
+import net.minecraft.world.item.Items;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
 import com.shipovskijkorp.ic2modernadapter.worldgen.SilverOreVariant;
 import java.util.List;
@@ -24,6 +26,9 @@ public final class IC2VariantStacks {
     }
 
     public static ItemStack create(OriginalContentManifest.StackVariant variant) {
+        if (VanillaBasalt.LEGACY_KEY.equals(variant.key())) {
+            return new ItemStack(Items.BASALT);
+        }
         ResourceLocation id = new ResourceLocation(MANIFEST.namespace(), variant.item());
         Item item = ForgeRegistries.ITEMS.getValue(id);
         if (item == null) {
@@ -39,6 +44,9 @@ public final class IC2VariantStacks {
 
     /** Creates an original dynamic NBT subtype that is intentionally not part of the finite manifest. */
     public static ItemStack createDynamicVariant(String itemPath, String variantKey) {
+        if ("resource".equals(itemPath) && VanillaBasalt.LEGACY_KEY.equals(variantKey)) {
+            return new ItemStack(Items.BASALT);
+        }
         ResourceLocation id = new ResourceLocation(MANIFEST.namespace(), itemPath);
         Item item = ForgeRegistries.ITEMS.getValue(id);
         if (item == null) {
@@ -85,15 +93,25 @@ public final class IC2VariantStacks {
     }
 
     public static void setEuStored(ItemStack stack, long amount) {
-        if (stack == null || stack.isEmpty()) {
-            return;
-        }
-        var tag = stack.getOrCreateTag();
-        if (amount <= 0L) {
-            tag.remove("charge");
-        } else {
-            tag.putDouble("charge", (double) amount);
-        }
+        if (stack == null || stack.isEmpty()) return;
+        var tag = electricData(stack);
+        if (amount <= 0L) tag.remove("charge"); else tag.putDouble("charge", (double) amount);
+        setElectricData(stack, tag);
+    }
+    public static int chargeMode(ItemStack stack) {
+        int mode = electricData(stack).getByte("mode");
+        return mode >= 0 && mode <= 2 ? mode : 0;
+    }
+    public static void setChargeMode(ItemStack stack, int mode) {
+        var tag = electricData(stack);
+        if (mode <= 0 || mode > 2) tag.remove("mode"); else tag.putByte("mode", (byte)mode);
+        setElectricData(stack, tag);
+    }
+    public static net.minecraft.nbt.CompoundTag electricData(ItemStack stack) {
+        return stack.hasTag() ? stack.getTag().copy() : new net.minecraft.nbt.CompoundTag();
+    }
+    public static void setElectricData(ItemStack stack, net.minecraft.nbt.CompoundTag tag) {
+        stack.setTag(tag.isEmpty() ? null : tag);
     }
 
     public static long blockEntityEnergy(ItemStack stack) {
@@ -116,7 +134,9 @@ public final class IC2VariantStacks {
     }
 
     public static List<ItemStack> createAll() {
-        return MANIFEST.stackVariants().stream().map(IC2VariantStacks::create).toList();
+        return MANIFEST.stackVariants().stream()
+                .filter(variant -> !VanillaBasalt.LEGACY_KEY.equals(variant.key()))
+                .map(IC2VariantStacks::create).toList();
     }
 
     private IC2VariantStacks() {

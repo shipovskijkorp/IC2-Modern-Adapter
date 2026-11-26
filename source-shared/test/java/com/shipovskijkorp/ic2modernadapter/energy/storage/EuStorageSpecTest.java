@@ -14,7 +14,11 @@ class EuStorageSpecTest {
         assertStorage(EuStorageSpec.CESU, "cesu", "te/cesu", 75, 73, 2, 128L, 300_000L);
         assertStorage(EuStorageSpec.MFE, "mfe", "te/mfe", 76, 74, 3, 512L, 4_000_000L);
         assertStorage(EuStorageSpec.MFSU, "mfsu", "te/mfsu", 77, 75, 4, 2_048L, 40_000_000L);
-        assertEquals(4, EuStorageSpec.values().length);
+        assertStorage(EuStorageSpec.CHARGEPAD_BATBOX, "chargepad_batbox", "te/chargepad_batbox", 70, 68, 1, 32L, 40_000L);
+        assertStorage(EuStorageSpec.CHARGEPAD_CESU, "chargepad_cesu", "te/chargepad_cesu", 71, 69, 2, 128L, 300_000L);
+        assertStorage(EuStorageSpec.CHARGEPAD_MFE, "chargepad_mfe", "te/chargepad_mfe", 72, 70, 3, 512L, 4_000_000L);
+        assertStorage(EuStorageSpec.CHARGEPAD_MFSU, "chargepad_mfsu", "te/chargepad_mfsu", 73, 71, 4, 2_048L, 40_000_000L);
+        assertEquals(8, EuStorageSpec.values().length);
     }
 
     @Test

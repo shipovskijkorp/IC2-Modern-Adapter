@@ -88,15 +88,15 @@ public final class OriginalItemModels {
     public static String dynamicDefaultModel(String itemPath) {
         return switch (itemPath) {
             // The original battery mesh definition selected levels 0..4 from charge/damage. A
-            // newly-created/default visual stack is represented with the level-4 model.
-            case "re_battery" -> "battery/re_battery_4";
-            case "advanced_re_battery" -> "battery/advanced_re_battery_4";
-            case "energy_crystal" -> "battery/energy_crystal_4";
-            case "lapotron_crystal" -> "battery/lapotron_crystal_4";
-            case "charging_re_battery" -> "battery/charging_re_battery_4";
-            case "advanced_charging_re_battery" -> "battery/advanced_charging_re_battery_4";
-            case "charging_energy_crystal" -> "battery/charging_energy_crystal_4";
-            case "charging_lapotron_crystal" -> "battery/charging_lapotron_crystal_4";
+            // empty visual stack is represented with the level-0 model.
+            case "re_battery" -> "battery/re_battery_0";
+            case "advanced_re_battery" -> "battery/advanced_re_battery_0";
+            case "energy_crystal" -> "battery/energy_crystal_0";
+            case "lapotron_crystal" -> "battery/lapotron_crystal_0";
+            case "charging_re_battery" -> "battery/charging_re_battery_0";
+            case "advanced_charging_re_battery" -> "battery/advanced_charging_re_battery_0";
+            case "charging_energy_crystal" -> "battery/charging_energy_crystal_0";
+            case "charging_lapotron_crystal" -> "battery/charging_lapotron_crystal_0";
 
             case "uranium_fuel_rod" -> "reactor/fuel_rod/uranium";
             case "dual_uranium_fuel_rod" -> "reactor/fuel_rod/dual_uranium";

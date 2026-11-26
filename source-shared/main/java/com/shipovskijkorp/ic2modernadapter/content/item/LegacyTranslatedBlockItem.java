@@ -1,6 +1,8 @@
 package com.shipovskijkorp.ic2modernadapter.content.item;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalTranslationKeys;
+import com.shipovskijkorp.ic2modernadapter.content.VanillaBasalt;
+import net.minecraft.world.item.Items;
 import java.util.Objects;
 import java.util.function.Function;
 import net.minecraft.world.item.BlockItem;
@@ -24,11 +26,16 @@ public class LegacyTranslatedBlockItem extends BlockItem {
 
     @Override
     public String getDescriptionId() {
+        if ("resource".equals(itemPath)) return Items.BASALT.getDescriptionId();
         return OriginalTranslationKeys.itemDescriptionId(itemPath, null);
     }
 
     @Override
     public String getDescriptionId(ItemStack stack) {
-        return OriginalTranslationKeys.itemDescriptionId(itemPath, variantResolver.apply(stack));
+        String key = variantResolver.apply(stack);
+        if ("resource".equals(itemPath) && (key == null || VanillaBasalt.LEGACY_KEY.equals(key))) {
+            return Items.BASALT.getDescriptionId();
+        }
+        return OriginalTranslationKeys.itemDescriptionId(itemPath, key);
     }
 }

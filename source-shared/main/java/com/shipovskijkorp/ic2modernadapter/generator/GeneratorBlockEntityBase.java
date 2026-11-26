@@ -2,7 +2,7 @@ package com.shipovskijkorp.ic2modernadapter.generator;
 
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantFacingBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.api.IEuEnergyStorage;
-import com.shipovskijkorp.ic2modernadapter.energy.item.IEuElectricItem;
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuItemManager;
 import com.shipovskijkorp.ic2modernadapter.energy.net.EuNetwork;
 import com.shipovskijkorp.ic2modernadapter.energy.util.EuUtil;
 import com.shipovskijkorp.ic2modernadapter.menu.GeneratorMenu;
@@ -147,18 +147,7 @@ public abstract class GeneratorBlockEntityBase extends BlockEntity implements Wo
 
     private boolean chargeItem() {
         ItemStack stack = items.get(SLOT_CHARGE);
-        if (!(stack.getItem() instanceof IEuElectricItem electricItem)) {
-            return false;
-        }
-        if (!electricItem.canChargeFromTier(stack, GeneratorConstants.TIER) || energy <= 0L) {
-            return false;
-        }
-
-        long chargeBudget = Math.min(energy, Math.max(0L, electricItem.getEuTransferLimit(stack)));
-        if (chargeBudget <= 0L) {
-            return false;
-        }
-        long accepted = electricItem.insertEu(stack, chargeBudget, false);
+        long accepted = EuItemManager.charge(stack, energy, GeneratorConstants.TIER, false, false);
         if (accepted <= 0L) {
             return false;
         }
@@ -231,10 +220,7 @@ public abstract class GeneratorBlockEntityBase extends BlockEntity implements Wo
     }
 
     public static boolean isChargeItem(ItemStack stack) {
-        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof IEuElectricItem electricItem)) {
-            return false;
-        }
-        return electricItem.canChargeFromTier(stack, GeneratorConstants.TIER);
+        return EuItemManager.charge(stack, Long.MAX_VALUE, GeneratorConstants.TIER, true, true) > 0;
     }
 
     @Override

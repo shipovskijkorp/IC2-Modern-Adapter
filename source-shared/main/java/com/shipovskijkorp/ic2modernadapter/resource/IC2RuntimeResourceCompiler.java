@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
+import com.shipovskijkorp.ic2modernadapter.content.VanillaBasalt;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalItemModels;
 import com.shipovskijkorp.ic2modernadapter.content.OriginalTranslationKeys;
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantBlock;
@@ -78,6 +79,8 @@ public final class IC2RuntimeResourceCompiler {
         }
 
         normalizeLegacyTextureLayout(resources);
+        resources.remove("models/block/resource/basalt.json");
+        resources.remove("textures/block/resource/basalt.png");
         normalizeLegacyArmorTextures(resources);
         normalizeLegacyModelTextures(resources);
         compileSilverOreAssets(resources);
@@ -138,6 +141,12 @@ public final class IC2RuntimeResourceCompiler {
                 Map.entry("textures/armor/hazmat_1.png", "textures/models/armor/hazmat_layer_1.png"),
                 Map.entry("textures/armor/hazmat_2.png", "textures/models/armor/hazmat_layer_2.png"),
                 Map.entry("textures/armor/rubber_1.png", "textures/models/armor/rubber_layer_1.png"));
+        for (String name : List.of("advbatpack", "batpack", "energypack", "jetpack", "lappack", "nano", "nightvision", "quantum", "solar")) {
+            for (int layer = 1; layer <= 2; layer++) {
+                byte[] bytes = resources.get("textures/armor/" + name + "_" + layer + ".png");
+                if (bytes != null) resources.putIfAbsent("textures/models/armor/" + name + "_layer_" + layer + ".png", bytes);
+            }
+        }
         for (Map.Entry<String, String> entry : layers.entrySet()) {
             byte[] data = resources.get(entry.getKey());
             if (data != null) {
@@ -461,7 +470,7 @@ public final class IC2RuntimeResourceCompiler {
         return vector;
     }
 
-    private static JsonObject compileTypeVariants(String blockPath, JsonObject oldState) {
+    static JsonObject compileTypeVariants(String blockPath, JsonObject oldState) {
         JsonObject typeMap = requireObject(requireObject(oldState, "variants"), "type");
         List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(blockPath);
 
@@ -470,11 +479,19 @@ public final class IC2RuntimeResourceCompiler {
             String sourceName = variants.isEmpty() ? firstKey(typeMap) : suffix(variants.get(0).key());
             modernVariants.add("", normalizeModelDescriptor(requireElement(typeMap, sourceName)));
         } else {
-            JsonElement fallback = normalizeModelDescriptor(
-                    requireElement(typeMap, suffix(variants.get(0).key())));
+            JsonElement fallback;
+            if ("resource".equals(blockPath)) {
+                JsonObject basalt = new JsonObject();
+                basalt.addProperty("model", VanillaBasalt.BLOCK_MODEL);
+                fallback = basalt;
+            } else {
+                fallback = normalizeModelDescriptor(requireElement(typeMap, suffix(variants.get(0).key())));
+            }
             for (int index = 0; index <= LegacyVariantBlock.MAX_VARIANT_INDEX; index++) {
                 JsonElement descriptor;
-                if ("resource".equals(blockPath) && index == SilverOreVariant.INDEX) {
+                if (VanillaBasalt.isLegacyState(blockPath, index)) {
+                    descriptor = fallback.deepCopy();
+                } else if ("resource".equals(blockPath) && index == SilverOreVariant.INDEX) {
                     JsonObject silver = new JsonObject();
                     silver.addProperty("model", SILVER_MODEL);
                     descriptor = silver;
@@ -626,7 +643,7 @@ public final class IC2RuntimeResourceCompiler {
         }
     }
 
-    private static JsonObject compileVariantItemModel(
+    static JsonObject compileVariantItemModel(
             String blockPath,
             JsonObject oldState,
             List<OriginalContentManifest.StackVariant> variants,
@@ -705,6 +722,9 @@ public final class IC2RuntimeResourceCompiler {
     }
 
     private static String modelForLegacyVariant(String blockPath, JsonObject oldState, String variantName) {
+        if ("resource".equals(blockPath) && "basalt".equals(variantName)) {
+            return VanillaBasalt.BLOCK_MODEL;
+        }
         JsonObject variantsNode = requireObject(oldState, "variants");
         JsonObject typeMap = requireObject(variantsNode, "type");
         return modelId(requireElement(typeMap, variantName));
@@ -783,6 +803,26 @@ public final class IC2RuntimeResourceCompiler {
             List<OriginalContentManifest.StackVariant> variants = MANIFEST.stackVariants(itemPath);
             if (!variants.isEmpty()) {
                 putJson(output, rootPath, compileFiniteStandaloneItemModel(itemPath, variants, output));
+                continue;
+            }
+
+            var electric = com.shipovskijkorp.ic2modernadapter.energy.item.EuElectricItemSpec.fromItemPath(itemPath);
+            if (electric != null && electric.isBattery()) {
+                JsonObject model = aliasItemModel("battery/" + itemPath + "_0");
+                JsonArray overrides = new JsonArray();
+                for (int level = 0; level <= 4; level++) {
+                    String original = "battery/" + itemPath + "_" + level;
+                    requireItemModel(output, original, itemPath);
+                    if (level == 0) continue;
+                    JsonObject predicate = new JsonObject();
+                    predicate.addProperty("ic2:charge_level", level / 4.0F);
+                    JsonObject override = new JsonObject();
+                    override.add("predicate", predicate);
+                    override.addProperty("model", "ic2:item/" + original);
+                    overrides.add(override);
+                }
+                model.add("overrides", overrides);
+                putJson(output, rootPath, model);
                 continue;
             }
 

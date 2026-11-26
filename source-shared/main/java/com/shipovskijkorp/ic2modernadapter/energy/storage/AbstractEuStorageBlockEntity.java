@@ -2,7 +2,7 @@ package com.shipovskijkorp.ic2modernadapter.energy.storage;
 
 import com.shipovskijkorp.ic2modernadapter.content.block.LegacyVariantFacingBlock;
 import com.shipovskijkorp.ic2modernadapter.energy.api.IEuEnergyStorage;
-import com.shipovskijkorp.ic2modernadapter.energy.item.IEuElectricItem;
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuItemManager;
 import com.shipovskijkorp.ic2modernadapter.energy.net.EuNetwork;
 import com.shipovskijkorp.ic2modernadapter.energy.util.EuUtil;
 import com.shipovskijkorp.ic2modernadapter.menu.EuStorageMenu;
@@ -45,7 +45,8 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
     public static final int DATA_OUTPUT = 2;
     public static final int DATA_REDSTONE_MODE = 3;
     public static final int DATA_TIER = 4;
-    public static final int DATA_COUNT = 5;
+    public static final int DATA_CHARGEPAD = 5;
+    public static final int DATA_COUNT = 6;
 
     public static final int REDSTONE_MODE_COUNT = 7;
 
@@ -66,6 +67,7 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
                 case DATA_OUTPUT -> (int) Math.min(Integer.MAX_VALUE, spec.outputEuPerTick());
                 case DATA_REDSTONE_MODE -> redstoneMode;
                 case DATA_TIER -> spec.tier();
+                case DATA_CHARGEPAD -> spec.isChargepad() ? 1 : 0;
                 default -> 0;
             };
         }
@@ -125,26 +127,45 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
             changed = true;
         }
 
+        if (spec.isChargepad()) changed |= processChargepad(level);
         updateRedstoneOutput();
         if (changed) {
             setChanged();
         }
     }
 
+    private boolean processChargepad(Level level) {
+        // Original chargepads update every two ticks, charging armor first and then inventory.
+        if ((level.getGameTime() & 1L) != 0) return false;
+        var area = new net.minecraft.world.phys.AABB(worldPosition.getX(), worldPosition.getY() + 0.90,
+                worldPosition.getZ(), worldPosition.getX() + 1, worldPosition.getY() + 1.15, worldPosition.getZ() + 1);
+        var players = level.getEntitiesOfClass(Player.class, area, player -> !player.isSpectator()
+                && player.getY() >= worldPosition.getY() + 0.90 && player.getY() <= worldPosition.getY() + 1.15);
+        boolean active = energy > 0 && !players.isEmpty();
+        BlockState state = getBlockState();
+        if (state.getValue(LegacyVariantFacingBlock.ACTIVE) != active) {
+            level.setBlock(worldPosition, state.setValue(LegacyVariantFacingBlock.ACTIVE, active), 3);
+        }
+        if (!active) return false;
+        long before = energy;
+        // The original tracks one colliding player per two-tick pass.
+        Player player = players.get(0);
+        for (var slot : new net.minecraft.world.entity.EquipmentSlot[] {net.minecraft.world.entity.EquipmentSlot.FEET,
+                net.minecraft.world.entity.EquipmentSlot.LEGS, net.minecraft.world.entity.EquipmentSlot.CHEST,
+                net.minecraft.world.entity.EquipmentSlot.HEAD}) chargePadItem(player.getItemBySlot(slot));
+        for (int i = 0; i < 36 && energy > 0; i++) chargePadItem(player.getInventory().getItem(i));
+        if (energy != before) player.getInventory().setChanged();
+        return energy != before;
+    }
+
+    private void chargePadItem(ItemStack stack) {
+        long accepted = EuItemManager.charge(stack, Math.min(energy, spec.outputEuPerTick() * 2L), spec.tier(), true, false);
+        energy -= accepted;
+    }
+
     private boolean processChargeSlot() {
         ItemStack stack = items.get(SLOT_CHARGE);
-        if (stack.isEmpty() || energy <= 0L || !(stack.getItem() instanceof IEuElectricItem electricItem)) {
-            return false;
-        }
-        if (!electricItem.canChargeFromTier(stack, spec.tier())) {
-            return false;
-        }
-
-        long transfer = Math.min(energy, Math.max(0L, electricItem.getEuTransferLimit(stack)));
-        if (transfer <= 0L) {
-            return false;
-        }
-        long accepted = Math.max(0L, electricItem.insertEu(stack, transfer, false));
+        long accepted = EuItemManager.charge(stack, energy, spec.tier(), false, false);
         if (accepted <= 0L) {
             return false;
         }
@@ -191,9 +212,9 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
 
     public final Direction getOutputSide() {
         BlockState state = getBlockState();
-        return state.hasProperty(LegacyVariantFacingBlock.FACING)
-                ? state.getValue(LegacyVariantFacingBlock.FACING)
-                : Direction.DOWN;
+        Direction facing = state.hasProperty(LegacyVariantFacingBlock.FACING)
+                ? state.getValue(LegacyVariantFacingBlock.FACING) : Direction.DOWN;
+        return spec.isChargepad() && facing == Direction.UP ? Direction.DOWN : facing;
     }
 
     /** Mirrors IC2 TileEntityElectricBlock.shouldEmitEnergy(). */
@@ -202,6 +223,7 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
         if (level == null) {
             return true;
         }
+        if (spec.isChargepad()) return true;
         boolean powered = level.hasNeighborSignal(worldPosition);
         if (redstoneMode == 5) {
             return !powered;
@@ -214,6 +236,10 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
 
     /** Mirrors IC2 TileEntityElectricBlock.shouldEmitRedstone(). */
     public final boolean shouldEmitRedstone() {
+        if (spec.isChargepad()) {
+            boolean active = getBlockState().getValue(LegacyVariantFacingBlock.ACTIVE);
+            return redstoneMode == 0 ? active : !active;
+        }
         long capacity = spec.capacityEu();
         long output = spec.outputEuPerTick();
         return switch (redstoneMode) {
@@ -259,13 +285,13 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
 
     /** Cycles the original seven IC2 storage redstone modes and reports the new mode to the player. */
     public final void cycleRedstoneMode(@Nullable Player player) {
-        redstoneMode = (redstoneMode + 1) % REDSTONE_MODE_COUNT;
+        redstoneMode = (redstoneMode + 1) % (spec.isChargepad() ? 2 : REDSTONE_MODE_COUNT);
         setChanged();
         cachedRedstoneOutput = -1;
         updateRedstoneOutput();
         if (player != null && !player.level().isClientSide()) {
             player.displayClientMessage(
-                    Component.translatable("ic2.EUStorage.gui.mod.redstone" + redstoneMode),
+                    Component.translatable((spec.isChargepad() ? "ic2.blockChargepad.gui.mod.redstone" : "ic2.EUStorage.gui.mod.redstone") + redstoneMode),
                     false);
         }
     }
@@ -447,7 +473,7 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
 
     @Override
     public boolean canInsert(Direction from) {
-        return from != null && from != getOutputSide();
+        return from != null && from != getOutputSide() && (!spec.isChargepad() || from != Direction.UP);
     }
 
     @Override
@@ -485,7 +511,7 @@ public abstract class AbstractEuStorageBlockEntity extends BlockEntity
         return EuStorageBounds.free(energy, spec.capacityEu());
     }
 
-    private static int normalizeRedstoneMode(int mode) {
-        return mode >= 0 && mode < REDSTONE_MODE_COUNT ? mode : 0;
+    private int normalizeRedstoneMode(int mode) {
+        return mode >= 0 && mode < (spec.isChargepad() ? 2 : REDSTONE_MODE_COUNT) ? mode : 0;
     }
 }

@@ -8,6 +8,10 @@ import org.jetbrains.annotations.Nullable;
 
 /** Canonical IC2 Experimental 2.8.222 electric storage block parameters. */
 public enum EuStorageSpec {
+    CHARGEPAD_BATBOX("chargepad_batbox", "te/chargepad_batbox", 70, 68, 1, 32L, 40_000L),
+    CHARGEPAD_CESU("chargepad_cesu", "te/chargepad_cesu", 71, 69, 2, 128L, 300_000L),
+    CHARGEPAD_MFE("chargepad_mfe", "te/chargepad_mfe", 72, 70, 3, 512L, 4_000_000L),
+    CHARGEPAD_MFSU("chargepad_mfsu", "te/chargepad_mfsu", 73, 71, 4, 2_048L, 40_000_000L),
     BATBOX("batbox", "te/batbox", 74, 72, 1, 32L, 40_000L),
     CESU("cesu", "te/cesu", 75, 73, 2, 128L, 300_000L),
     MFE("mfe", "te/mfe", 76, 74, 3, 512L, 4_000_000L),
@@ -56,6 +60,8 @@ public enum EuStorageSpec {
         this.capacityEu = capacityEu;
     }
 
+    public boolean isChargepad() { return blockEntityPath.startsWith("chargepad_"); }
+
     public String blockEntityPath() {
         return blockEntityPath;
     }
@@ -87,6 +93,8 @@ public enum EuStorageSpec {
     public String translationKey() {
         return "ic2.te." + blockEntityPath;
     }
+
+    public static @Nullable EuStorageSpec fromVariantIndex(int index) { return BY_VARIANT.get(index); }
 
     public static boolean isStorage(BlockState state) {
         return fromBlockState(state) != null;

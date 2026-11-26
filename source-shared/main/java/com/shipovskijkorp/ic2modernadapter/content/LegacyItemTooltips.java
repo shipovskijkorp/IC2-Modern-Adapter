@@ -25,13 +25,20 @@ public final class LegacyItemTooltips {
             String variantKey,
             List<Component> tooltip,
             boolean showPowerTier) {
-        if (stack == null || stack.isEmpty() || !"ic2".equals(namespace)) {
+        if (stack == null || stack.isEmpty()) return;
+        if (!"ic2".equals(namespace)) {
+            if (com.shipovskijkorp.ic2modernadapter.energy.item.AttachedJetpackEnergy.attached(stack))
+                appendElectricTooltip(stack, tooltip, showPowerTier);
             return;
         }
 
         appendCableTooltip(variantKey, tooltip);
         appendStorageTooltip(stack, variantKey, tooltip);
         appendElectricTooltip(stack, tooltip, showPowerTier);
+        if (stack.getItem() instanceof com.shipovskijkorp.ic2modernadapter.content.item.EuElectricItem electric
+                && electric.spec().chargesHotbar()) {
+            tooltip.add(Component.translatable(com.shipovskijkorp.ic2modernadapter.content.item.EuElectricItem.modeKey(stack)));
+        }
         appendSingleUseBatteryTooltip(itemPath, tooltip);
         appendCraftingToolTooltip(stack, itemPath, tooltip);
         appendUpgradeTooltip(stack, itemPath, variantKey, tooltip);
@@ -76,7 +83,15 @@ public final class LegacyItemTooltips {
     }
 
     private static void appendElectricTooltip(ItemStack stack, List<Component> tooltip, boolean showPowerTier) {
-        if (!(stack.getItem() instanceof IEuElectricItem electricItem)) {
+        IEuElectricItem electricItem = com.shipovskijkorp.ic2modernadapter.energy.item.EuItemManager.electric(stack);
+        if (electricItem == null) {
+            return;
+        }
+        if (com.shipovskijkorp.ic2modernadapter.energy.item.AttachedJetpackEnergy.attached(stack)) {
+            tooltip.add(Component.translatable("ic2.jetpackAttached").withStyle(ChatFormatting.YELLOW));
+        }
+        if (stack.getItem() instanceof com.shipovskijkorp.ic2modernadapter.content.item.EuDebugItem) {
+            tooltip.add(Component.literal("infinite EU"));
             return;
         }
         tooltip.add(Component.literal(toSiString(electricItem.getEuStored(stack))

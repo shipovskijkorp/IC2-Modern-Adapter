@@ -1,5 +1,8 @@
 package com.shipovskijkorp.ic2modernadapter.recipe;
 
+import com.shipovskijkorp.ic2modernadapter.content.VanillaBasalt;
+
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuItemManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +71,16 @@ public final class LegacyRecipeRuntime {
             }
             return result;
         }
-        return createResult(definition.output(), definition.outputCount(), stacks);
+        ItemStack result = createResult(definition.output(), definition.outputCount(), stacks);
+        // AdvRecipe/AdvShapelessRecipe sum charge from one consumed item per occupied slot.
+        if (EuItemManager.electric(result) != null && result.getCount() == 1) {
+            long remaining = EuItemManager.capacity(result);
+            for (int i = 0; i < gridSize && remaining > 0; i++) {
+                remaining -= EuItemManager.charge(result, Math.min(remaining, EuItemManager.stored(slot.apply(i))),
+                        Integer.MAX_VALUE, true, false);
+            }
+        }
+        return result;
     }
 
     public static boolean matchesSmelting(
@@ -374,6 +386,10 @@ public final class LegacyRecipeRuntime {
     }
 
     private static boolean matchesSingle(String token, ItemStack stack, StackAccess stacks) {
+        if (VanillaBasalt.ITEM_TOKEN.equals(token) || ("variant:" + VanillaBasalt.LEGACY_KEY).equals(token)) {
+            return VanillaBasalt.ITEM_ID.equals(itemId(stack))
+                    || ("ic2:resource".equals(itemId(stack)) && VanillaBasalt.LEGACY_KEY.equals(stacks.variantKey(stack)));
+        }
         if (token.startsWith("item:")) {
             return token.substring("item:".length()).equals(itemId(stack));
         }

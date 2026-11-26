@@ -12,6 +12,7 @@ public final class IC2ModernAdapterClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         GeneratorClientRegistration.register();
+        EuItemClientRegistration.register();
         EuStorageClientRegistration.register();
         MachineClientRegistration.register();
         FurnaceClientRegistration.register();

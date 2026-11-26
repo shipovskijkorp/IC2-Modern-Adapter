@@ -26,7 +26,11 @@ class InDevContentTest {
                 "te/batbox",
                 "te/cesu",
                 "te/mfe",
-                "te/mfsu")) {
+                "te/mfsu",
+                "te/chargepad_batbox",
+                "te/chargepad_cesu",
+                "te/chargepad_mfe",
+                "te/chargepad_mfsu")) {
             assertFalse(InDevContent.isItem("ic2", "te", variant), variant + " should be implemented");
             assertTrue(InDevContent.completedVariants().contains(variant));
         }
@@ -80,10 +84,19 @@ class InDevContentTest {
     }
 
     @Test
+    void chargingOnlyEquipmentIsProductionReady() {
+        for (String path : Set.of("re_battery", "advanced_re_battery", "energy_crystal", "lapotron_crystal",
+                "charging_re_battery", "advanced_charging_re_battery", "charging_energy_crystal", "charging_lapotron_crystal",
+                "batpack", "advanced_batpack", "energy_pack", "lappack", "solar_helmet", "static_boots")) {
+            assertFalse(InDevContent.isItem("ic2", path), path + " has charging behavior");
+        }
+    }
+
+    @Test
     void unfinishedFunctionalItemsRemainMarked() {
         for (String path : Set.of(
-                "energy_crystal",
-                "lapotron_crystal",
+                "drill",
+                "quantum_helmet",
                 "heat_exchanger",
                 "heat_vent",
                 "uranium_fuel_rod",

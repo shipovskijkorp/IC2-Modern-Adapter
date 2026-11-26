@@ -62,8 +62,13 @@ final class OreWorldgenParityTest {
                 JsonObject pool = pools.get(i).getAsJsonObject();
                 JsonObject condition = pool.getAsJsonArray("conditions").get(0).getAsJsonObject();
                 assertEquals(Integer.toString(i), condition.getAsJsonObject("properties").get("variant").getAsString());
-                JsonObject function = pool.getAsJsonArray("entries").get(0).getAsJsonObject()
-                        .getAsJsonArray("functions").get(0).getAsJsonObject();
+                JsonObject entry = pool.getAsJsonArray("entries").get(0).getAsJsonObject();
+                if (VanillaBasalt.isLegacyState("resource", i)) {
+                    assertEquals(VanillaBasalt.ITEM_ID, entry.get("name").getAsString());
+                    assertTrue(!entry.has("functions"));
+                    continue;
+                }
+                JsonObject function = entry.getAsJsonArray("functions").get(0).getAsJsonObject();
                 if ("loot_table".equals(folder)) {
                     assertEquals(original.get(i).key(), function.getAsJsonObject("components")
                             .getAsJsonObject("minecraft:custom_data").get("ic2ma_variant").getAsString());

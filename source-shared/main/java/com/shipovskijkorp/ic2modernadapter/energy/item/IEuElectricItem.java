@@ -38,11 +38,11 @@ public interface IEuElectricItem {
     }
 
     default boolean canChargeFromTier(ItemStack stack, int chargerTier) {
-        return chargerTier >= getEuTier(stack) && getEuStored(stack) < getEuCapacity(stack);
+        return EuItemManager.single(stack) && chargerTier >= getEuTier(stack) && getEuStored(stack) < getEuCapacity(stack);
     }
 
     default boolean canDischargeToTier(ItemStack stack, int receiverTier) {
-        return canProvideEu(stack)
+        return EuItemManager.single(stack) && canProvideEu(stack)
                 && receiverTier >= getEuTier(stack)
                 && getEuStored(stack) > 0L;
     }

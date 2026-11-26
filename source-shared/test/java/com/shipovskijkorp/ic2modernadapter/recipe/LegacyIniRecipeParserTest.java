@@ -44,6 +44,17 @@ final class LegacyIniRecipeParserTest {
     }
 
     @Test
+    void substitutesVanillaBasaltForAllLegacyAliases() {
+        for (String old : List.of("ic2:resource#basalt", "ic2:resource@0", "ic2:resource", "minecraft:basalt")) {
+            assertEquals("item:minecraft:basalt", LegacyIniRecipeParser.normalizeIngredient(old));
+            assertEquals("item:minecraft:basalt", LegacyIniRecipeParser.normalizeOutput(old));
+        }
+        assertEquals("variant:resource/lead_ore", LegacyIniRecipeParser.normalizeIngredient("ic2:resource@2"));
+        assertEquals("variant:resource/tin_ore", LegacyIniRecipeParser.normalizeIngredient("ic2:resource#tin_ore"));
+        assertEquals("item:ic2:resource", LegacyIniRecipeParser.normalizeIngredient("ic2:resource@*"));
+    }
+
+    @Test
     void preservesExplicitLegacyItemDamage() {
         List<LegacyRecipeDefinition> recipes = LegacyIniRecipeParser.parseShaped(bytes(
                 "\"A\" A:minecraft:stone@* = ic2:jetpack@27\n" +

@@ -100,6 +100,8 @@ public final class IC2ContentRegistries {
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, NAMESPACE);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, "ic2_modern_adapter");
+    private static final Supplier<RecipeSerializer<?>> JETPACK_ATTACHMENT_SERIALIZER = RECIPE_SERIALIZERS.register("jetpack_attachment",
+            () -> new net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer<>(com.shipovskijkorp.ic2modernadapter.recipe.JetpackAttachmentRecipe::new));
     private static final Supplier<RecipeSerializer<?>> LEGACY_CRAFTING_SERIALIZER =
             RECIPE_SERIALIZERS.register("legacy_crafting", LegacyCraftingRecipe.Serializer::new);
     private static final Supplier<RecipeSerializer<?>> LEGACY_SMELTING_SERIALIZER =
@@ -308,7 +310,43 @@ public final class IC2ContentRegistries {
         };
     }
 
+    public static net.minecraft.world.item.crafting.RecipeSerializer<?> jetpackAttachmentSerializer() {
+        return JETPACK_ATTACHMENT_SERIALIZER.get();
+    }
+
+    private static Item createElectricArmor(String path) {
+        ArmorItem.Type type = path.endsWith("_helmet") || path.equals("nightvision_goggles") ? ArmorItem.Type.HELMET
+                : path.endsWith("_leggings") ? ArmorItem.Type.LEGGINGS
+                : path.endsWith("_boots") ? ArmorItem.Type.BOOTS : ArmorItem.Type.CHESTPLATE;
+        String texture = path.startsWith("nano_") ? "nano" : path.startsWith("quantum_") ? "quantum" : switch (path) {
+            case "advanced_batpack" -> "advbatpack";
+            case "energy_pack" -> "energypack";
+            case "jetpack_electric" -> "jetpack";
+            case "nightvision_goggles" -> "nightvision";
+            default -> path;
+        };
+        return new com.shipovskijkorp.ic2modernadapter.content.item.armor.EuElectricArmorItem(path,
+                ModernArmorMaterials.electric(texture), type, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
+    }
+
+    private static Item createChargingArmor(String path) {
+        boolean solar = path.equals("solar_helmet");
+        return new com.shipovskijkorp.ic2modernadapter.content.item.armor.EuChargingArmorItem(path,
+                ModernArmorMaterials.electric(solar ? "solar" : "rubber"), solar ? ArmorItem.Type.HELMET : ArmorItem.Type.BOOTS,
+                new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
+    }
+
     private static Item createStandaloneItem(String path) {
+        if ("debug_item".equals(path)) return new com.shipovskijkorp.ic2modernadapter.content.item.EuDebugItem(
+                path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
+        EuElectricItemSpec electric = EuElectricItemSpec.fromItemPath(path);
+        if (electric != null && !"electric_treetap".equals(path)) {
+            if (electric.isArmor()) {
+                return createElectricArmor(path);
+            }
+            return new EuElectricItem(path, electric, new Item.Properties().stacksTo(electric.stackLimit()), IC2VariantStacks::variantKey);
+        }
+        if ("solar_helmet".equals(path) || "static_boots".equals(path)) return createChargingArmor(path);
         return switch (path) {
             case "bronze_sword" -> new TranslatedSwordItem(
                     path, BronzeToolMaterial.INSTANCE, 5, -2.4F, new Item.Properties(), IC2VariantStacks::variantKey);
@@ -356,8 +394,6 @@ public final class IC2ContentRegistries {
                     path, ModernArmorMaterials.RUBBER_BOOTS.holder(), ArmorItem.Type.BOOTS,
                     new Item.Properties().durability(ModernArmorMaterials.RUBBER_BOOTS.durability(ArmorItem.Type.BOOTS)),
                     IC2VariantStacks::variantKey);
-            case "re_battery", "advanced_re_battery", "energy_crystal", "lapotron_crystal" -> new EuElectricItem(
-                    path, EuElectricItemSpec.fromItemPath(path), new Item.Properties().stacksTo(16), IC2VariantStacks::variantKey);
             case "iodine_tablet" -> new IodineTabletItem(
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
             case "nuclear" -> new RadioactiveItem(

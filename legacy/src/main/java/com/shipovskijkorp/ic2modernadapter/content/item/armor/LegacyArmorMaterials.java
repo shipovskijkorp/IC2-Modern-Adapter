@@ -36,6 +36,12 @@ public final class LegacyArmorMaterials {
     public static final ArmorMaterial HAZMAT = utility("hazmat", 64, SoundEvents.ARMOR_EQUIP_LEATHER);
     public static final ArmorMaterial RUBBER_BOOTS = utility("rubber", 64, SoundEvents.ARMOR_EQUIP_LEATHER);
 
+    /** No vanilla damage/defense: energy-dependent armor protection is a separate mechanic. */
+    public static ArmorMaterial electric(String name) {
+        return material(name, Map.of(), Map.of(), 0, SoundEvents.ARMOR_EQUIP_IRON,
+                0.0F, () -> Ingredient.EMPTY);
+    }
+
     private static ArmorMaterial utility(String name, int durability, SoundEvent sound) {
         return material(
                 name,

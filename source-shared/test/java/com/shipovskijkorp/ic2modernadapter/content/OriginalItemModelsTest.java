@@ -51,7 +51,7 @@ class OriginalItemModelsTest {
 
     @Test
     void keepsDynamicDefaultsForCodeSelectedModels() {
-        assertEquals("battery/re_battery_4", OriginalItemModels.dynamicDefaultModel("re_battery"));
+        assertEquals("battery/re_battery_0", OriginalItemModels.dynamicDefaultModel("re_battery"));
         assertEquals("reactor/fuel_rod/uranium",
                 OriginalItemModels.dynamicDefaultModel("uranium_fuel_rod"));
         assertEquals("tool/electric/obscurator_raw",

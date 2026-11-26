@@ -33,6 +33,10 @@ public final class ToolBoxItem extends LegacyTranslatedItem {
         if (stack == null || stack.isEmpty() || stack.getItem() instanceof ToolBoxItem) {
             return false;
         }
+        if (stack.getItem() instanceof com.shipovskijkorp.ic2modernadapter.content.item.EuElectricItem electric
+                && electric.spec().chargesHotbar()) {
+            return com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks.chargeMode(stack) == 1;
+        }
         if (stack.isDamageableItem()) {
             return true;
         }

@@ -56,6 +56,8 @@ public class LegacyVariantFacingBlock extends Block {
         Direction facing = variant == GeneratorConstants.VARIANT_INDEX || MachineSpec.isMachineVariantIndex(variant) || FurnaceSpec.isFurnaceVariantIndex(variant)
                 ? context.getHorizontalDirection().getOpposite()
                 : context.getNearestLookingDirection().getOpposite();
+        var storage = com.shipovskijkorp.ic2modernadapter.energy.storage.EuStorageSpec.fromVariantIndex(variant);
+        if (storage != null && storage.isChargepad() && facing == Direction.UP) facing = Direction.DOWN;
         return defaultBlockState()
                 .setValue(VARIANT, variant)
                 .setValue(FACING, facing)

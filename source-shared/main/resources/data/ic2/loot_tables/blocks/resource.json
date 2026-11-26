@@ -18,13 +18,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ic2:resource",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{ic2ma_legacy_meta:0,ic2ma_variant:\"resource/basalt\",CustomModelData:1}"
-            }
-          ]
+          "name": "minecraft:basalt"
         }
       ]
     },

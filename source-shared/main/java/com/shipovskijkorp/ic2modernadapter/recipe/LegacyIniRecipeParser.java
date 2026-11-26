@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.recipe;
 
 import com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest;
+import com.shipovskijkorp.ic2modernadapter.content.VanillaBasalt;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -210,6 +211,9 @@ public final class LegacyIniRecipeParser {
         }
 
         ParsedItem item = parseItemRef(raw);
+        if (VanillaBasalt.isLegacyReference(item.id(), item.subtype(), item.meta())) {
+            return VanillaBasalt.ITEM_TOKEN;
+        }
 
         // Remove the three duplicate copper identities from the executable content surface even
         // when an original ini references them explicitly instead of through OreDictionary.

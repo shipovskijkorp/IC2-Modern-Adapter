@@ -1,6 +1,12 @@
 package com.shipovskijkorp.ic2modernadapter.content.block;
 
 import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
+import com.shipovskijkorp.ic2modernadapter.content.VanillaBasalt;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import com.shipovskijkorp.ic2modernadapter.worldgen.SilverOreVariant;
 import java.util.function.ToIntFunction;
 import net.minecraft.core.BlockPos;
@@ -17,6 +23,29 @@ public final class PickableLegacyVariantBlock extends LegacyVariantBlock {
             ToIntFunction<ItemStack> variantResolver) {
         super(properties, variantCount, variantResolver);
         this.blockPath = blockPath;
+    }
+
+    // Do not create new IC2 basalt blocks, even from a legacy inventory stack.
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState state = super.getStateForPlacement(context);
+        if (VanillaBasalt.isLegacyState(blockPath, state.getValue(VARIANT))) {
+            return Blocks.BASALT.getStateForPlacement(context);
+        }
+        return state;
+    }
+
+    // Lazily migrate existing placed basalt without changing the other resource indices.
+    @Override
+    public boolean isRandomlyTicking(BlockState state) {
+        return VanillaBasalt.isLegacyState(blockPath, state.getValue(VARIANT));
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (VanillaBasalt.isLegacyState(blockPath, state.getValue(VARIANT))) {
+            level.setBlock(pos, Blocks.BASALT.defaultBlockState(), Block.UPDATE_ALL);
+        }
     }
 
     @Override

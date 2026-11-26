@@ -1,6 +1,7 @@
 package com.shipovskijkorp.ic2modernadapter.content.item;
 
 import com.shipovskijkorp.ic2modernadapter.energy.item.EuElectricItemSpec;
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuItemManager;
 import java.util.function.Function;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +23,11 @@ public final class ElectricTreetapItem extends EuElectricItem {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         if (context.getPlayer() == null || !ResinExtraction.canTap(state, context.getClickedFace())) return InteractionResult.PASS;
         ItemStack stack = context.getItemInHand();
-        if (getEuStored(stack) < OPERATION_COST) return InteractionResult.PASS;
         if (context.getLevel().isClientSide()) return InteractionResult.SUCCESS;
+        if (!context.getPlayer().getAbilities().instabuild) EuItemManager.chargeFromArmor(stack, context.getPlayer());
+        if (!EuItemManager.canUse(stack, OPERATION_COST)) return InteractionResult.PASS;
         if (!ResinExtraction.extract(context.getLevel(), context.getClickedPos(), context.getClickedFace(), state)) return InteractionResult.PASS;
-        if (!context.getPlayer().getAbilities().instabuild) extractEu(stack, OPERATION_COST, false);
+        if (!context.getPlayer().getAbilities().instabuild) EuItemManager.use(stack, OPERATION_COST, context.getPlayer());
         return InteractionResult.CONSUME;
     }
 }

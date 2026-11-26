@@ -1,6 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.energy.storage;
 
-import com.shipovskijkorp.ic2modernadapter.energy.item.IEuElectricItem;
+import com.shipovskijkorp.ic2modernadapter.energy.item.EuItemManager;
 import java.util.Objects;
 import java.util.function.Function;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,20 +25,14 @@ public final class EuStorageItemHooks {
     }
 
     public static boolean canCharge(ItemStack stack, int tier) {
-        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof IEuElectricItem electricItem)) {
-            return false;
-        }
-        return electricItem.canChargeFromTier(stack, tier);
+        return EuItemManager.charge(stack, Long.MAX_VALUE, tier, true, true) > 0;
     }
 
     public static boolean canDischarge(ItemStack stack, int tier) {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        if (stack.getItem() instanceof IEuElectricItem electricItem
-                && electricItem.canDischargeToTier(stack, tier)) {
-            return true;
-        }
+        if (EuItemManager.discharge(stack, Long.MAX_VALUE, tier, true, true, true) > 0) return true;
         return getConsumableEnergy(stack) > 0L;
     }
 
@@ -48,15 +42,8 @@ public final class EuStorageItemHooks {
             return 0L;
         }
 
-        if (stack.getItem() instanceof IEuElectricItem electricItem
-                && electricItem.canDischargeToTier(stack, tier)) {
-            long budget = Math.min(requested, Math.max(0L, electricItem.getEuTransferLimit(stack)));
-            if (budget <= 0L) {
-                return 0L;
-            }
-            long extracted = Math.max(0L, electricItem.extractEu(stack, budget, simulate));
-            return Math.min(budget, extracted);
-        }
+        long electric = EuItemManager.discharge(stack, requested, tier, false, true, simulate);
+        if (electric > 0) return electric;
 
         long value = getConsumableEnergy(stack);
         if (value <= 0L) {

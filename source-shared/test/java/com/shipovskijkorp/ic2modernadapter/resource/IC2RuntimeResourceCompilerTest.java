@@ -72,6 +72,31 @@ class IC2RuntimeResourceCompilerTest {
     }
 
     @Test
+    void usesVanillaBasaltForReservedResourceSlotWithoutMovingOtherModels() {
+        var variants = com.shipovskijkorp.ic2modernadapter.content.OriginalContentManifest.get().stackVariants("resource");
+        JsonObject types = new JsonObject();
+        for (var variant : variants) {
+            String name = variant.key().substring("resource/".length());
+            if (name.equals("basalt")) continue; // The old asset must not be required.
+            JsonObject descriptor = new JsonObject();
+            descriptor.addProperty("model", "ic2:resource/" + name);
+            types.add(name, descriptor);
+        }
+        JsonObject legacyVariants = new JsonObject(); legacyVariants.add("type", types);
+        JsonObject oldState = new JsonObject(); oldState.add("variants", legacyVariants);
+        var state = IC2RuntimeResourceCompiler.compileTypeVariants("resource", oldState).getAsJsonObject("variants");
+        assertEquals("minecraft:block/basalt", state.getAsJsonObject("variant=0").get("model").getAsString());
+        assertEquals("ic2:block/resource/lead_ore", state.getAsJsonObject("variant=1").get("model").getAsString());
+        assertEquals("ic2:block/ic2ma_generated/silver_ore", state.getAsJsonObject("variant=14").get("model").getAsString());
+        var item = IC2RuntimeResourceCompiler.compileVariantItemModel("resource", oldState, variants, new LinkedHashMap<>());
+        assertEquals("minecraft:block/basalt", item.get("parent").getAsString());
+        var overrides = item.getAsJsonArray("overrides");
+        assertEquals("minecraft:block/basalt", overrides.get(0).getAsJsonObject().get("model").getAsString());
+        assertEquals(2, overrides.get(1).getAsJsonObject().getAsJsonObject("predicate").get("custom_model_data").getAsInt());
+        assertEquals("ic2:block/resource/lead_ore", overrides.get(1).getAsJsonObject().get("model").getAsString());
+    }
+
+    @Test
     void publishesSilverAsAnIc2ResourceBlockModel() throws java.io.IOException {
         Map<String, byte[]> output = new LinkedHashMap<>();
         IC2RuntimeResourceCompiler.compileSilverOreAssets(output);
