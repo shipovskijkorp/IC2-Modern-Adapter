@@ -32,6 +32,9 @@ class InDevContentTest {
         }
         assertFalse(InDevContent.isItem("ic2", "cable"), "all fourteen cable variants are implemented");
         assertFalse(InDevContent.isItem("ic2", "cutter"), "insulation cutter is implemented");
+        for (String path : Set.of("rubber_wood", "leaves", "sapling", "treetap", "electric_treetap")) {
+            assertFalse(InDevContent.isItem("ic2", path), path + " has rubber tree gameplay");
+        }
         assertFalse(InDevContent.isItem("ic2", "forge_hammer"), "forge hammer crafting behavior is implemented");
         assertFalse(InDevContent.isItem("ic2", "iodine_tablet"), "iodine tablet radiation reduction is implemented");
         assertFalse(InDevContent.isItem("ic2", "tool_box"), "tool box inventory behavior is implemented");
@@ -84,8 +87,7 @@ class InDevContentTest {
                 "heat_exchanger",
                 "heat_vent",
                 "uranium_fuel_rod",
-                "upgrade",
-                "treetap")) {
+                "upgrade")) {
             assertTrue(InDevContent.isItem("ic2", path), path + " still needs behavior");
         }
     }

@@ -44,6 +44,11 @@ import com.shipovskijkorp.ic2modernadapter.content.item.IodineTabletItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.EuElectricItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.RadioactiveItem;
 import com.shipovskijkorp.ic2modernadapter.content.item.WireCutterItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.TreetapItem;
+import com.shipovskijkorp.ic2modernadapter.content.item.ElectricTreetapItem;
+import com.shipovskijkorp.ic2modernadapter.content.block.RubberWoodBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.RubberSaplingBlock;
+import com.shipovskijkorp.ic2modernadapter.content.block.RubberLeavesBlock;
 import com.shipovskijkorp.ic2modernadapter.toolbox.ToolBoxItem;
 import com.shipovskijkorp.ic2modernadapter.radiation.RadioactivitySpec;
 import com.shipovskijkorp.ic2modernadapter.radiation.RadiationEffect;
@@ -63,7 +68,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -246,7 +250,9 @@ public final class IC2ContentRegistries {
             return new PickableLegacyVariantBlock(properties, path, variantCount, IC2VariantStacks::placementVariantIndex);
         }
         return switch (path) {
-            case "rubber_wood" -> new RotatedPillarBlock(properties);
+            case "rubber_wood" -> new RubberWoodBlock(properties.strength(1.0F).sound(SoundType.WOOD).randomTicks());
+            case "leaves" -> new RubberLeavesBlock(properties.strength(0.2F).sound(SoundType.GRASS).randomTicks().isSuffocating((s, l, p) -> false).isViewBlocking((s, l, p) -> false));
+            case "sapling" -> new RubberSaplingBlock(properties.instabreak().noCollission().randomTicks().sound(SoundType.GRASS));
             case "fence" -> new FenceBlock(properties);
             case "reinforced_door" -> new PlaceholderDoorBlock(properties);
             case "dynamite" -> new PlaceholderDynamiteBlock(properties);
@@ -347,6 +353,10 @@ public final class IC2ContentRegistries {
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
             case "nuclear" -> new RadioactiveItem(
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "treetap" -> new TreetapItem(
+                    path, new Item.Properties().durability(TreetapItem.MAX_USES), IC2VariantStacks::variantKey);
+            case "electric_treetap" -> new ElectricTreetapItem(
+                    path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
             case "cutter" -> new WireCutterItem(
                     path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
             case "tool_box" -> new ToolBoxItem(

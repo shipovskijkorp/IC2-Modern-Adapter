@@ -464,6 +464,7 @@ public final class LegacyRecipeRuntime {
             case "ingotUranium" -> matchesVariantOrCommonTag(stack, stacks, "ingot/uranium", "ingots/uranium");
             case "itemRubber" -> matchesVariant(stack, stacks, "crafting/rubber")
                     || matchesCommonTag(stack, "rubber");
+            case "woodRubber" -> "ic2:rubber_wood".equals(itemId(stack));
             case "logWood" -> matchesTag(stack, "minecraft:logs");
             case "materialScrap" -> matchesVariant(stack, stacks, "crafting/scrap");
             case "nuggetIridium" -> matchesVariantOrCommonTag(stack, stacks, "misc_resource/iridium_shard", "nuggets/iridium");
@@ -721,6 +722,7 @@ public final class LegacyRecipeRuntime {
             case "enderpearl" -> stackForItemId("minecraft:ender_pearl");
             case "ingotCopper" -> stackForItemId("minecraft:copper_ingot");
             case "ingotIron" -> stackForItemId("minecraft:iron_ingot");
+            case "woodRubber" -> stackForItemId("ic2:rubber_wood");
             case "logWood" -> stackForItemId("minecraft:oak_log");
             case "plankWood" -> stackForItemId("minecraft:oak_planks");
             case "stickWood" -> stackForItemId("minecraft:stick");

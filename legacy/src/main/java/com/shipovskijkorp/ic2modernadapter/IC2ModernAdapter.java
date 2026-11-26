@@ -23,6 +23,7 @@ public final class IC2ModernAdapter {
         var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IC2ContentRegistries.register(modEventBus);
         OreContent.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.worldgen.RubberTreeWorldGen.register(modEventBus);
         GeneratorPlatform.register(modEventBus);
         FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);

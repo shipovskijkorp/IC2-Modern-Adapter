@@ -527,12 +527,18 @@ public final class IC2RuntimeResourceCompiler {
         return result;
     }
 
-    private static JsonObject compileRubberWood(JsonObject oldState) {
+    static JsonObject compileRubberWood(JsonObject oldState) {
         JsonObject stateMap = requireObject(requireObject(oldState, "variants"), "state");
         JsonObject variants = new JsonObject();
-        variants.add("axis=y", normalizeModelDescriptor(requireElement(stateMap, "plain_y")));
-        variants.add("axis=x", normalizeModelDescriptor(requireElement(stateMap, "plain_x")));
-        variants.add("axis=z", normalizeModelDescriptor(requireElement(stateMap, "plain_z")));
+        for (String axis : List.of("x", "y", "z")) {
+            variants.add("axis=" + axis + ",resin=plain", normalizeModelDescriptor(requireElement(stateMap, "plain_" + axis)));
+        }
+        for (String fill : List.of("dry", "wet")) {
+            for (String face : List.of("north", "south", "west", "east")) {
+                String key = fill + "_" + face;
+                variants.add("resin=" + key, normalizeModelDescriptor(requireElement(stateMap, key)));
+            }
+        }
         JsonObject result = new JsonObject();
         result.add("variants", variants);
         return result;

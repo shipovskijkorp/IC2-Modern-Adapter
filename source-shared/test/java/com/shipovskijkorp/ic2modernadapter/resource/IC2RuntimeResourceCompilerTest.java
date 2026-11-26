@@ -83,6 +83,32 @@ class IC2RuntimeResourceCompilerTest {
     }
 
     @Test
+    void generatesAllRubberWoodResinStates() {
+        JsonObject stateMap = new JsonObject();
+        for (String axis : java.util.List.of("x", "y", "z")) {
+            JsonObject descriptor = new JsonObject();
+            descriptor.addProperty("model", "ic2:resource/rubber_wood");
+            stateMap.add("plain_" + axis, descriptor);
+        }
+        for (String fill : java.util.List.of("dry", "wet")) {
+            for (String direction : java.util.List.of("north", "south", "west", "east")) {
+                JsonObject descriptor = new JsonObject();
+                descriptor.addProperty("model", "ic2:resource/rubber_wood_" + fill);
+                descriptor.addProperty("y", switch (direction) { case "east" -> 90; case "south" -> 180; case "west" -> 270; default -> 0; });
+                stateMap.add(fill + "_" + direction, descriptor);
+            }
+        }
+        JsonObject variants = new JsonObject(); variants.add("state", stateMap);
+        JsonObject original = new JsonObject(); original.add("variants", variants);
+        JsonObject output = IC2RuntimeResourceCompiler.compileRubberWood(original).getAsJsonObject("variants");
+        assertEquals(11, output.size());
+        assertTrue(output.has("axis=y,resin=plain"));
+        assertEquals("ic2:block/resource/rubber_wood_wet", output.getAsJsonObject("resin=wet_east").get("model").getAsString());
+        assertEquals(90, output.getAsJsonObject("resin=wet_east").get("y").getAsInt());
+        assertEquals(270, output.getAsJsonObject("resin=dry_west").get("y").getAsInt());
+    }
+
+    @Test
     void leavesNonIc2TextureIdsUntouched() {
         assertEquals("minecraft:block/stone",
                 IC2RuntimeResourceCompiler.normalizeLegacyTextureId("minecraft:block/stone"));

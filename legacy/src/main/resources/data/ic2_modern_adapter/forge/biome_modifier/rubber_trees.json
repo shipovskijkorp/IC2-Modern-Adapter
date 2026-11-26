@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "ic2_modern_adapter:rubber_tree_cluster"
+  ],
+  "step": "vegetal_decoration"
+}

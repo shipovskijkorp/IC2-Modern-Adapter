@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
 /** Native IC2MA implementation of IC2 chargeable batteries and crystals. */
-public final class EuElectricItem extends LegacyTranslatedItem implements IEuElectricItem {
+public class EuElectricItem extends LegacyTranslatedItem implements IEuElectricItem {
     private final EuElectricItemSpec spec;
 
     public EuElectricItem(

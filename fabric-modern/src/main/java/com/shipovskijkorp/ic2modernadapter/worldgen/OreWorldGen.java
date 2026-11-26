@@ -3,6 +3,8 @@ package com.shipovskijkorp.ic2modernadapter.worldgen;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biomes;
@@ -14,6 +16,9 @@ public final class OreWorldGen {
     private static final String MOD_ID = "ic2_modern_adapter";
 
     public static void register() {
+        Registry.register(BuiltInRegistries.FEATURE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "rubber_tree_cluster"), new RubberTreeFeature());
+        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(),
+                GenerationStep.Decoration.VEGETAL_DECORATION, key("rubber_tree_cluster"));
         for (String path : new String[] {"tin_ore", "lead_ore", "uranium_ore", "silver_ore"}) {
             BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(),
                     GenerationStep.Decoration.UNDERGROUND_ORES, key(path));
