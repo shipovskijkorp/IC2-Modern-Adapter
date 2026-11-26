@@ -13,6 +13,8 @@ public final class IC2ModernAdapterClient implements ClientModInitializer {
     public void onInitializeClient() {
         GeneratorClientRegistration.register();
         EuItemClientRegistration.register();
+        NightVisionClient.register();
+        ToolModeClient.register();
         EuStorageClientRegistration.register();
         MachineClientRegistration.register();
         FurnaceClientRegistration.register();

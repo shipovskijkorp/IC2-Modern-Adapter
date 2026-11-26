@@ -826,6 +826,20 @@ public final class IC2RuntimeResourceCompiler {
                 continue;
             }
 
+            if ("nano_saber".equals(itemPath)) {
+                String inactive = "tool/electric/nano_saber";
+                String active = "tool/electric/nano_saber_active";
+                requireItemModel(output, inactive, itemPath);
+                requireItemModel(output, active, itemPath);
+                JsonObject model = aliasItemModel(inactive);
+                JsonObject predicate = new JsonObject(); predicate.addProperty("ic2:saber_active", 1);
+                JsonObject override = new JsonObject(); override.add("predicate", predicate);
+                override.addProperty("model", "ic2:item/" + active);
+                JsonArray overrides = new JsonArray(); overrides.add(override); model.add("overrides", overrides);
+                putJson(output, rootPath, model);
+                continue;
+            }
+
             // Some root items already had a top-level model in the original resource pack.
             if (output.containsKey(rootPath)) {
                 continue;

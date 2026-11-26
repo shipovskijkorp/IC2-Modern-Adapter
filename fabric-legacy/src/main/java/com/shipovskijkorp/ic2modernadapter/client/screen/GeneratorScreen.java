@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.client.screen;
 
+import com.shipovskijkorp.ic2modernadapter.energy.util.OriginalEnergyFormat;
 import com.shipovskijkorp.ic2modernadapter.menu.GeneratorMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -39,7 +40,8 @@ public final class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu
         if (isHovering(ENERGY_X - 4, ENERGY_Y - 11, 32, 32, mouseX, mouseY)) {
             graphics.renderTooltip(
                     this.font,
-                    Component.literal(menu.getEuStored() + "/" + menu.getEuCapacity() + " EU"),
+                    Component.literal(OriginalEnergyFormat.gauge(menu.getEuStored(), menu.getEuCapacity()))
+                            .append(Component.translatable("ic2.generic.text.EU")),
                     mouseX,
                     mouseY);
         }

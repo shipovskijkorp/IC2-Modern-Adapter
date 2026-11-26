@@ -89,7 +89,7 @@ public final class ThermalCentrifugeMenu extends AbstractContainerMenu {
         for (int column = 0; column < 9; column++) {
             addSlot(new Slot(playerInventory, column, startX + column * 18, hotbarY));
         }
-        addDataSlots(data);
+        addDataSlots(new WideContainerData(data));
     }
 
     private static ContainerData defaultClientData() {

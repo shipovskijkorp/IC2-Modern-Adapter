@@ -12,6 +12,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 public final class EuItemClientRegistration {
     @SubscribeEvent public static void setup(FMLClientSetupEvent event) { event.enqueueWork(EuItemClientRegistration::register); }
     public static void register() {
+        ItemProperties.register(IC2ContentRegistries.item("nano_saber").get(), ResourceLocation.fromNamespaceAndPath("ic2", "saber_active"), (stack, level, entity, seed) ->
+                com.shipovskijkorp.ic2modernadapter.content.item.tool.ElectricMiningToolItem.active(stack) ? 1F : 0F);
         for (EuElectricItemSpec spec : EuElectricItemSpec.values()) {
             if (spec.isBattery()) ItemProperties.register(IC2ContentRegistries.item(spec.itemPath()).get(),
                     ResourceLocation.fromNamespaceAndPath("ic2", "charge_level"), (stack, level, entity, seed) ->

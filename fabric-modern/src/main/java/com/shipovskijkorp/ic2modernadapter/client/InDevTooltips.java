@@ -5,6 +5,8 @@ import com.shipovskijkorp.ic2modernadapter.development.InDevContent;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import com.shipovskijkorp.ic2modernadapter.client.screen.ToolBoxScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -20,7 +22,9 @@ public final class InDevTooltips {
             String variantKey = IC2VariantStacks.variantKey(stack);
             if (id != null) {
                 LegacyItemTooltips.append(
-                        stack, id.getNamespace(), id.getPath(), variantKey, lines, Screen.hasShiftDown());
+                        stack, id.getNamespace(), id.getPath(), variantKey, lines, Screen.hasShiftDown(), Minecraft.getInstance().screen instanceof ToolBoxScreen,
+                        Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage(),
+                        Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage());
             }
             if (id != null && InDevContent.isItem(id.getNamespace(), id.getPath(), variantKey)) {
                 lines.add(Math.min(1, lines.size()), IN_DEV);

@@ -24,12 +24,16 @@ public final class IC2ModernAdapter implements ModInitializer {
         OreContent.register();
         OreWorldGen.register();
         IC2RuntimeResources.register();
+        com.shipovskijkorp.ic2modernadapter.content.item.tool.ToolInteractionPlatform.register();
         GeneratorPlatform.register();
         FurnacePlatform.register();
         EuStoragePlatform.register();
         MachinePlatform.register();
         ToolBoxPlatform.register();
+        com.shipovskijkorp.ic2modernadapter.containment.ContainmentBoxPlatform.register();
         IC2CreativeTab.register();
         FabricEuNetworkLifecycle.register();
+        com.shipovskijkorp.ic2modernadapter.network.ToolModeNetworking.register();
+        com.shipovskijkorp.ic2modernadapter.network.NightVisionNetworking.register();
     }
 }

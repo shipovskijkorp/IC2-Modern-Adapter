@@ -39,11 +39,17 @@ public final class ModernArmorMaterials {
     public static final Spec HAZMAT = utility("hazmat", 64, SoundEvents.ARMOR_EQUIP_LEATHER);
     public static final Spec RUBBER_BOOTS = utility("rubber", 64, SoundEvents.ARMOR_EQUIP_LEATHER);
 
-    /** No vanilla damage/defense: energy-dependent armor protection is a separate mechanic. */
+    /** IL's diamond-like Nano/Quantum/NVG attributes; EU remains the wear/charge resource. */
     public static Holder<ArmorMaterial> electric(String name) {
-        return holder(name, Map.of(ArmorItem.Type.HELMET, 0, ArmorItem.Type.CHESTPLATE, 0,
-                ArmorItem.Type.LEGGINGS, 0, ArmorItem.Type.BOOTS, 0), 0,
-                SoundEvents.ARMOR_EQUIP_IRON, () -> Ingredient.EMPTY, 0.0F);
+        boolean protective = name.equals("nano") || name.equals("quantum") || name.equals("nightvision");
+        Map<ArmorItem.Type, Integer> defense = protective
+                ? Map.of(ArmorItem.Type.HELMET, 3, ArmorItem.Type.CHESTPLATE, 8,
+                        ArmorItem.Type.LEGGINGS, 6, ArmorItem.Type.BOOTS, 3)
+                : Map.of(ArmorItem.Type.HELMET, 0, ArmorItem.Type.CHESTPLATE, 0,
+                        ArmorItem.Type.LEGGINGS, 0, ArmorItem.Type.BOOTS, 0);
+        Holder<SoundEvent> sound = name.equals("nightvision") || name.equals("rubber")
+                ? SoundEvents.ARMOR_EQUIP_LEATHER : protective ? SoundEvents.ARMOR_EQUIP_DIAMOND : SoundEvents.ARMOR_EQUIP_IRON;
+        return holder(name, defense, 0, sound, () -> Ingredient.EMPTY, protective ? 2.0F : 0.0F);
     }
 
     private static Spec utility(String name, int durability, Holder<SoundEvent> sound) {

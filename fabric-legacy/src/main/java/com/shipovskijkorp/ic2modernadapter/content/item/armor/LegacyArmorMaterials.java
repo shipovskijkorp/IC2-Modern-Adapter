@@ -36,10 +36,17 @@ public final class LegacyArmorMaterials {
     public static final ArmorMaterial HAZMAT = utility("hazmat", 64, SoundEvents.ARMOR_EQUIP_LEATHER);
     public static final ArmorMaterial RUBBER_BOOTS = utility("rubber", 64, SoundEvents.ARMOR_EQUIP_LEATHER);
 
-    /** No vanilla damage/defense: energy-dependent armor protection is a separate mechanic. */
+    /** IL's diamond-like Nano/Quantum/NVG attributes; EU remains the wear/charge resource. */
     public static ArmorMaterial electric(String name) {
-        return material(name, Map.of(), Map.of(), 0, SoundEvents.ARMOR_EQUIP_IRON,
-                0.0F, () -> Ingredient.EMPTY);
+        boolean protective = name.equals("nano") || name.equals("quantum") || name.equals("nightvision");
+        Map<ArmorItem.Type, Integer> defense = protective
+                ? Map.of(ArmorItem.Type.HELMET, 3, ArmorItem.Type.CHESTPLATE, 8,
+                        ArmorItem.Type.LEGGINGS, 6, ArmorItem.Type.BOOTS, 3)
+                : Map.of();
+        SoundEvent sound = name.equals("nightvision") || name.equals("rubber")
+                ? SoundEvents.ARMOR_EQUIP_LEATHER : protective ? SoundEvents.ARMOR_EQUIP_DIAMOND : SoundEvents.ARMOR_EQUIP_IRON;
+        return material(name, Map.of(), defense, 0, sound,
+                protective ? 2.0F : 0.0F, () -> Ingredient.EMPTY);
     }
 
     private static ArmorMaterial utility(String name, int durability, SoundEvent sound) {

@@ -8,10 +8,7 @@
   "license": "${mod_license}",
   "environment": "*",
   "mixins": [
-    {
-      "config": "ic2_modern_adapter.fabric.mixins.json",
-      "environment": "client"
-    }
+    "ic2_modern_adapter.fabric.mixins.json"
   ],
   "entrypoints": {
     "main": [

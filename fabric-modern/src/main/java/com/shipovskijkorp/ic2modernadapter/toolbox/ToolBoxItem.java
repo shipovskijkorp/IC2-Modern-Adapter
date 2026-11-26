@@ -37,6 +37,9 @@ public final class ToolBoxItem extends LegacyTranslatedItem {
                 && electric.spec().chargesHotbar()) {
             return com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks.chargeMode(stack) == 1;
         }
+        if (stack.getItem() instanceof com.shipovskijkorp.ic2modernadapter.content.item.tool.ElectricMiningToolItem
+                || stack.getItem() instanceof com.shipovskijkorp.ic2modernadapter.content.item.tool.PainterItem
+                || stack.getItem() instanceof com.shipovskijkorp.ic2modernadapter.content.item.tool.ElectricWrenchItem) return true;
         if (stack.isDamageableItem()) {
             return true;
         }

@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.client.screen;
 
+import com.shipovskijkorp.ic2modernadapter.energy.util.OriginalEnergyFormat;
 import com.shipovskijkorp.ic2modernadapter.menu.OreWashingPlantMenu;
 import java.util.Objects;
 import net.minecraft.client.gui.GuiGraphics;
@@ -47,7 +48,8 @@ public final class OreWashingPlantScreen extends AbstractContainerScreen<OreWash
         renderTooltip(graphics, mouseX, mouseY);
         if (isHovering(ENERGY_X - 4, ENERGY_Y - 1, 16, 16, mouseX, mouseY)) {
             graphics.renderTooltip(this.font,
-                    Component.literal(menu.getEuStored() + "/" + menu.getEuCapacity() + " EU"),
+                    Component.literal(OriginalEnergyFormat.gauge(menu.getEuStored(), menu.getEuCapacity()))
+                            .append(Component.translatable("ic2.generic.text.EU")),
                     mouseX, mouseY);
         }
         if (isHovering(TANK_X, TANK_Y, TANK_WIDTH, TANK_HEIGHT, mouseX, mouseY)) {

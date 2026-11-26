@@ -70,7 +70,7 @@ public final class EuStorageMenu extends AbstractContainerMenu {
             addSlot(new Slot(playerInventory, column, inventoryX + column * 18, hotbarY));
         }
 
-        addDataSlots(data);
+        addDataSlots(new WideContainerData(data));
     }
 
     @Override

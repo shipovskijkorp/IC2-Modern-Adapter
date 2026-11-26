@@ -25,14 +25,19 @@ public final class IC2ModernAdapter {
         com.shipovskijkorp.ic2modernadapter.loot.ChestLootPlatform.register();
         OreContent.register(modEventBus);
         com.shipovskijkorp.ic2modernadapter.worldgen.RubberTreeWorldGen.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.content.item.tool.ToolInteractionPlatform.register();
         GeneratorPlatform.register(modEventBus);
         FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);
         MachinePlatform.register(modEventBus);
         ToolBoxPlatform.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.containment.ContainmentBoxPlatform.register(modEventBus);
         IC2CreativeTab.register(modEventBus);
         modEventBus.addListener(IC2RuntimeResources::onAddPackFinders);
         MinecraftForge.EVENT_BUS.addListener(InDevTooltips::onItemTooltip);
         ForgeEuNetworkLifecycle.register();
+        com.shipovskijkorp.ic2modernadapter.network.ToolModeNetworking.register();
+        com.shipovskijkorp.ic2modernadapter.network.NightVisionNetworking.register();
+        com.shipovskijkorp.ic2modernadapter.content.item.armor.NanoArmorPlatform.register();
     }
 }

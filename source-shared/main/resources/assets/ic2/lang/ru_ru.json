@@ -1,3 +1,14 @@
 {
-  "ic2.resource.silver_ore": "Серебряная руда"
+  "ic2.resource.silver_ore": "Серебряная руда",
+  "key.ic2_modern_adapter.nightvision_toggle": "ПНВ: вкл/выкл",
+  "message.ic2_modern_adapter.nightvision.disabled": "ПНВ выключено.",
+  "message.ic2_modern_adapter.nightvision.enabled": "ПНВ включено.",
+  "message.ic2_modern_adapter.nightvision.no_module": "ПНВ-модуль не найден.",
+  "message.ic2_modern_adapter.nightvision.no_power": "ПНВ выключено (нет энергии).",
+  "message.ic2_modern_adapter.nightvision.state_off": "Состояние: ВЫКЛ",
+  "message.ic2_modern_adapter.nightvision.state_on": "Состояние: ВКЛ",
+  "key.categories.ic2_modern_adapter": "IndustrialCraft 2",
+  "key.ic2ma.tool_mode": "Переключение режима инструмента",
+  "ic2ma.tool.painter.refill_on": "Автоматическое пополнение валика включено",
+  "ic2ma.tool.painter.refill_off": "Автоматическое пополнение валика выключено"
 }

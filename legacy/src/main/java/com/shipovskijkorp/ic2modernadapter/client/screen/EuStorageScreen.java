@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.client.screen;
 
+import com.shipovskijkorp.ic2modernadapter.energy.util.OriginalEnergyFormat;
 import com.shipovskijkorp.ic2modernadapter.menu.EuStorageMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -51,7 +52,8 @@ public final class EuStorageScreen extends AbstractContainerScreen<EuStorageMenu
         if (isHovering(ENERGY_X - 4, ENERGY_Y - 11, 32, 32, mouseX, mouseY)) {
             graphics.renderTooltip(
                     font,
-                    Component.literal(menu.getEuStored() + "/" + menu.getEuCapacity() + " EU"),
+                    Component.literal(OriginalEnergyFormat.gauge(menu.getEuStored(), menu.getEuCapacity()))
+                            .append(Component.translatable("ic2.generic.text.EU")),
                     mouseX,
                     mouseY);
         }
@@ -75,15 +77,17 @@ public final class EuStorageScreen extends AbstractContainerScreen<EuStorageMenu
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         graphics.drawString(font, title, titleLabelX, titleLabelY, 0x404040, false);
         graphics.drawString(font, Component.translatable("ic2.EUStorage.gui.info.level"), 79, 25, 0x404040, false);
-        graphics.drawString(font, Component.literal(" " + menu.getEuStored()), 110, 35, 0x404040, false);
+        graphics.drawString(font, Component.literal(" " + Math.min(menu.getEuStored(), menu.getEuCapacity())), 110, 35, 0x404040, false);
         graphics.drawString(font, Component.literal("/" + menu.getEuCapacity()), 110, 45, 0x404040, false);
-        graphics.drawString(
-                font,
-                Component.translatable("ic2.EUStorage.gui.info.output", menu.getOutputEuPerTick()),
-                85,
-                60,
-                0x404040,
-                false);
+        if (!menu.isChargepad()) {
+            graphics.drawString(
+                    font,
+                    Component.translatable("ic2.EUStorage.gui.info.output", menu.getOutputEuPerTick()),
+                    85,
+                    60,
+                    0x404040,
+                    false);
+        }
         graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040, false);
     }
 

@@ -4,6 +4,9 @@ import com.shipovskijkorp.ic2modernadapter.content.LegacyItemTooltips;
 import com.shipovskijkorp.ic2modernadapter.development.InDevContent;
 import com.shipovskijkorp.ic2modernadapter.registry.IC2VariantStacks;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import com.shipovskijkorp.ic2modernadapter.client.screen.ToolBoxScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -19,7 +22,9 @@ public final class InDevTooltips {
         if (id != null) {
             LegacyItemTooltips.append(
                     event.getItemStack(), id.getNamespace(), id.getPath(), variantKey,
-                    event.getToolTip(), event.getFlags().isAdvanced());
+                    event.getToolTip(), Screen.hasShiftDown(), Minecraft.getInstance().screen instanceof ToolBoxScreen,
+                        Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage(),
+                        Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage());
         }
         if (id != null && InDevContent.isItem(id.getNamespace(), id.getPath(), variantKey)) {
             event.getToolTip().add(Math.min(1, event.getToolTip().size()), IN_DEV);

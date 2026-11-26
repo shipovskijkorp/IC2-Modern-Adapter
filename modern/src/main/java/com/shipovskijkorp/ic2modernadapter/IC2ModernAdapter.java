@@ -23,14 +23,19 @@ public final class IC2ModernAdapter {
         IC2ContentRegistries.register(modEventBus);
         OreContent.register(modEventBus);
         com.shipovskijkorp.ic2modernadapter.worldgen.RubberTreeWorldGen.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.content.item.tool.ToolInteractionPlatform.register();
         GeneratorPlatform.register(modEventBus);
         FurnacePlatform.register(modEventBus);
         EuStoragePlatform.register(modEventBus);
         MachinePlatform.register(modEventBus);
         ToolBoxPlatform.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.containment.ContainmentBoxPlatform.register(modEventBus);
         IC2CreativeTab.register(modEventBus);
         modEventBus.addListener(IC2RuntimeResources::onAddPackFinders);
         NeoForge.EVENT_BUS.addListener(InDevTooltips::onItemTooltip);
         NeoForgeEuNetworkLifecycle.register();
+        com.shipovskijkorp.ic2modernadapter.network.ToolModeNetworking.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.network.NightVisionNetworking.register(modEventBus);
+        com.shipovskijkorp.ic2modernadapter.content.item.armor.NanoArmorPlatform.register();
     }
 }

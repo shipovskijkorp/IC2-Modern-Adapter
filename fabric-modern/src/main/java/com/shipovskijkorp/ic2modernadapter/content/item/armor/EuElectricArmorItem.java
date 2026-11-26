@@ -12,6 +12,12 @@ public final class EuElectricArmorItem extends TranslatedArmorItem implements Sp
         this.spec = EuElectricItemSpec.fromItemPath(path);
     }
     @Override public EuElectricItemSpec spec() { return spec; }
+    @Override public void inventoryTick(ItemStack stack, net.minecraft.world.level.Level level,
+            net.minecraft.world.entity.Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, level, entity, slot, selected);
+        if (!level.isClientSide() && entity instanceof net.minecraft.server.level.ServerPlayer player)
+            NightVisionModule.tick(stack, player);
+    }
     @Override public boolean isBarVisible(ItemStack stack) { return EuItemManager.showBar(stack); }
     @Override public int getBarWidth(ItemStack stack) { return EuItemManager.barWidth(stack); }
     @Override public int getBarColor(ItemStack stack) { return EuItemManager.barColor(stack); }

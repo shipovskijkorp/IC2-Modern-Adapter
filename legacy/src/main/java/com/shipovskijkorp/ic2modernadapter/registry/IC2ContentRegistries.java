@@ -338,7 +338,16 @@ public final class IC2ContentRegistries {
     private static Item createStandaloneItem(String path) {
         if ("debug_item".equals(path)) return new com.shipovskijkorp.ic2modernadapter.content.item.EuDebugItem(
                 path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
+        if ("wrench".equals(path)) return new com.shipovskijkorp.ic2modernadapter.content.item.tool.ClassicWrenchItem(
+                path, new Item.Properties(), IC2VariantStacks::variantKey);
+        if ("painter".equals(path)) return new com.shipovskijkorp.ic2modernadapter.content.item.tool.PainterItem(
+                path, new Item.Properties(), IC2VariantStacks::variantKey);
         EuElectricItemSpec electric = EuElectricItemSpec.fromItemPath(path);
+        if ("electric_wrench".equals(path)) return new com.shipovskijkorp.ic2modernadapter.content.item.tool.ElectricWrenchItem(
+                path, new Item.Properties(), IC2VariantStacks::variantKey);
+        if (Set.of("drill", "diamond_drill", "iridium_drill", "chainsaw", "electric_hoe", "nano_saber").contains(path))
+            return new com.shipovskijkorp.ic2modernadapter.content.item.tool.ElectricMiningToolItem(
+                    path, electric, new Item.Properties(), IC2VariantStacks::variantKey);
         if (electric != null && !"electric_treetap".equals(path)) {
             if (electric.isArmor()) {
                 return createElectricArmor(path);
@@ -387,6 +396,8 @@ public final class IC2ContentRegistries {
                     path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
             case "cutter" -> new WireCutterItem(
                     path, new Item.Properties().durability(WireCutterItem.MAX_USES), IC2VariantStacks::variantKey);
+            case "containment_box" -> new com.shipovskijkorp.ic2modernadapter.containment.ContainmentBoxItem(
+                    path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
             case "tool_box" -> new ToolBoxItem(
                     path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
             case "forge_hammer" -> new LegacyCraftingToolItem(

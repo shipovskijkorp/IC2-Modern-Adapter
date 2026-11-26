@@ -1,5 +1,6 @@
 package com.shipovskijkorp.ic2modernadapter.client.screen;
 
+import com.shipovskijkorp.ic2modernadapter.energy.util.OriginalEnergyFormat;
 import com.shipovskijkorp.ic2modernadapter.machine.CannerMode;
 import com.shipovskijkorp.ic2modernadapter.machine.Ic2FluidKind;
 import com.shipovskijkorp.ic2modernadapter.menu.CannerMenu;
@@ -96,7 +97,8 @@ public final class CannerScreen extends AbstractContainerScreen<CannerMenu> {
     private void renderCannerTooltips(GuiGraphics graphics, int mouseX, int mouseY) {
         if (isHovering(ENERGY_X - 4, ENERGY_Y - 1, 16, 16, mouseX, mouseY)) {
             graphics.renderTooltip(this.font,
-                    Component.literal(menu.getEuStored() + "/" + menu.getEuCapacity() + " EU"),
+                    Component.literal(OriginalEnergyFormat.gauge(menu.getEuStored(), menu.getEuCapacity()))
+                            .append(Component.translatable("ic2.generic.text.EU")),
                     mouseX, mouseY);
         } else if (isHovering(INPUT_TANK_X, TANK_Y, TANK_WIDTH, TANK_HEIGHT, mouseX, mouseY)) {
             graphics.renderTooltip(this.font,

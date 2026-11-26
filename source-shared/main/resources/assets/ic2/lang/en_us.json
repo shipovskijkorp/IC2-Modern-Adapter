@@ -6,5 +6,16 @@
   "ic2.Canner.gui.switch.BottleLiquid": "fill Cell from Tank",
   "ic2.Canner.gui.switch.EnrichLiquid": "fluid enrich (Tank or Cell)",
   "ic2.Canner.gui.switchTanks": "Switch Tanks",
-  "ic2.resource.silver_ore": "Silver Ore"
+  "ic2.resource.silver_ore": "Silver Ore",
+  "key.ic2_modern_adapter.nightvision_toggle": "Toggle Nightvision",
+  "message.ic2_modern_adapter.nightvision.disabled": "Nightvision disabled.",
+  "message.ic2_modern_adapter.nightvision.enabled": "Nightvision enabled.",
+  "message.ic2_modern_adapter.nightvision.no_module": "No nightvision module found.",
+  "message.ic2_modern_adapter.nightvision.no_power": "Nightvision disabled (no power).",
+  "message.ic2_modern_adapter.nightvision.state_off": "State: OFF",
+  "message.ic2_modern_adapter.nightvision.state_on": "State: ON",
+  "key.categories.ic2_modern_adapter": "IndustrialCraft 2",
+  "key.ic2ma.tool_mode": "Switch tool mode",
+  "ic2ma.tool.painter.refill_on": "Painter automatic refill mode enabled",
+  "ic2ma.tool.painter.refill_off": "Painter automatic refill mode disabled"
 }

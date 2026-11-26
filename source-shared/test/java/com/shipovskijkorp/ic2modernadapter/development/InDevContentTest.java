@@ -93,9 +93,34 @@ class InDevContentTest {
     }
 
     @Test
+    void nanoSuitAndNightVisionAreImplemented() {
+        for (String path : Set.of("nano_helmet", "nano_chestplate", "nano_leggings", "nano_boots", "nightvision_goggles")) {
+            assertFalse(InDevContent.isItem("ic2", path), path + " has functional electric armor behavior");
+        }
+    }
+
+    @Test
+    void completedToolsAndContainmentBoxAreProductionReady() {
+        for (String path : Set.of(
+                "drill", "diamond_drill", "iridium_drill", "chainsaw", "electric_hoe",
+                "nano_saber", "wrench", "electric_wrench", "painter", "containment_box")) {
+            assertFalse(InDevContent.isItem("ic2", path), path + " now has functional tool behavior");
+        }
+    }
+
+    @Test
+    void deferredToolsRemainMarked() {
+        for (String path : Set.of(
+                "meter", "scanner", "advanced_scanner", "cropnalyzer", "mining_laser",
+                "wind_meter", "obscurator", "wrench_new", "crowbar",
+                "frequency_transmitter", "remote", "weeding_trowel")) {
+            assertTrue(InDevContent.isItem("ic2", path), path + " still needs behavior");
+        }
+    }
+
+    @Test
     void unfinishedFunctionalItemsRemainMarked() {
         for (String path : Set.of(
-                "drill",
                 "quantum_helmet",
                 "heat_exchanger",
                 "heat_vent",
