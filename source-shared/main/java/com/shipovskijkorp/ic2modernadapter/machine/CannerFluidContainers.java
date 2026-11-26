@@ -1,6 +1,8 @@
 package com.shipovskijkorp.ic2modernadapter.machine;
 
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyRecipeRuntime;
+import com.shipovskijkorp.ic2modernadapter.content.item.FoamCharge;
+import com.shipovskijkorp.ic2modernadapter.content.item.FoamSprayerItem;
 import com.shipovskijkorp.ic2modernadapter.recipe.LegacyRecipeStacks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +18,14 @@ public final class CannerFluidContainers {
     public static DrainResult drain(ItemStack stack) {
         if (stack == null || stack.isEmpty()) {
             return null;
+        }
+        if (stack.getItem() instanceof FoamSprayerItem) {
+            int amount = FoamCharge.get(stack);
+            if (amount <= 0) return null;
+            ItemStack empty = stack.copy();
+            empty.setCount(1);
+            FoamCharge.set(empty, 0);
+            return new DrainResult(Ic2FluidKind.CONSTRUCTION_FOAM, amount, empty);
         }
         String id = itemId(stack);
         return switch (id) {
@@ -39,9 +49,20 @@ public final class CannerFluidContainers {
     }
 
     public static FillResult fill(ItemStack stack, Ic2FluidKind fluid, int availableMb) {
-        if (stack == null || stack.isEmpty() || fluid == null || fluid.isEmpty() || availableMb < CELL_AMOUNT_MB) {
+        if (stack == null || stack.isEmpty() || fluid == null || fluid.isEmpty() || availableMb <= 0) {
             return null;
         }
+        if (stack.getItem() instanceof FoamSprayerItem) {
+            if (fluid != Ic2FluidKind.CONSTRUCTION_FOAM) return null;
+            int stored = FoamCharge.get(stack);
+            int amount = Math.min(availableMb, FoamSprayerItem.CAPACITY - stored);
+            if (amount <= 0) return null;
+            ItemStack filled = stack.copy();
+            filled.setCount(1);
+            FoamCharge.set(filled, stored + amount);
+            return new FillResult(fluid, amount, filled);
+        }
+        if (availableMb < CELL_AMOUNT_MB) return null;
         String id = itemId(stack);
         if ("minecraft:bucket".equals(id)) {
             if (fluid == Ic2FluidKind.WATER) {
@@ -66,6 +87,7 @@ public final class CannerFluidContainers {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
+        if (stack.getItem() instanceof FoamSprayerItem) return FoamCharge.get(stack) < FoamSprayerItem.CAPACITY;
         return "minecraft:bucket".equals(itemId(stack))
                 || "fluid_cell/empty".equals(LegacyRecipeStacks.INSTANCE.variantKey(stack));
     }

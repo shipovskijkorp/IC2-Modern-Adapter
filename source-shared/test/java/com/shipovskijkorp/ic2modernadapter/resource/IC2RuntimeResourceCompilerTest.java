@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.shipovskijkorp.ic2modernadapter.energy.cable.EuCableVariant;
+import com.shipovskijkorp.ic2modernadapter.content.OriginalVisualColors;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -109,7 +110,61 @@ class IC2RuntimeResourceCompilerTest {
     }
 
     @Test
-    void leavesNonIc2TextureIdsUntouched() {
+    void normalizesVanillaLegacyTextureIds() {
+        assertEquals("minecraft:block/white_wool",
+                IC2RuntimeResourceCompiler.normalizeLegacyTextureId("blocks/wool_colored_white"));
+        assertEquals("minecraft:block/white_wool",
+                IC2RuntimeResourceCompiler.normalizeLegacyTextureId("minecraft:blocks/wool_colored_white"));
+        assertEquals("minecraft:block/water_still",
+                IC2RuntimeResourceCompiler.normalizeLegacyTextureId("minecraft:blocks/water_still"));
+        assertEquals("minecraft:block/cauldron_side",
+                IC2RuntimeResourceCompiler.normalizeLegacyTextureId("blocks/cauldron_side"));
+    }
+
+    @Test
+    void repairsSheetTexturesWithoutChangingModelParents() {
+        Map<String, byte[]> output = new LinkedHashMap<>();
+        output.put("models/item/resource/water_sheet.json", """
+                {"parent":"ic2:item/default","textures":{"layer0":"minecraft:blocks/water_still"}}
+                """.getBytes(StandardCharsets.UTF_8));
+        output.put("models/item/resource/lava_sheet.json", """
+                {"parent":"ic2:item/default","textures":{"layer0":"minecraft:blocks/lava_still"}}
+                """.getBytes(StandardCharsets.UTF_8));
+        output.put("models/block/wool_sheet.json", """
+                {"parent":"ic2:block/sheet_base","textures":{"texture":"blocks/wool_colored_white"}}
+                """.getBytes(StandardCharsets.UTF_8));
+        output.put("models/block/sheet_base.json", """
+                {"textures":{"particle":"#texture"},"elements":[{"from":[0,0,0],"to":[16,2,16]}]}
+                """.getBytes(StandardCharsets.UTF_8));
+        byte[] originalGeometry = output.get("models/block/sheet_base.json");
+        IC2RuntimeResourceCompiler.normalizeLegacyModelTextures(output);
+        for (String liquid : java.util.List.of("water", "lava")) {
+            JsonObject sheet = JsonParser.parseString(new String(
+                    output.get("models/item/resource/" + liquid + "_sheet.json"), StandardCharsets.UTF_8))
+                    .getAsJsonObject();
+            assertEquals("minecraft:block/" + liquid + "_flow",
+                    sheet.getAsJsonObject("textures").get("layer0").getAsString());
+            assertEquals("ic2:item/default", sheet.get("parent").getAsString());
+            assertFalse(sheet.has("elements"));
+        }
+        JsonObject wool = JsonParser.parseString(new String(
+                output.get("models/block/wool_sheet.json"), StandardCharsets.UTF_8)).getAsJsonObject();
+        assertEquals("minecraft:block/white_wool", wool.getAsJsonObject("textures").get("texture").getAsString());
+        assertEquals("ic2:block/sheet_base", wool.get("parent").getAsString());
+        org.junit.jupiter.api.Assertions.assertArrayEquals(originalGeometry, output.get("models/block/sheet_base.json"));
+    }
+
+    @Test
+    void tintsOnlyTheWaterSheetLayer() {
+        assertEquals(0xFF3F76E4, OriginalVisualColors.miscResource("misc_resource/water_sheet", 0));
+        assertEquals(OriginalVisualColors.WHITE, OriginalVisualColors.miscResource("misc_resource/water_sheet", 1));
+        assertEquals(OriginalVisualColors.WHITE, OriginalVisualColors.miscResource("misc_resource/lava_sheet", 0));
+        assertEquals(OriginalVisualColors.WHITE, OriginalVisualColors.miscResource("misc_resource/iridium_ore", 0));
+        assertEquals(OriginalVisualColors.WHITE, OriginalVisualColors.miscResource(null, 0));
+    }
+
+    @Test
+    void leavesModernAndVariableTextureIdsUntouched() {
         assertEquals("minecraft:block/stone",
                 IC2RuntimeResourceCompiler.normalizeLegacyTextureId("minecraft:block/stone"));
         assertEquals("#layer0", IC2RuntimeResourceCompiler.normalizeLegacyTextureId("#layer0"));

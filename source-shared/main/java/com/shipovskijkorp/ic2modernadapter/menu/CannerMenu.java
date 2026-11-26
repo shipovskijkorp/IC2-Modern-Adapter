@@ -113,13 +113,13 @@ public final class CannerMenu extends AbstractContainerMenu {
         if (index < SLOT_COUNT) {
             if (!moveItemStackTo(source, SLOT_COUNT, slots.size(), true)) return ItemStack.EMPTY;
         } else if (container.canPlaceItem(AbstractCannerBlockEntity.SLOT_CAN_INPUT, source)) {
-            if (!moveItemStackTo(source, AbstractCannerBlockEntity.SLOT_CAN_INPUT, AbstractCannerBlockEntity.SLOT_CAN_INPUT + 1, false)) return ItemStack.EMPTY;
+            if (!moveItemStackTo(source, 0, 1, false)) return ItemStack.EMPTY;
         } else if (container.canPlaceItem(AbstractElectricMachineBlockEntity.SLOT_INPUT, source)) {
-            if (!moveItemStackTo(source, AbstractElectricMachineBlockEntity.SLOT_INPUT, AbstractElectricMachineBlockEntity.SLOT_INPUT + 1, false)) return ItemStack.EMPTY;
+            if (!moveItemStackTo(source, 1, 2, false)) return ItemStack.EMPTY;
         } else if (container.canPlaceItem(AbstractElectricMachineBlockEntity.SLOT_DISCHARGE, source)) {
-            if (!moveItemStackTo(source, AbstractElectricMachineBlockEntity.SLOT_DISCHARGE, AbstractElectricMachineBlockEntity.SLOT_DISCHARGE + 1, false)) return ItemStack.EMPTY;
+            if (!moveItemStackTo(source, 3, 4, false)) return ItemStack.EMPTY;
         } else if (AbstractElectricMachineBlockEntity.isUpgradeStack(source)) {
-            if (!moveItemStackTo(source, AbstractElectricMachineBlockEntity.SLOT_UPGRADE_0, AbstractElectricMachineBlockEntity.SLOT_UPGRADE_0 + AbstractElectricMachineBlockEntity.UPGRADE_SLOTS, false)) return ItemStack.EMPTY;
+            if (!moveItemStackTo(source, 4, 4 + AbstractElectricMachineBlockEntity.UPGRADE_SLOTS, false)) return ItemStack.EMPTY;
         } else {
             return ItemStack.EMPTY;
         }

@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "ic2:foam",
+          "properties": {
+            "variant": "1"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ic2:scaffold",
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:custom_data": {
+                  "ic2ma_legacy_meta": 2,
+                  "ic2ma_variant": "scaffold/iron"
+                },
+                "minecraft:custom_model_data": 3
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

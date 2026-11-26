@@ -20,6 +20,7 @@ public final class IC2ModernAdapter implements ModInitializer {
     @Override
     public void onInitialize() {
         IC2ContentRegistries.register();
+        com.shipovskijkorp.ic2modernadapter.loot.ChestLootPlatform.register();
         OreContent.register();
         OreWorldGen.register();
         IC2RuntimeResources.register();

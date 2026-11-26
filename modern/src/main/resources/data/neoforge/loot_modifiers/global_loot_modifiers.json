@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "entries": [
+    "ic2_modern_adapter:original_chest/abandoned_mineshaft",
+    "ic2_modern_adapter:original_chest/desert_pyramid",
+    "ic2_modern_adapter:original_chest/end_city_treasure",
+    "ic2_modern_adapter:original_chest/igloo_chest",
+    "ic2_modern_adapter:original_chest/jungle_temple",
+    "ic2_modern_adapter:original_chest/nether_bridge",
+    "ic2_modern_adapter:original_chest/simple_dungeon",
+    "ic2_modern_adapter:original_chest/spawn_bonus_chest",
+    "ic2_modern_adapter:original_chest/stronghold_corridor",
+    "ic2_modern_adapter:original_chest/stronghold_crossing",
+    "ic2_modern_adapter:original_chest/stronghold_library",
+    "ic2_modern_adapter:original_chest/village/village_weaponsmith"
+  ]
+}

@@ -146,14 +146,26 @@ public final class IC2RuntimeResourceCompiler {
         }
     }
 
-    /** Rewrites every original item/block texture reference to the modern singular atlas path. */
-    private static void normalizeLegacyModelTextures(Map<String, byte[]> resources) {
+    /** Rewrites legacy atlas paths and adapts the two liquid sheet sprites. */
+    static void normalizeLegacyModelTextures(Map<String, byte[]> resources) {
         List<String> modelPaths = resources.keySet().stream()
                 .filter(path -> path.startsWith("models/") && path.endsWith(".json"))
                 .toList();
         for (String modelPath : modelPaths) {
             JsonObject model = parseJsonObject(resources.get(modelPath), modelPath);
-            if (rewriteLegacyTextureReferences(model)) {
+            boolean changed = rewriteLegacyTextureReferences(model);
+            // Liquid sheets are generated item models, not thin block models. Use the vanilla
+            // animated flowing sprites while preserving the original parent and item transforms.
+            String sheetTexture = switch (modelPath) {
+                case "models/item/resource/water_sheet.json" -> "minecraft:block/water_flow";
+                case "models/item/resource/lava_sheet.json" -> "minecraft:block/lava_flow";
+                default -> null;
+            };
+            if (sheetTexture != null) {
+                requireObject(model, "textures").addProperty("layer0", sheetTexture);
+                changed = true;
+            }
+            if (changed) {
                 putJson(resources, modelPath, model);
             }
         }
@@ -193,6 +205,17 @@ public final class IC2RuntimeResourceCompiler {
         }
         if (id.startsWith("ic2:items/")) {
             return "ic2:item/" + id.substring("ic2:items/".length());
+        }
+        // Vanilla moved to singular atlas directories as well. The wool sprite was also
+        // renamed during the flattening; unqualified texture ids use the minecraft namespace.
+        if (id.equals("blocks/wool_colored_white") || id.equals("minecraft:blocks/wool_colored_white")) {
+            return "minecraft:block/white_wool";
+        }
+        if (id.startsWith("minecraft:blocks/")) {
+            return "minecraft:block/" + id.substring("minecraft:blocks/".length());
+        }
+        if (id.startsWith("blocks/")) {
+            return "minecraft:block/" + id.substring("blocks/".length());
         }
         return id;
     }

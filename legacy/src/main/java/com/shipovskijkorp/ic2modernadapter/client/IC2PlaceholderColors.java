@@ -42,6 +42,10 @@ public final class IC2PlaceholderColors {
                 (stack, tintIndex) -> OriginalVisualColors.cover(
                         IC2VariantStacks.placementVariantIndex(stack), tintIndex),
                 IC2ContentRegistries.item("cover").get());
+        event.register(
+                (stack, tintIndex) -> OriginalVisualColors.miscResource(
+                        IC2VariantStacks.variantKey(stack), tintIndex),
+                IC2ContentRegistries.item("misc_resource").get());
     }
 
     private IC2PlaceholderColors() {

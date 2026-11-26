@@ -420,6 +420,15 @@ public final class LegacyRecipeRuntime {
             case "crushedSilver" -> matchesVariantOrCommonTag(stack, stacks, "crushed/silver", "crushed_ores/silver");
             case "crushedTin" -> matchesVariantOrCommonTag(stack, stacks, "crushed/tin", "crushed_ores/tin");
             case "crushedUranium" -> matchesVariantOrCommonTag(stack, stacks, "crushed/uranium", "crushed_ores/uranium");
+            case "dustClay" -> matchesVariantOrCommonTag(stack, stacks, "dust/clay", "dusts/clay");
+            case "itemSlag" -> matchesVariantOrCommonTag(stack, stacks, "misc_resource/slag", "slag");
+            case "crushedPurifiedCopper" -> matchesVariantOrCommonTag(stack, stacks, "purified/copper", "purified_ores/copper");
+            case "crushedPurifiedGold" -> matchesVariantOrCommonTag(stack, stacks, "purified/gold", "purified_ores/gold");
+            case "crushedPurifiedIron" -> matchesVariantOrCommonTag(stack, stacks, "purified/iron", "purified_ores/iron");
+            case "crushedPurifiedLead" -> matchesVariantOrCommonTag(stack, stacks, "purified/lead", "purified_ores/lead");
+            case "crushedPurifiedSilver" -> matchesVariantOrCommonTag(stack, stacks, "purified/silver", "purified_ores/silver");
+            case "crushedPurifiedTin" -> matchesVariantOrCommonTag(stack, stacks, "purified/tin", "purified_ores/tin");
+            case "crushedPurifiedUranium" -> matchesVariantOrCommonTag(stack, stacks, "purified/uranium", "purified_ores/uranium");
             case "dustCoal" -> matchesVariantOrCommonTag(stack, stacks, "dust/coal", "dusts/coal");
             case "dustCopper" -> matchesVariantOrCommonTag(stack, stacks, "dust/copper", "dusts/copper");
             case "dustDiamond" -> matchesVariantOrCommonTag(stack, stacks, "dust/diamond", "dusts/diamond");
@@ -530,10 +539,12 @@ public final class LegacyRecipeRuntime {
             return matchesAnyId(stack, List.of("minecraft:sand", "minecraft:red_sand"));
         }
         if (legacy.startsWith("wool/")) {
+            if (legacy.equals("wool/*")) return matchesTag(stack, "minecraft:wool");
             int meta = parseLegacyMeta(legacy.substring("wool/".length()));
             return ("minecraft:" + legacyColor(meta) + "_wool").equals(itemId(stack));
         }
         if (legacy.startsWith("carpet/")) {
+            if (legacy.equals("carpet/*")) return matchesTag(stack, "minecraft:wool_carpets");
             int meta = parseLegacyMeta(legacy.substring("carpet/".length()));
             return ("minecraft:" + legacyColor(meta) + "_carpet").equals(itemId(stack));
         }
@@ -601,7 +612,8 @@ public final class LegacyRecipeRuntime {
                 return stackForItemId("minecraft:white_wool");
             }
             if (legacy.startsWith("carpet/")) {
-                return stackForItemId("minecraft:white_carpet");
+                String meta = legacy.substring("carpet/".length());
+                return stackForItemId("minecraft:" + ("*".equals(meta) ? "white" : legacyColor(parseLegacyMeta(meta))) + "_carpet");
             }
             if (legacy.startsWith("tallgrass/")) {
                 ItemStack modern = stackForItemId("minecraft:short_grass");
@@ -655,6 +667,15 @@ public final class LegacyRecipeRuntime {
             case "crushedSilver" -> "crushed/silver";
             case "crushedTin" -> "crushed/tin";
             case "crushedUranium" -> "crushed/uranium";
+            case "dustClay" -> "dust/clay";
+            case "itemSlag" -> "misc_resource/slag";
+            case "crushedPurifiedCopper" -> "purified/copper";
+            case "crushedPurifiedGold" -> "purified/gold";
+            case "crushedPurifiedIron" -> "purified/iron";
+            case "crushedPurifiedLead" -> "purified/lead";
+            case "crushedPurifiedSilver" -> "purified/silver";
+            case "crushedPurifiedTin" -> "purified/tin";
+            case "crushedPurifiedUranium" -> "purified/uranium";
             case "dustCoal" -> "dust/coal";
             case "dustCopper" -> "dust/copper";
             case "dustDiamond" -> "dust/diamond";
@@ -820,25 +841,25 @@ public final class LegacyRecipeRuntime {
         }
     }
 
-    /** 1.12 dye metadata order: black -> white. */
+    /** 1.12 wool and carpet block metadata (NOT dye item metadata). */
     private static String legacyColor(int meta) {
         return switch (meta & 15) {
-            case 0 -> "black";
-            case 1 -> "red";
-            case 2 -> "green";
-            case 3 -> "brown";
-            case 4 -> "blue";
-            case 5 -> "purple";
-            case 6 -> "cyan";
-            case 7 -> "light_gray";
-            case 8 -> "gray";
-            case 9 -> "pink";
-            case 10 -> "lime";
-            case 11 -> "yellow";
-            case 12 -> "light_blue";
-            case 13 -> "magenta";
-            case 14 -> "orange";
-            case 15 -> "white";
+            case 0 -> "white";
+            case 1 -> "orange";
+            case 2 -> "magenta";
+            case 3 -> "light_blue";
+            case 4 -> "yellow";
+            case 5 -> "lime";
+            case 6 -> "pink";
+            case 7 -> "gray";
+            case 8 -> "light_gray";
+            case 9 -> "cyan";
+            case 10 -> "purple";
+            case 11 -> "blue";
+            case 12 -> "brown";
+            case 13 -> "green";
+            case 14 -> "red";
+            case 15 -> "black";
             default -> throw new IllegalStateException("Unreachable legacy color");
         };
     }

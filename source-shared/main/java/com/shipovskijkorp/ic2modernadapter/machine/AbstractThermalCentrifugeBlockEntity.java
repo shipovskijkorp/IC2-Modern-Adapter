@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -206,76 +205,46 @@ public abstract class AbstractThermalCentrifugeBlockEntity extends AbstractElect
     }
 
     private boolean canOutputAll(List<ItemStack> outputs) {
+        return planOutputs(outputs) != null;
+    }
+
+    /** Simulate the exact transaction, including outputs larger than a single stack. */
+    private NonNullList<ItemStack> planOutputs(List<ItemStack> outputs) {
         NonNullList<ItemStack> snapshot = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
-        for (int slot = 0; slot < getContainerSize(); slot++) {
+        for (int slot : OUTPUT_SLOTS) {
             snapshot.set(slot, getItem(slot).copy());
         }
         for (ItemStack output : outputs) {
-            if (output.isEmpty() || !canInsertIntoAnyOutput(output, snapshot)) {
-                return false;
+            if (output.isEmpty()) return null;
+            int remaining = output.getCount();
+            for (int slot : OUTPUT_SLOTS) {
+                ItemStack current = snapshot.get(slot);
+                if (!current.isEmpty() && canStacksMerge(current, output)) {
+                    int moved = Math.min(remaining, Math.max(0, Math.min(getMaxStackSize(), current.getMaxStackSize()) - current.getCount()));
+                    current.grow(moved);
+                    remaining -= moved;
+                }
             }
-            insertIntoSnapshot(output, snapshot);
+            for (int slot : OUTPUT_SLOTS) {
+                if (remaining == 0) break;
+                if (snapshot.get(slot).isEmpty()) {
+                    int moved = Math.min(remaining, Math.min(getMaxStackSize(), output.getMaxStackSize()));
+                    ItemStack part = output.copy();
+                    part.setCount(moved);
+                    snapshot.set(slot, part);
+                    remaining -= moved;
+                }
+            }
+            if (remaining != 0) return null;
         }
-        return true;
-    }
-
-    private static boolean canInsertIntoAnyOutput(ItemStack stack, NonNullList<ItemStack> snapshot) {
-        for (int slot : OUTPUT_SLOTS) {
-            ItemStack current = snapshot.get(slot);
-            if (current.isEmpty()) {
-                return stack.getCount() <= stack.getMaxStackSize();
-            }
-            if (canStacksMergeStatic(current, stack)
-                    && current.getCount() + stack.getCount() <= current.getMaxStackSize()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static void insertIntoSnapshot(ItemStack stack, NonNullList<ItemStack> snapshot) {
-        for (int slot : OUTPUT_SLOTS) {
-            ItemStack current = snapshot.get(slot);
-            if (current.isEmpty()) {
-                snapshot.set(slot, stack.copy());
-                return;
-            }
-            if (canStacksMergeStatic(current, stack)
-                    && current.getCount() + stack.getCount() <= current.getMaxStackSize()) {
-                current.grow(stack.getCount());
-                return;
-            }
-        }
+        return snapshot;
     }
 
     private void insertOutputs(List<ItemStack> outputs) {
-        for (ItemStack output : outputs) {
-            for (int slot : OUTPUT_SLOTS) {
-                ItemStack current = getItem(slot);
-                if (current.isEmpty()) {
-                    setItem(slot, output.copy());
-                    break;
-                }
-                if (canStacksMerge(current, output)
-                        && current.getCount() + output.getCount() <= current.getMaxStackSize()) {
-                    current.grow(output.getCount());
-                    setChanged();
-                    break;
-                }
-            }
-        }
-    }
-
-    private static boolean canStacksMergeStatic(ItemStack left, ItemStack right) {
-        if (left.isEmpty() || right.isEmpty() || left.getItem() != right.getItem()) {
-            return false;
-        }
-        String leftVariant = LegacyRecipeStacks.INSTANCE.variantKey(left);
-        String rightVariant = LegacyRecipeStacks.INSTANCE.variantKey(right);
-        if (leftVariant == null ? rightVariant != null : !leftVariant.equals(rightVariant)) {
-            return false;
-        }
-        return left.getDamageValue() == right.getDamageValue();
+        NonNullList<ItemStack> snapshot = planOutputs(outputs);
+        if (snapshot == null) throw new IllegalStateException("Centrifuge output changed during operation");
+        for (int slot : OUTPUT_SLOTS) setItem(slot, snapshot.get(slot));
+        setChanged();
     }
 
     private static int clampHeat(int value) {

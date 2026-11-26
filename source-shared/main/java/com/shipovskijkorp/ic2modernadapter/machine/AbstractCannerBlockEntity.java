@@ -243,7 +243,8 @@ public abstract class AbstractCannerBlockEntity extends AbstractElectricMachineB
         ItemStack container = getItem(SLOT_CAN_INPUT);
         CannerFluidContainers.FillResult directFill = CannerFluidContainers.fill(container, recipe.outputFluid(), recipe.outputAmountMb());
         if (directFill != null && canOutput(directFill.filledContainer())) {
-            return true;
+            int remaining = recipe.outputAmountMb() - directFill.amountMb();
+            if (remaining == 0 || canAddOutputFluid(recipe.outputFluid(), remaining)) return true;
         }
         return canAddOutputFluid(recipe.outputFluid(), recipe.outputAmountMb());
     }
@@ -251,7 +252,8 @@ public abstract class AbstractCannerBlockEntity extends AbstractElectricMachineB
     private void produceEnrichedFluid(Ic2FluidKind fluid, int amountMb) {
         ItemStack container = getItem(SLOT_CAN_INPUT);
         CannerFluidContainers.FillResult directFill = CannerFluidContainers.fill(container, fluid, amountMb);
-        if (directFill != null && canOutput(directFill.filledContainer())) {
+        if (directFill != null && canOutput(directFill.filledContainer())
+                && (amountMb == directFill.amountMb() || canAddOutputFluid(fluid, amountMb - directFill.amountMb()))) {
             container.shrink(1);
             insertOutput(directFill.filledContainer());
             int remaining = amountMb - directFill.amountMb();

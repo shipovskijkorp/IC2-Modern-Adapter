@@ -246,6 +246,15 @@ public final class IC2ContentRegistries {
                     IC2ContentRegistries::createFurnaceBlockEntity,
                     IC2VariantStacks::create);
         }
+        if ("scaffold".equals(path)) {
+            return new com.shipovskijkorp.ic2modernadapter.content.block.PlatformScaffoldBlock(
+                    properties, IC2VariantStacks::placementVariantIndex);
+        }
+        if ("foam".equals(path)) {
+            return new com.shipovskijkorp.ic2modernadapter.content.block.PlatformFoamBlock(
+                    properties.strength(0.01F, 10.0F).sound(SoundType.WOOL).noOcclusion().noCollission().randomTicks(),
+                    IC2VariantStacks::placementVariantIndex);
+        }
         if (variantCount > 1) {
             return new PickableLegacyVariantBlock(properties, path, variantCount, IC2VariantStacks::placementVariantIndex);
         }
@@ -353,6 +362,8 @@ public final class IC2ContentRegistries {
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
             case "nuclear" -> new RadioactiveItem(
                     path, new Item.Properties(), IC2VariantStacks::variantKey);
+            case "foam_sprayer" -> new com.shipovskijkorp.ic2modernadapter.content.item.FoamSprayerItem(
+                    path, new Item.Properties().stacksTo(1), IC2VariantStacks::variantKey);
             case "treetap" -> new TreetapItem(
                     path, new Item.Properties().durability(TreetapItem.MAX_USES), IC2VariantStacks::variantKey);
             case "electric_treetap" -> new ElectricTreetapItem(

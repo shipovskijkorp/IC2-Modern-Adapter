@@ -5,6 +5,7 @@ import java.util.List;
 /** Original IC2 tint multipliers required by models used by the visual placeholder milestone. */
 public final class OriginalVisualColors {
     public static final int WHITE = 0xFFFFFFFF;
+    public static final int WATER_SHEET = 0xFF3F76E4;
     public static final int RUBBER_LEAVES = 0xFF669944;
     public static final int PIPE_BRONZE = 0xFFF05111;
     public static final int PIPE_STEEL = 0xFF808080;
@@ -48,6 +49,11 @@ public final class OriginalVisualColors {
             case "cover/pump_mv" -> PUMP_COVER_MV;
             default -> WHITE;
         };
+    }
+
+    /** Modern vanilla water sprites are grayscale; restore the blue item tint only for water. */
+    public static int miscResource(String variantKey, int tintIndex) {
+        return tintIndex == 0 && "misc_resource/water_sheet".equals(variantKey) ? WATER_SHEET : WHITE;
     }
 
     private OriginalVisualColors() {
